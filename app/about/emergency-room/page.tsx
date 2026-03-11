@@ -1,5 +1,10 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { Siren } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Emergency Room",
+  description: "24/7 emergency care at metrodocshospital. Rapid triage, trauma care, cardiac and stroke response, pediatric emergency.",
+}
 
 export default function EmergencyRoomPage() {
   return (
@@ -7,7 +12,7 @@ export default function EmergencyRoomPage() {
       title="Emergency Room"
       subtitle="24/7 Emergency Care"
       description="Our emergency department operates around the clock, providing immediate care for life-threatening conditions and urgent medical needs. Our highly trained emergency medicine team is ready to respond to any medical crisis with speed and expertise."
-      icon={Siren}
+      iconName="Siren"
       features={[
         "24/7 emergency services availability",
         "Rapid triage and assessment",

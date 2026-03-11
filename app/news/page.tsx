@@ -6,101 +6,10 @@ import { useRef, useState } from "react"
 import Link from "next/link"
 import { Calendar, Clock, ArrowRight, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getNews, getNewsCategories } from "@/lib/mock-api"
+import type { NewsArticle } from "@/lib/mock-api"
 
-const news = [
-  {
-    id: 1,
-    slug: "new-cardiac-wing-opening",
-    title: "ModernCare Opens State-of-the-Art Cardiac Wing",
-    excerpt: "Our new cardiac care facility features the latest technology in heart health, including advanced catheterization labs and cardiac imaging. This expansion will allow us to serve more patients with complex cardiovascular conditions.",
-    content: "Full article content here...",
-    category: "Hospital News",
-    date: "2026-03-08",
-    readTime: "4 min read",
-    featured: true,
-  },
-  {
-    id: 2,
-    slug: "community-health-fair",
-    title: "Annual Community Health Fair This Weekend",
-    excerpt: "Join us for free health screenings, wellness workshops, and family activities at our annual community health fair. This year we're offering blood pressure checks, glucose testing, and BMI assessments.",
-    content: "Full article content here...",
-    category: "Events",
-    date: "2026-03-05",
-    readTime: "2 min read",
-    featured: false,
-  },
-  {
-    id: 3,
-    slug: "dr-chen-award",
-    title: "Dr. Sarah Chen Receives Excellence in Cardiology Award",
-    excerpt: "Our chief cardiologist has been recognized for her outstanding contributions to cardiovascular research and patient care. Dr. Chen has been with ModernCare for over 10 years.",
-    content: "Full article content here...",
-    category: "Awards",
-    date: "2026-03-01",
-    readTime: "3 min read",
-    featured: false,
-  },
-  {
-    id: 4,
-    slug: "new-pediatric-program",
-    title: "Launching New Pediatric Development Program",
-    excerpt: "ModernCare is proud to announce a comprehensive pediatric development program designed to support children with developmental delays and their families through early intervention services.",
-    content: "Full article content here...",
-    category: "Hospital News",
-    date: "2026-02-25",
-    readTime: "5 min read",
-    featured: false,
-  },
-  {
-    id: 5,
-    slug: "flu-season-tips",
-    title: "Staying Healthy During Flu Season: Expert Tips",
-    excerpt: "Our infectious disease specialists share their top recommendations for staying healthy this flu season, from vaccination to hygiene practices and immune-boosting strategies.",
-    content: "Full article content here...",
-    category: "Health Tips",
-    date: "2026-02-20",
-    readTime: "4 min read",
-    featured: false,
-  },
-  {
-    id: 6,
-    slug: "emergency-room-expansion",
-    title: "Emergency Room Expansion Complete",
-    excerpt: "Our emergency department expansion project is now complete, adding 12 new treatment bays and reducing average wait times by 40%. The new facilities include dedicated pediatric emergency rooms.",
-    content: "Full article content here...",
-    category: "Hospital News",
-    date: "2026-02-15",
-    readTime: "3 min read",
-    featured: false,
-  },
-  {
-    id: 7,
-    slug: "volunteer-recognition",
-    title: "Celebrating Our Hospital Volunteers",
-    excerpt: "This National Volunteer Week, we honor the dedicated individuals who give their time to support our patients and staff. Our volunteers contribute over 10,000 hours annually to ModernCare.",
-    content: "Full article content here...",
-    category: "Community",
-    date: "2026-02-10",
-    readTime: "3 min read",
-    featured: false,
-  },
-  {
-    id: 8,
-    slug: "mental-health-awareness",
-    title: "Mental Health Awareness Month Activities",
-    excerpt: "Join us throughout May for special events and workshops focused on mental health awareness. Topics include stress management, mindfulness, and when to seek professional help.",
-    content: "Full article content here...",
-    category: "Events",
-    date: "2026-02-05",
-    readTime: "2 min read",
-    featured: false,
-  },
-]
-
-const categories = ["All", "Hospital News", "Events", "Awards", "Health Tips", "Community"]
-
-function NewsCard({ article, index, featured = false }: { article: typeof news[0]; index: number; featured?: boolean }) {
+function NewsCard({ article, index, featured = false }: { article: NewsArticle; index: number; featured?: boolean }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-50px" })
 
@@ -192,6 +101,8 @@ function NewsCard({ article, index, featured = false }: { article: typeof news[0
 }
 
 export default function NewsPage() {
+  const news = getNews()
+  const categories = getNewsCategories()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -220,7 +131,7 @@ export default function NewsPage() {
               News & Events
             </span>
             <h1 className="mb-6 text-balance text-4xl font-bold text-foreground md:text-5xl">
-              Latest Updates from ModernCare
+              Latest Updates from metrodocshospital
             </h1>
             <p className="text-pretty text-lg text-muted-foreground">
               Stay informed about hospital news, upcoming events, health tips, and community activities.

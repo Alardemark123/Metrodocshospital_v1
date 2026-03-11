@@ -4,47 +4,8 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
-import { 
-  Heart, 
-  Target, 
-  Eye, 
-  Users, 
-  Award, 
-  Building2,
-  ArrowRight
-} from "lucide-react"
-
-const values = [
-  {
-    icon: Heart,
-    title: "Compassion",
-    description: "We treat every patient with empathy, kindness, and respect, recognizing the human being behind every medical case.",
-  },
-  {
-    icon: Target,
-    title: "Excellence",
-    description: "We pursue the highest standards in medical care, continuously improving our practices and embracing innovation.",
-  },
-  {
-    icon: Users,
-    title: "Collaboration",
-    description: "We work together as a unified team, partnering with patients and families to achieve the best health outcomes.",
-  },
-  {
-    icon: Award,
-    title: "Integrity",
-    description: "We uphold honesty, transparency, and ethical conduct in all our interactions and decisions.",
-  },
-]
-
-const facilities = [
-  { name: "Rehab Room", href: "/about/rehab-room", description: "Rehabilitation facility overview" },
-  { name: "Radiology Room", href: "/about/radiology-room", description: "Diagnostic imaging services" },
-  { name: "Emergency Room", href: "/about/emergency-room", description: "24/7 emergency care" },
-  { name: "Second Floor", href: "/about/second-floor", description: "Lobby, Prayer Area, Nursery Complex" },
-  { name: "Third Floor", href: "/about/third-floor", description: "Clinics, OPD Waiting Area" },
-  { name: "Fourth Floor", href: "/about/fourth-floor", description: "Private, Semi-Private, Suite Rooms" },
-]
+import { Target, Eye, Building2, ArrowRight } from "lucide-react"
+import { getValues, getFacilities, ICON_MAP } from "@/lib/mock-api"
 
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef(null)
@@ -76,13 +37,13 @@ export default function AboutPage() {
             className="mx-auto max-w-3xl text-center"
           >
             <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary">
-              About ModernCare
+              About metrodocshospital
             </span>
             <h1 className="mb-6 text-balance text-4xl font-bold text-foreground md:text-5xl">
               A Legacy of Healing, A Future of Hope
             </h1>
             <p className="text-pretty text-lg text-muted-foreground">
-              For over 25 years, ModernCare Hospital has been dedicated to providing exceptional healthcare services to our community, combining cutting-edge medical technology with compassionate care.
+              For over 25 years, metrodocshospital has been dedicated to providing exceptional healthcare services to our community, combining cutting-edge medical technology with compassionate care.
             </p>
           </motion.div>
         </div>
@@ -135,7 +96,9 @@ export default function AboutPage() {
           </AnimatedSection>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {values.map((value, index) => (
+            {getValues().map((value, index) => {
+              const ValueIcon = ICON_MAP[value.icon]
+              return (
               <AnimatedSection key={value.title}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -145,13 +108,13 @@ export default function AboutPage() {
                   className="group rounded-2xl bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    <value.icon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-foreground" />
+                    {ValueIcon && <ValueIcon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-foreground" />}
                   </div>
                   <h3 className="mb-2 text-xl font-semibold text-card-foreground">{value.title}</h3>
                   <p className="text-sm text-muted-foreground">{value.description}</p>
                 </motion.div>
               </AnimatedSection>
-            ))}
+            )})}
           </div>
         </div>
       </section>
@@ -172,7 +135,7 @@ export default function AboutPage() {
           </AnimatedSection>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {facilities.map((facility, index) => (
+            {getFacilities().map((facility, index) => (
               <motion.div
                 key={facility.name}
                 initial={{ opacity: 0, y: 20 }}

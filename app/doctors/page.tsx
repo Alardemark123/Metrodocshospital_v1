@@ -6,93 +6,10 @@ import { useRef, useState } from "react"
 import Link from "next/link"
 import { Search, Star, Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getDoctors, getDoctorDepartmentFilters } from "@/lib/mock-api"
+import type { Doctor } from "@/lib/mock-api"
 
-const doctors = [
-  {
-    id: 1,
-    name: "Dr. Sarah Chen",
-    specialty: "Cardiology",
-    department: "Cardiology",
-    experience: "15+ years",
-    rating: 4.9,
-    education: "Harvard Medical School",
-    bio: "Board-certified cardiologist specializing in interventional cardiology and heart failure management.",
-  },
-  {
-    id: 2,
-    name: "Dr. Michael Roberts",
-    specialty: "Neurology",
-    department: "Internal Medicine",
-    experience: "12+ years",
-    rating: 4.8,
-    education: "Johns Hopkins University",
-    bio: "Expert in neurological disorders including stroke, epilepsy, and movement disorders.",
-  },
-  {
-    id: 3,
-    name: "Dr. Emily Watson",
-    specialty: "Pediatrics",
-    department: "Pediatrics",
-    experience: "10+ years",
-    rating: 4.9,
-    education: "Stanford University",
-    bio: "Dedicated pediatrician with expertise in child development and pediatric infectious diseases.",
-  },
-  {
-    id: 4,
-    name: "Dr. James Miller",
-    specialty: "Orthopedic Surgery",
-    department: "Rehabilitation",
-    experience: "18+ years",
-    rating: 4.7,
-    education: "Yale School of Medicine",
-    bio: "Renowned orthopedic surgeon specializing in joint replacement and sports medicine.",
-  },
-  {
-    id: 5,
-    name: "Dr. Maria Garcia",
-    specialty: "Emergency Medicine",
-    department: "Emergency",
-    experience: "14+ years",
-    rating: 4.8,
-    education: "UCLA Medical School",
-    bio: "Emergency medicine specialist with extensive trauma care experience.",
-  },
-  {
-    id: 6,
-    name: "Dr. David Kim",
-    specialty: "Radiology",
-    department: "Radiology",
-    experience: "11+ years",
-    rating: 4.6,
-    education: "Columbia University",
-    bio: "Diagnostic radiologist with expertise in MRI and CT imaging interpretation.",
-  },
-  {
-    id: 7,
-    name: "Dr. Jennifer Lee",
-    specialty: "Internal Medicine",
-    department: "Internal Medicine",
-    experience: "9+ years",
-    rating: 4.8,
-    education: "University of Pennsylvania",
-    bio: "Internal medicine physician focused on preventive care and chronic disease management.",
-  },
-  {
-    id: 8,
-    name: "Dr. Robert Thompson",
-    specialty: "Laboratory Medicine",
-    department: "Laboratory",
-    experience: "16+ years",
-    rating: 4.7,
-    education: "Duke University",
-    bio: "Clinical pathologist ensuring accurate diagnostic testing and quality assurance.",
-  },
-]
-
-const departments = ["All", "Cardiology", "Internal Medicine", "Pediatrics", "Rehabilitation", "Emergency", "Radiology", "Laboratory"]
-
-function DoctorCard({ doctor, index }: { doctor: typeof doctors[0]; index: number }) {
+function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-50px" })
 
@@ -137,6 +54,8 @@ function DoctorCard({ doctor, index }: { doctor: typeof doctors[0]; index: numbe
 }
 
 export default function DoctorsPage() {
+  const doctors = getDoctors()
+  const departments = getDoctorDepartmentFilters()
   const [selectedDepartment, setSelectedDepartment] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
 

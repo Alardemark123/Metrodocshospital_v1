@@ -4,8 +4,26 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
-import { ArrowLeft, Check } from "lucide-react"
+import {
+  ArrowLeft,
+  Check,
+  Activity,
+  Bed,
+  Building2,
+  ScanLine,
+  Siren,
+  Stethoscope,
+} from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Activity,
+  Bed,
+  Building2,
+  ScanLine,
+  Siren,
+  Stethoscope,
+}
 
 interface FacilitySection {
   title: string
@@ -16,7 +34,7 @@ interface FacilityPageProps {
   title: string
   subtitle: string
   description: string
-  icon: LucideIcon
+  iconName: keyof typeof ICON_MAP
   features: string[]
   sections?: FacilitySection[]
   highlights?: { title: string; value: string }[]
@@ -38,15 +56,16 @@ function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; d
   )
 }
 
-export function FacilityPage({ 
-  title, 
-  subtitle, 
-  description, 
-  icon: Icon, 
-  features, 
+export function FacilityPage({
+  title,
+  subtitle,
+  description,
+  iconName,
+  features,
   sections,
-  highlights 
+  highlights,
 }: FacilityPageProps) {
+  const Icon = ICON_MAP[iconName] ?? Building2
   return (
     <>
       {/* Hero */}

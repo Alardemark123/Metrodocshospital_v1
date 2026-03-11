@@ -5,44 +5,10 @@ import { useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
-
-const news = [
-  {
-    id: 1,
-    slug: "new-cardiac-wing-opening",
-    title: "ModernCare Opens State-of-the-Art Cardiac Wing",
-    excerpt: "Our new cardiac care facility features the latest technology in heart health, including advanced catheterization labs and cardiac imaging.",
-    category: "Hospital News",
-    date: "2026-03-08",
-    readTime: "4 min read",
-    image: "/news/cardiac-wing.jpg",
-    featured: true,
-  },
-  {
-    id: 2,
-    slug: "community-health-fair",
-    title: "Annual Community Health Fair This Weekend",
-    excerpt: "Join us for free health screenings, wellness workshops, and family activities at our annual community health fair.",
-    category: "Events",
-    date: "2026-03-05",
-    readTime: "2 min read",
-    image: "/news/health-fair.jpg",
-    featured: false,
-  },
-  {
-    id: 3,
-    slug: "dr-chen-award",
-    title: "Dr. Sarah Chen Receives Excellence in Cardiology Award",
-    excerpt: "Our chief cardiologist has been recognized for her outstanding contributions to cardiovascular research and patient care.",
-    category: "Awards",
-    date: "2026-03-01",
-    readTime: "3 min read",
-    image: "/news/award.jpg",
-    featured: false,
-  },
-]
+import { getNews } from "@/lib/mock-api"
 
 export function LatestNews() {
+  const news = getNews().slice(0, 3)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 

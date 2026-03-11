@@ -1,5 +1,10 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { Stethoscope } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Third Floor",
+  description: "Outpatient services and OPD at metrodocshospital. Specialty clinics and comfortable waiting areas.",
+}
 
 export default function ThirdFloorPage() {
   return (
@@ -7,7 +12,7 @@ export default function ThirdFloorPage() {
       title="Third Floor"
       subtitle="Outpatient Services"
       description="Our third floor is dedicated to outpatient services, featuring multiple specialty clinics and a comfortable OPD waiting area. This floor is designed to provide efficient, high-quality care for patients who don't require hospitalization."
-      icon={Stethoscope}
+      iconName="Stethoscope"
       features={[
         "Multiple specialty consultation clinics",
         "General medicine outpatient services",

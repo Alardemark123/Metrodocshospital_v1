@@ -1,5 +1,10 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { Activity } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Rehabilitation Room",
+  description: "Recovery and therapy at metrodocshospital: physical, occupational, and speech therapy; post-surgical and stroke rehabilitation.",
+}
 
 export default function RehabRoomPage() {
   return (
@@ -7,7 +12,7 @@ export default function RehabRoomPage() {
       title="Rehabilitation Room"
       subtitle="Recovery & Therapy"
       description="Our rehabilitation facility is designed to help patients recover their strength, mobility, and independence. With state-of-the-art equipment and experienced therapists, we provide comprehensive rehabilitation services tailored to each patient's needs."
-      icon={Activity}
+      iconName="Activity"
       features={[
         "Physical therapy with certified specialists",
         "Occupational therapy for daily living skills",

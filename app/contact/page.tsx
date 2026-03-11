@@ -11,6 +11,7 @@ import {
   CheckCircle
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getFaqs } from "@/lib/mock-api"
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -108,8 +109,8 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-foreground">Email</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      info@moderncare.com<br />
-                      appointments@moderncare.com
+                      info@metrodocshospital.com<br />
+                      appointments@metrodocshospital.com
                     </p>
                   </div>
                 </div>
@@ -296,24 +297,7 @@ export default function ContactPage() {
           </motion.div>
 
           <div className="space-y-4">
-            {[
-              {
-                question: "How do I schedule an appointment?",
-                answer: "You can schedule an appointment by calling our main line at +1 (555) 123-4567, using our online contact form, or visiting our hospital in person.",
-              },
-              {
-                question: "What insurance plans do you accept?",
-                answer: "We accept most major insurance plans. Please contact our billing department to verify your specific coverage before your visit.",
-              },
-              {
-                question: "What should I bring to my first appointment?",
-                answer: "Please bring a valid photo ID, your insurance card, a list of current medications, and any relevant medical records or test results.",
-              },
-              {
-                question: "Do you offer telehealth appointments?",
-                answer: "Yes, we offer telehealth consultations for certain conditions and follow-up visits. Ask about virtual appointment options when scheduling.",
-              },
-            ].map((faq, index) => (
+            {getFaqs().map((faq, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 10 }}

@@ -1,17 +1,31 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
-  title: 'ModernCare Hospital | Compassionate Care for Every Life',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://metrodocshospital.com'),
+  title: {
+    default: 'metrodocshospital | Compassionate Care for Every Life',
+    template: '%s | metrodocshospital',
+  },
   description: 'Delivering modern healthcare with trusted medical professionals. Find doctors, explore departments, and access quality medical care.',
-  generator: 'v0.app',
+  generator: 'Apglobalitsolutioninc',
   keywords: ['hospital', 'healthcare', 'medical', 'doctors', 'emergency care', 'departments'],
+  openGraph: {
+    type: 'website',
+    title: 'metrodocshospital | Compassionate Care for Every Life',
+    description: 'Delivering modern healthcare with trusted medical professionals. Find doctors, explore departments, and access quality medical care.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'metrodocshospital | Compassionate Care for Every Life',
+    description: 'Delivering modern healthcare with trusted medical professionals.',
+  },
   icons: {
     icon: [
       {
@@ -43,8 +57,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.variable} font-sans antialiased`} suppressHydrationWarning>
         <Navbar />
         <main>
           {children}

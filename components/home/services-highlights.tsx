@@ -4,56 +4,11 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
-import { 
-  Stethoscope, 
-  Brain, 
-  Heart, 
-  Baby, 
-  Bone, 
-  Eye,
-  ArrowRight
-} from "lucide-react"
-
-const services = [
-  {
-    icon: Stethoscope,
-    title: "General Medicine",
-    description: "Comprehensive primary care and preventive health services for all ages.",
-    href: "/departments#general-medicine",
-  },
-  {
-    icon: Heart,
-    title: "Cardiology",
-    description: "Expert heart care with advanced diagnostic and treatment options.",
-    href: "/departments#cardiology",
-  },
-  {
-    icon: Brain,
-    title: "Neurology",
-    description: "Specialized care for brain, spine, and nervous system conditions.",
-    href: "/departments#neurology",
-  },
-  {
-    icon: Baby,
-    title: "Pediatrics",
-    description: "Gentle, expert care for infants, children, and adolescents.",
-    href: "/departments#pediatrics",
-  },
-  {
-    icon: Bone,
-    title: "Orthopedics",
-    description: "Treatment for bones, joints, muscles, and sports injuries.",
-    href: "/departments#orthopedics",
-  },
-  {
-    icon: Eye,
-    title: "Ophthalmology",
-    description: "Complete eye care from routine exams to advanced surgery.",
-    href: "/departments#ophthalmology",
-  },
-]
+import { ArrowRight } from "lucide-react"
+import { getServices, ICON_MAP } from "@/lib/mock-api"
 
 export function ServicesHighlights() {
+  const services = getServices()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -80,7 +35,9 @@ export function ServicesHighlights() {
 
         {/* Services Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
+          {services.map((service, index) => {
+            const ServiceIcon = ICON_MAP[service.icon]
+            return (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 30 }}
@@ -90,7 +47,7 @@ export function ServicesHighlights() {
               <Link href={service.href} className="group block h-full">
                 <div className="flex h-full flex-col rounded-2xl bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                   <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    <service.icon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-foreground" />
+                    {ServiceIcon && <ServiceIcon className="h-7 w-7 text-primary transition-colors group-hover:text-primary-foreground" />}
                   </div>
                   <h3 className="mb-2 text-xl font-semibold text-card-foreground">{service.title}</h3>
                   <p className="mb-4 flex-1 text-sm text-muted-foreground">{service.description}</p>
@@ -101,7 +58,7 @@ export function ServicesHighlights() {
                 </div>
               </Link>
             </motion.div>
-          ))}
+          )})}
         </div>
 
         {/* View All Button */}

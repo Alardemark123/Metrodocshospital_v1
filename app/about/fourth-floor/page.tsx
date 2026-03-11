@@ -1,5 +1,10 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { Bed } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Fourth Floor",
+  description: "Inpatient rooms at metrodocshospital: private suites, semi-private rooms, 24/7 nursing care.",
+}
 
 export default function FourthFloorPage() {
   return (
@@ -7,7 +12,7 @@ export default function FourthFloorPage() {
       title="Fourth Floor"
       subtitle="Inpatient Rooms"
       description="The fourth floor houses our inpatient facilities, offering a range of room options from private suites to semi-private accommodations. Each room is designed with patient comfort and recovery in mind, supported by our dedicated nursing stations."
-      icon={Bed}
+      iconName="Bed"
       features={[
         "Luxurious private suite rooms",
         "Comfortable semi-private rooms",

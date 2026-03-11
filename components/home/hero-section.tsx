@@ -49,7 +49,7 @@ export function HeroSection() {
             transition={{ delay: 0.2 }}
             className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary"
           >
-            Welcome to ModernCare Hospital
+            Welcome to metrodocshospital
           </motion.span>
 
           <h1 className="mb-6 text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">

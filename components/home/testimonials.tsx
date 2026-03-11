@@ -4,36 +4,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Jennifer Martinez",
-    quote: "The care I received at ModernCare was exceptional. From the moment I walked in, the staff made me feel comfortable and well-cared for. Dr. Chen and her team saved my life.",
-  },
-  {
-    id: 2,
-    name: "Robert Thompson",
-    quote: "After my knee surgery, the rehabilitation team at ModernCare helped me get back on my feet faster than I ever expected. Their dedication to patient recovery is truly remarkable.",
-  },
-  {
-    id: 3,
-    name: "Maria Santos",
-    quote: "As a new mother, I was anxious about my baby's health. The pediatric team was incredibly supportive and patient, answering all my questions and providing excellent care for my little one.",
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    quote: "The emergency department responded quickly when I had my accident. The doctors and nurses were professional, compassionate, and kept my family informed throughout my treatment.",
-  },
-  {
-    id: 5,
-    name: "Linda Foster",
-    quote: "I've been a patient at ModernCare for over 10 years. The consistent quality of care and the genuine concern the staff shows for my well-being keeps me coming back.",
-  },
-]
+import { getTestimonials } from "@/lib/mock-api"
 
 export function Testimonials() {
+  const testimonials = getTestimonials()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [current, setCurrent] = useState(0)

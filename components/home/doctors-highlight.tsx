@@ -6,43 +6,10 @@ import { useRef } from "react"
 import Link from "next/link"
 import { ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const doctors = [
-  {
-    id: 1,
-    name: "Dr. Sarah Chen",
-    specialty: "Cardiologist",
-    experience: "15+ years",
-    rating: 4.9,
-    image: "/doctors/doctor-1.jpg",
-  },
-  {
-    id: 2,
-    name: "Dr. Michael Roberts",
-    specialty: "Neurologist",
-    experience: "12+ years",
-    rating: 4.8,
-    image: "/doctors/doctor-2.jpg",
-  },
-  {
-    id: 3,
-    name: "Dr. Emily Watson",
-    specialty: "Pediatrician",
-    experience: "10+ years",
-    rating: 4.9,
-    image: "/doctors/doctor-3.jpg",
-  },
-  {
-    id: 4,
-    name: "Dr. James Miller",
-    specialty: "Orthopedic Surgeon",
-    experience: "18+ years",
-    rating: 4.7,
-    image: "/doctors/doctor-4.jpg",
-  },
-]
+import { getDoctors } from "@/lib/mock-api"
 
 export function DoctorsHighlight() {
+  const doctors = getDoctors().slice(0, 4)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 

@@ -40,7 +40,7 @@ export function Footer() {
                 <Heart className="h-6 w-6 text-primary-foreground" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold">ModernCare</span>
+                <span className="text-xl font-bold">metrodocshospital</span>
                 <span className="text-xs text-background/70">Hospital</span>
               </div>
             </Link>
@@ -111,7 +111,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 shrink-0 text-primary" />
-                <span className="text-sm text-background/80">info@moderncare.com</span>
+                <span className="text-sm text-background/80">info@metrodocshospital.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <Clock className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
@@ -128,7 +128,7 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-background/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 text-sm text-background/60 md:flex-row">
-          <p>&copy; {new Date().getFullYear()} ModernCare Hospital. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} metrodocshospital. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-primary">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-primary">Terms of Service</Link>

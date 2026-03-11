@@ -1,5 +1,10 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { ScanLine } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Radiology Room",
+  description: "Diagnostic imaging at metrodocshospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
+}
 
 export default function RadiologyRoomPage() {
   return (
@@ -7,7 +12,7 @@ export default function RadiologyRoomPage() {
       title="Radiology Room"
       subtitle="Diagnostic Imaging"
       description="Our radiology department is equipped with the latest imaging technology to provide accurate diagnoses. Our team of skilled radiologists and technicians work together to ensure you receive the highest quality diagnostic services."
-      icon={ScanLine}
+      iconName="ScanLine"
       features={[
         "Digital X-ray imaging",
         "Magnetic Resonance Imaging (MRI)",

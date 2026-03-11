@@ -1,13 +1,18 @@
+import type { Metadata } from "next"
 import { FacilityPage } from "@/components/facility-page"
-import { Building2 } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Second Floor",
+  description: "Lobby, prayer area, and nursery complex at metrodocshospital. Patient services and family care.",
+}
 
 export default function SecondFloorPage() {
   return (
     <FacilityPage
       title="Second Floor"
       subtitle="Patient Services"
-      description="The second floor of ModernCare Hospital houses essential patient services including our welcoming lobby area, a peaceful prayer space for spiritual comfort, and our comprehensive nursery complex for newborns and their families."
-      icon={Building2}
+      description="The second floor of metrodocshospital houses essential patient services including our welcoming lobby area, a peaceful prayer space for spiritual comfort, and our comprehensive nursery complex for newborns and their families."
+      iconName="Building2"
       features={[
         "Spacious and comfortable lobby area",
         "Patient registration services",

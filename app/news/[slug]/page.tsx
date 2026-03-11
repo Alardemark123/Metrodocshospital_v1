@@ -5,172 +5,11 @@ import { use } from "react"
 import Link from "next/link"
 import { ArrowLeft, Calendar, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const news = [
-  {
-    id: 1,
-    slug: "new-cardiac-wing-opening",
-    title: "ModernCare Opens State-of-the-Art Cardiac Wing",
-    excerpt: "Our new cardiac care facility features the latest technology in heart health.",
-    content: `
-      <p>ModernCare Hospital is proud to announce the grand opening of our new state-of-the-art Cardiac Care Wing, a significant milestone in our commitment to providing exceptional cardiovascular care to our community.</p>
-      
-      <h2>World-Class Facilities</h2>
-      <p>The new wing spans over 50,000 square feet and features the latest advancements in cardiac care technology. Key highlights include:</p>
-      <ul>
-        <li>Two advanced cardiac catheterization laboratories</li>
-        <li>State-of-the-art cardiac imaging center</li>
-        <li>Dedicated cardiac intensive care unit with 20 beds</li>
-        <li>Modern patient rooms designed for comfort and recovery</li>
-        <li>Advanced telemetry monitoring systems</li>
-      </ul>
-      
-      <h2>Expert Team</h2>
-      <p>Our cardiac care team has expanded to include some of the region's most experienced cardiologists, cardiac surgeons, and specialized nursing staff. Led by Dr. Sarah Chen, our team is committed to providing personalized, comprehensive care for patients with all types of heart conditions.</p>
-      
-      <h2>Community Impact</h2>
-      <p>This expansion will allow us to serve an additional 5,000 cardiac patients annually, reducing wait times and ensuring more community members have access to life-saving cardiac care close to home.</p>
-      
-      <p>We invite the community to join us for our open house event on March 15th, where you can tour the new facilities and meet our cardiac care team.</p>
-    `,
-    category: "Hospital News",
-    date: "2026-03-08",
-    readTime: "4 min read",
-    author: "ModernCare Communications",
-  },
-  {
-    id: 2,
-    slug: "community-health-fair",
-    title: "Annual Community Health Fair This Weekend",
-    excerpt: "Join us for free health screenings, wellness workshops, and family activities.",
-    content: `
-      <p>ModernCare Hospital invites the entire community to our Annual Health Fair this weekend! This free event offers valuable health resources, screenings, and fun activities for the whole family.</p>
-      
-      <h2>Event Details</h2>
-      <p>Date: Saturday, March 10th & Sunday, March 11th<br>
-      Time: 10:00 AM - 4:00 PM<br>
-      Location: ModernCare Hospital Main Campus</p>
-      
-      <h2>Free Health Screenings</h2>
-      <ul>
-        <li>Blood pressure checks</li>
-        <li>Blood glucose testing</li>
-        <li>BMI assessments</li>
-        <li>Vision and hearing tests</li>
-        <li>Skin cancer screenings</li>
-      </ul>
-      
-      <h2>Wellness Workshops</h2>
-      <p>Throughout the weekend, our healthcare professionals will be hosting informative workshops on:</p>
-      <ul>
-        <li>Healthy eating on a budget</li>
-        <li>Managing stress and anxiety</li>
-        <li>Exercise for all ages</li>
-        <li>Heart health basics</li>
-        <li>Diabetes prevention</li>
-      </ul>
-      
-      <h2>Family Activities</h2>
-      <p>Kids will love our dedicated children's area featuring face painting, a teddy bear clinic, and interactive health games. Don't miss the opportunity to meet our therapy dogs!</p>
-      
-      <p>No registration required. All are welcome!</p>
-    `,
-    category: "Events",
-    date: "2026-03-05",
-    readTime: "2 min read",
-    author: "Events Team",
-  },
-  {
-    id: 3,
-    slug: "dr-chen-award",
-    title: "Dr. Sarah Chen Receives Excellence in Cardiology Award",
-    excerpt: "Our chief cardiologist has been recognized for her outstanding contributions.",
-    content: `
-      <p>We are thrilled to announce that Dr. Sarah Chen, Chief of Cardiology at ModernCare Hospital, has been awarded the prestigious Excellence in Cardiology Award by the American Heart Association.</p>
-      
-      <h2>A Well-Deserved Recognition</h2>
-      <p>This award recognizes Dr. Chen's exceptional contributions to cardiovascular research and patient care over her 15-year career. Her pioneering work in interventional cardiology has improved outcomes for thousands of patients.</p>
-      
-      <h2>Research Contributions</h2>
-      <p>Dr. Chen has published over 50 peer-reviewed research papers and has been instrumental in developing new techniques for minimally invasive cardiac procedures. Her research on heart failure management has been adopted by hospitals nationwide.</p>
-      
-      <h2>Patient-Centered Care</h2>
-      <p>"This award belongs to our entire cardiac team," said Dr. Chen upon receiving the honor. "Every day, I'm inspired by my colleagues' dedication to our patients. Together, we're making a difference in people's lives."</p>
-      
-      <p>Please join us in congratulating Dr. Chen on this remarkable achievement!</p>
-    `,
-    category: "Awards",
-    date: "2026-03-01",
-    readTime: "3 min read",
-    author: "ModernCare Communications",
-  },
-  {
-    id: 4,
-    slug: "new-pediatric-program",
-    title: "Launching New Pediatric Development Program",
-    excerpt: "ModernCare is proud to announce a comprehensive pediatric development program.",
-    content: `
-      <p>ModernCare Hospital is excited to launch our new comprehensive Pediatric Development Program, designed to support children with developmental delays and their families through early intervention services.</p>
-      
-      <h2>Program Overview</h2>
-      <p>Our multidisciplinary team of pediatric specialists will provide comprehensive evaluations and personalized treatment plans for children from birth to age 5. The program addresses developmental concerns in areas including:</p>
-      <ul>
-        <li>Speech and language development</li>
-        <li>Motor skills development</li>
-        <li>Social and emotional development</li>
-        <li>Cognitive development</li>
-        <li>Adaptive behavior skills</li>
-      </ul>
-      
-      <h2>Expert Team</h2>
-      <p>The program brings together developmental pediatricians, speech-language pathologists, occupational therapists, physical therapists, and child psychologists to provide coordinated care.</p>
-      
-      <p>For more information or to schedule a consultation, please contact our Pediatric Development Center at (555) 123-4567.</p>
-    `,
-    category: "Hospital News",
-    date: "2026-02-25",
-    readTime: "5 min read",
-    author: "Pediatrics Department",
-  },
-  {
-    id: 5,
-    slug: "flu-season-tips",
-    title: "Staying Healthy During Flu Season: Expert Tips",
-    excerpt: "Our infectious disease specialists share their top recommendations.",
-    content: `
-      <p>With flu season in full swing, our infectious disease specialists want to share important tips to help you and your family stay healthy.</p>
-      
-      <h2>Get Vaccinated</h2>
-      <p>The flu vaccine remains the most effective way to protect yourself and others. It's not too late to get vaccinated! ModernCare offers flu shots at all our locations, no appointment necessary.</p>
-      
-      <h2>Practice Good Hygiene</h2>
-      <ul>
-        <li>Wash your hands frequently with soap and water for at least 20 seconds</li>
-        <li>Avoid touching your face, especially your eyes, nose, and mouth</li>
-        <li>Cover coughs and sneezes with a tissue or your elbow</li>
-        <li>Stay home when you're sick</li>
-      </ul>
-      
-      <h2>Boost Your Immune System</h2>
-      <ul>
-        <li>Get adequate sleep (7-9 hours for adults)</li>
-        <li>Eat a balanced diet rich in fruits and vegetables</li>
-        <li>Exercise regularly</li>
-        <li>Manage stress through relaxation techniques</li>
-      </ul>
-      
-      <p>If you develop flu symptoms, contact your healthcare provider promptly. Antiviral medications work best when started within 48 hours of symptom onset.</p>
-    `,
-    category: "Health Tips",
-    date: "2026-02-20",
-    readTime: "4 min read",
-    author: "Dr. Jennifer Lee",
-  },
-]
+import { getNewsBySlug, getNews } from "@/lib/mock-api"
 
 export default function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params)
-  const article = news.find((a) => a.slug === slug)
+  const article = getNewsBySlug(slug)
 
   if (!article) {
     return (
@@ -194,7 +33,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
   }
 
   // Get related articles (same category, excluding current)
-  const relatedArticles = news
+  const relatedArticles = getNews()
     .filter((a) => a.category === article.category && a.slug !== article.slug)
     .slice(0, 3)
 
@@ -257,7 +96,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: article.content ?? "" }}
           />
 
           {/* Share */}

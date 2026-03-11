@@ -3,32 +3,10 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
-import { Heart, Shield, Users, Award } from "lucide-react"
-
-const features = [
-  {
-    icon: Heart,
-    title: "Patient-Centered Care",
-    description: "Every treatment plan is tailored to your unique needs and preferences.",
-  },
-  {
-    icon: Shield,
-    title: "Advanced Technology",
-    description: "State-of-the-art medical equipment for accurate diagnosis and treatment.",
-  },
-  {
-    icon: Users,
-    title: "Expert Medical Team",
-    description: "Board-certified physicians and caring nursing staff dedicated to you.",
-  },
-  {
-    icon: Award,
-    title: "Accredited Excellence",
-    description: "Recognized for maintaining the highest standards in healthcare.",
-  },
-]
+import { getFeatures, ICON_MAP } from "@/lib/mock-api"
 
 export function HospitalIntro() {
+  const features = getFeatures()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -49,7 +27,7 @@ export function HospitalIntro() {
               A Legacy of Healing, A Future of Hope
             </h2>
             <p className="mb-6 text-pretty leading-relaxed text-muted-foreground">
-              For over two decades, ModernCare Hospital has been at the forefront of medical excellence. Our mission is to provide compassionate, accessible, and high-quality healthcare to every patient who walks through our doors.
+              For over two decades, metrodocshospital has been at the forefront of medical excellence. Our mission is to provide compassionate, accessible, and high-quality healthcare to every patient who walks through our doors.
             </p>
             <p className="mb-8 text-pretty leading-relaxed text-muted-foreground">
               We combine cutting-edge medical technology with a human touch, ensuring that you receive not just treatment, but genuine care that respects your dignity and values.
@@ -57,7 +35,9 @@ export function HospitalIntro() {
 
             {/* Features Grid */}
             <div className="grid gap-6 sm:grid-cols-2">
-              {features.map((feature, index) => (
+              {features.map((feature, index) => {
+                const FeatureIcon = ICON_MAP[feature.icon]
+                return (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -66,14 +46,14 @@ export function HospitalIntro() {
                   className="group flex items-start gap-4"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    <feature.icon className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
+                    {FeatureIcon && <FeatureIcon className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />}
                   </div>
                   <div>
                     <h3 className="mb-1 font-semibold text-foreground">{feature.title}</h3>
                     <p className="text-sm text-muted-foreground">{feature.description}</p>
                   </div>
                 </motion.div>
-              ))}
+              )})}
             </div>
           </motion.div>
 
