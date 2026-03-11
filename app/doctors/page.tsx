@@ -210,13 +210,21 @@ export default function DoctorsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
+  const DOCTORS_PER_PAGE = useDoctorsPerPage();
 
   const scrollToGrid = () => {
     setTimeout(() => {
-      gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (gridRef.current) {
+        const top =
+          gridRef.current.getBoundingClientRect().top + window.scrollY - 170;
+        const clampedTop = Math.min(
+          top,
+          document.body.scrollHeight - window.innerHeight,
+        );
+        window.scrollTo({ top: clampedTop, behavior: "smooth" });
+      }
     }, 50);
   };
-  const DOCTORS_PER_PAGE = useDoctorsPerPage();
 
   const handleDepartmentChange = (dept: string) => {
     setSelectedDepartment(dept);
@@ -228,6 +236,7 @@ export default function DoctorsPage() {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setCurrentPage(1);
+    scrollToGrid();
   };
 
   const clearFilters = () => {

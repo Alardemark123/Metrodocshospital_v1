@@ -1,17 +1,74 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { useState } from "react"
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
   Send,
-  CheckCircle
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { getFaqs } from "@/lib/mock-api"
+  CheckCircle,
+  ChevronDown,
+  MessageSquare,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { getFaqs } from "@/lib/mock-api";
+
+// ---------- FAQ Accordion Item ----------
+function FaqItem({
+  faq,
+  index,
+}: {
+  faq: { question: string; answer: string };
+  index: number;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.07 }}
+      viewport={{ once: true }}
+      className={`overflow-hidden rounded-xl border transition-colors ${open ? "border-primary/40 bg-card" : "border-border bg-card"}`}
+    >
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between px-5 py-4 text-left"
+      >
+        <span
+          className={`text-sm font-semibold ${open ? "text-primary" : "text-card-foreground"}`}
+        >
+          {faq.question}
+        </span>
+        <motion.div
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 transition-colors ${open ? "text-primary" : "text-muted-foreground"}`}
+          />
+        </motion.div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            <div className="border-t border-border px-5 pb-4 pt-3">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {faq.answer}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -20,247 +77,394 @@ export default function ContactPage() {
     phone: "",
     subject: "",
     message: "",
-  })
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!formState.name.trim()) e.name = "Required";
+    if (!formState.email.trim()) e.email = "Required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email))
+      e.email = "Invalid email";
+    if (!formState.subject) e.subject = "Please select a subject";
+    if (!formState.message.trim()) e.message = "Required";
+    return e;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Mock form submission
-    setIsSubmitted(true)
+    e.preventDefault();
+    const e2 = validate();
+    if (Object.keys(e2).length > 0) {
+      setErrors(e2);
+      return;
+    }
+    setIsSubmitted(true);
     setTimeout(() => {
-      setIsSubmitted(false)
-      setFormState({ name: "", email: "", phone: "", subject: "", message: "" })
-    }, 3000)
-  }
+      setIsSubmitted(false);
+      setFormState({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+      setErrors({});
+    }, 4000);
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+  };
+
+  const contactCards = [
+    {
+      icon: MapPin,
+      label: "Address",
+      lines: ["156 Marick Dr, Santo Domingo,", "Cainta, 1900 Rizal"],
+    },
+    {
+      icon: Clock,
+      label: "Opening Hours",
+      lines: [
+        "Mon: 8:00 AM – 8:00 PM",
+        "Wed & Fri: 7:00 AM – 7:00 PM",
+        "Tue, Thu & Sat: 6:00 AM – 6:00 PM",
+        "Hospital: 24/7",
+      ],
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      lines: ["(02) 8251-6922", "(02) 8532-6505"],
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      lines: ["info@metrodocshospital.com.ph"],
+    },
+  ];
 
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-accent/30 blur-2xl" />
+        <div className="relative mx-auto max-w-7xl px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto max-w-3xl text-center"
+            className="mx-auto max-w-2xl text-center"
           >
-            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary">
-              Contact Us
-            </span>
-            <h1 className="mb-6 text-balance text-4xl font-bold text-foreground md:text-5xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+              <MessageSquare className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                Contact Us
+              </span>
+            </div>
+            <h1 className="mb-4 text-balance text-4xl font-bold text-foreground md:text-5xl">
               {"We're Here to Help"}
             </h1>
-            <p className="text-pretty text-lg text-muted-foreground">
-              Have questions or need to schedule an appointment? Reach out to us and our team will respond promptly.
+            <p className="text-pretty text-base text-muted-foreground md:text-lg">
+              Have questions or need to schedule an appointment? Reach out and
+              our team will respond promptly.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Info & Form */}
-      <section className="bg-background py-20 lg:py-32">
+      {/* Contact info cards */}
+      <section className="bg-secondary/30 py-10">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="grid gap-12 lg:grid-cols-3">
-            {/* Contact Information */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {contactCards.map((card, i) => (
+              <motion.div
+                key={card.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.07 }}
+                viewport={{ once: true }}
+                className="group relative flex flex-col items-start rounded-2xl border border-border bg-card px-5 py-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+              >
+                {/* Top accent bar */}
+                <div className="absolute left-0 top-0 h-1 w-12 rounded-tl-2xl bg-primary/40 transition-all duration-300 group-hover:w-full group-hover:rounded-tr-2xl group-hover:bg-primary/30" />
+
+                {/* Icon */}
+                <div className="mb-4 mt-2 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
+                  <card.icon className="h-5 w-5 text-primary" />
+                </div>
+
+                {/* Label */}
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                  {card.label}
+                </p>
+
+                {/* Info lines */}
+                <div className="space-y-1">
+                  {card.lines.map((line, j) => (
+                    <p
+                      key={j}
+                      className={`text-sm leading-snug ${j === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Map + Form */}
+      <section className="bg-background pb-16 pt-4">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid gap-6 lg:grid-cols-5">
+            {/* Map */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-1"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2"
             >
-              <h2 className="mb-8 text-2xl font-bold text-foreground">Contact Information</h2>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <MapPin className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Address</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      123 Healthcare Avenue<br />
-                      Medical District, City<br />
-                      State 12345
+              <div className="sticky top-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                {/* Map placeholder */}
+                <div className="relative aspect-[3/4] bg-gradient-to-br from-primary/10 via-accent/30 to-secondary">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                      <MapPin className="h-7 w-7 text-primary" />
+                    </div>
+                    <p className="text-sm font-medium text-foreground">
+                      156 Marick Dr, Santo Domingo
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Cainta, 1900 Rizal
                     </p>
                   </div>
+                  {/* Decorative grid lines */}
+                  <svg
+                    className="absolute inset-0 h-full w-full opacity-10"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <pattern
+                        id="grid"
+                        width="40"
+                        height="40"
+                        patternUnits="userSpaceOnUse"
+                      >
+                        <path
+                          d="M 40 0 L 0 0 0 40"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                  </svg>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <Phone className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Phone</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Main: +1 (555) 123-4567<br />
-                      Emergency: +1 (555) 911-0000
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <Mail className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Email</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      info@metrodocshospital.com<br />
-                      appointments@metrodocshospital.com
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Hours</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Monday - Friday: 8:00 AM - 8:00 PM<br />
-                      Saturday - Sunday: 9:00 AM - 5:00 PM<br />
-                      Emergency: 24/7
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Map Placeholder */}
-              <div className="mt-8 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-accent">
-                <div className="flex h-full items-center justify-center text-muted-foreground">
-                  <MapPin className="mr-2 h-6 w-6" />
-                  Map View
+                {/* Quick contact links */}
+                <div className="divide-y divide-border">
+                  <a
+                    href="tel:02825169222"
+                    className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-accent"
+                  >
+                    <Phone className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium text-foreground">
+                      (02) 8251-6922
+                    </span>
+                  </a>
+                  <a
+                    href="mailto:info@metrodocshospital.com.ph"
+                    className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-accent"
+                  >
+                    <Mail className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium text-foreground">
+                      info@metrodocshospital.com.ph
+                    </span>
+                  </a>
                 </div>
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Form */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-2"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="lg:col-span-3"
             >
-              <div className="rounded-3xl border border-border bg-card p-8 md:p-12">
-                <h2 className="mb-2 text-2xl font-bold text-card-foreground">Send Us a Message</h2>
-                <p className="mb-8 text-muted-foreground">
-                  Fill out the form below and we will get back to you within 24 hours.
-                </p>
+              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                {/* Form header */}
+                <div className="border-b border-border bg-secondary/30 px-6 py-5">
+                  <h2 className="font-bold text-card-foreground">
+                    Send Us a Message
+                  </h2>
+                  <p className="text-xs text-muted-foreground">
+                    We'll get back to you within 24 hours.
+                  </p>
+                </div>
 
-                {isSubmitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-12 text-center"
-                  >
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                      <CheckCircle className="h-8 w-8 text-primary" />
-                    </div>
-                    <h3 className="mb-2 text-xl font-semibold text-card-foreground">Message Sent!</h3>
-                    <p className="text-muted-foreground">
-                      Thank you for contacting us. We will respond shortly.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <div>
-                        <label htmlFor="name" className="mb-2 block text-sm font-medium text-card-foreground">
-                          Full Name *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formState.name}
-                          onChange={handleChange}
-                          required
-                          className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                          placeholder="John Doe"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="mb-2 block text-sm font-medium text-card-foreground">
-                          Email Address *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formState.email}
-                          onChange={handleChange}
-                          required
-                          className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                          placeholder="john@example.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <div>
-                        <label htmlFor="phone" className="mb-2 block text-sm font-medium text-card-foreground">
-                          Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={formState.phone}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                          placeholder="+1 (555) 000-0000"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="subject" className="mb-2 block text-sm font-medium text-card-foreground">
-                          Subject *
-                        </label>
-                        <select
-                          id="subject"
-                          name="subject"
-                          value={formState.subject}
-                          onChange={handleChange}
-                          required
-                          className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                <div className="p-6">
+                  <AnimatePresence mode="wait">
+                    {isSubmitted ? (
+                      <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="flex flex-col items-center justify-center py-16 text-center"
+                      >
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", damping: 14 }}
+                          className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
                         >
-                          <option value="">Select a subject</option>
-                          <option value="appointment">Schedule an Appointment</option>
-                          <option value="general">General Inquiry</option>
-                          <option value="billing">Billing Question</option>
-                          <option value="feedback">Feedback</option>
-                          <option value="careers">Career Opportunity</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                    </div>
+                          <CheckCircle className="h-8 w-8 text-primary" />
+                        </motion.div>
+                        <h3 className="mb-2 text-xl font-bold text-card-foreground">
+                          Message Sent!
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Thank you for reaching out. We will respond shortly.
+                        </p>
+                      </motion.div>
+                    ) : (
+                      <motion.form
+                        key="form"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        onSubmit={handleSubmit}
+                        className="space-y-4"
+                      >
+                        {/* Row 1 */}
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div>
+                            <label className="mb-1.5 block text-xs font-semibold text-foreground">
+                              Full Name <span className="text-primary">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              value={formState.name}
+                              onChange={handleChange}
+                              placeholder="Juan dela Cruz"
+                              className={`w-full rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.name ? "border-red-400" : "border-input focus:border-primary"}`}
+                            />
+                            {errors.name && (
+                              <p className="mt-1 text-xs text-red-500">
+                                {errors.name}
+                              </p>
+                            )}
+                          </div>
+                          <div>
+                            <label className="mb-1.5 block text-xs font-semibold text-foreground">
+                              Email <span className="text-primary">*</span>
+                            </label>
+                            <input
+                              type="email"
+                              name="email"
+                              value={formState.email}
+                              onChange={handleChange}
+                              placeholder="juan@email.com"
+                              className={`w-full rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.email ? "border-red-400" : "border-input focus:border-primary"}`}
+                            />
+                            {errors.email && (
+                              <p className="mt-1 text-xs text-red-500">
+                                {errors.email}
+                              </p>
+                            )}
+                          </div>
+                        </div>
 
-                    <div>
-                      <label htmlFor="message" className="mb-2 block text-sm font-medium text-card-foreground">
-                        Message *
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formState.message}
-                        onChange={handleChange}
-                        required
-                        rows={5}
-                        className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                        placeholder="How can we help you?"
-                      />
-                    </div>
+                        {/* Row 2 */}
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div>
+                            <label className="mb-1.5 block text-xs font-semibold text-foreground">
+                              Phone{" "}
+                              <span className="text-xs font-normal text-muted-foreground">
+                                (optional)
+                              </span>
+                            </label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={formState.phone}
+                              onChange={handleChange}
+                              placeholder="+63 912 345 6789"
+                              className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                            />
+                          </div>
+                          <div>
+                            <label className="mb-1.5 block text-xs font-semibold text-foreground">
+                              Subject <span className="text-primary">*</span>
+                            </label>
+                            <select
+                              name="subject"
+                              value={formState.subject}
+                              onChange={handleChange}
+                              className={`w-full rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.subject ? "border-red-400" : "border-input focus:border-primary"}`}
+                            >
+                              <option value="">Select a subject</option>
+                              <option value="appointment">
+                                Schedule an Appointment
+                              </option>
+                              <option value="general">General Inquiry</option>
+                              <option value="billing">Billing Question</option>
+                              <option value="feedback">Feedback</option>
+                              <option value="careers">
+                                Career Opportunity
+                              </option>
+                              <option value="other">Other</option>
+                            </select>
+                            {errors.subject && (
+                              <p className="mt-1 text-xs text-red-500">
+                                {errors.subject}
+                              </p>
+                            )}
+                          </div>
+                        </div>
 
-                    <Button type="submit" size="lg" className="gap-2">
-                      <Send className="h-5 w-5" />
-                      Send Message
-                    </Button>
-                  </form>
-                )}
+                        {/* Message */}
+                        <div>
+                          <label className="mb-1.5 block text-xs font-semibold text-foreground">
+                            Message <span className="text-primary">*</span>
+                          </label>
+                          <textarea
+                            name="message"
+                            value={formState.message}
+                            onChange={handleChange}
+                            rows={5}
+                            placeholder="How can we help you?"
+                            className={`w-full resize-none rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.message ? "border-red-400" : "border-input focus:border-primary"}`}
+                          />
+                          {errors.message && (
+                            <p className="mt-1 text-xs text-red-500">
+                              {errors.message}
+                            </p>
+                          )}
+                        </div>
+
+                        <Button type="submit" className="gap-2">
+                          <Send className="h-4 w-4" />
+                          Send Message
+                        </Button>
+                      </motion.form>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -268,51 +472,50 @@ export default function ContactPage() {
       </section>
 
       {/* Emergency Banner */}
-      <section className="bg-destructive py-8">
+      <section className="bg-destructive py-6">
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-left">
-            <div className="text-destructive-foreground">
-              <h3 className="text-lg font-semibold text-card">Medical Emergency?</h3>
-              <p className="text-card/80">{"For life-threatening emergencies, please call 911 or visit our Emergency Room immediately."}</p>
+            <div>
+              <h3 className="text-base font-bold text-destructive-foreground">
+                Medical Emergency?
+              </h3>
+              <p className="text-sm text-destructive-foreground/80">
+                For life-threatening emergencies, call 911 or visit our
+                Emergency Room immediately.
+              </p>
             </div>
-            <Button variant="secondary" size="lg" asChild>
+            <Button variant="secondary" size="lg" asChild className="shrink-0">
               <a href="tel:911">Call 911</a>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-secondary py-20">
+      {/* FAQ — accordion */}
+      <section className="bg-secondary py-16">
         <div className="mx-auto max-w-3xl px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="mb-12 text-center"
+            className="mb-10 text-center"
           >
-            <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground">Find quick answers to common questions.</p>
+            <h2 className="mb-2 text-2xl font-bold text-foreground md:text-3xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Find quick answers to common questions.
+            </p>
           </motion.div>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             {getFaqs().map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="rounded-2xl bg-card p-6"
-              >
-                <h3 className="mb-2 font-semibold text-card-foreground">{faq.question}</h3>
-                <p className="text-sm text-muted-foreground">{faq.answer}</p>
-              </motion.div>
+              <FaqItem key={index} faq={faq} index={index} />
             ))}
           </div>
         </div>
       </section>
     </>
-  )
+  );
 }
