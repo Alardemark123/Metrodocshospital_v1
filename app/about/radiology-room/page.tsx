@@ -1,10 +1,11 @@
-import type { Metadata } from "next"
-import { FacilityPage } from "@/components/facility-page"
+import type { Metadata } from "next";
+import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
   title: "Radiology Room",
-  description: "Diagnostic imaging at metrodocshospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
-}
+  description:
+    "Diagnostic imaging at metrodocshospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
+};
 
 export default function RadiologyRoomPage() {
   return (
@@ -13,6 +14,11 @@ export default function RadiologyRoomPage() {
       subtitle="Diagnostic Imaging"
       description="Our radiology department is equipped with the latest imaging technology to provide accurate diagnoses. Our team of skilled radiologists and technicians work together to ensure you receive the highest quality diagnostic services."
       iconName="ScanLine"
+      images={[
+        "/about/radiology/FRD_5339-1024x683.jpg",
+        "/about/radiology/FRD_5340-1024x683.jpg",
+        "/about/radiology/FRD_5342-1024x683.jpg",
+      ]}
       features={[
         "Digital X-ray imaging",
         "Magnetic Resonance Imaging (MRI)",
@@ -32,5 +38,5 @@ export default function RadiologyRoomPage() {
         { title: "Accuracy Rate", value: "99%" },
       ]}
     />
-  )
+  );
 }

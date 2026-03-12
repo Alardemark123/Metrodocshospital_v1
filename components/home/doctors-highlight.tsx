@@ -42,7 +42,7 @@ function DoctorCard({
     >
       <Link href={`/doctors/${doctor.id}`} className="group block">
         <div className="relative overflow-hidden rounded-3xl bg-card shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-          {/* Portrait image — tall */}
+          {/* Portrait image */}
           <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/50">
             <Image
               src={imgSrc}
@@ -52,16 +52,15 @@ function DoctorCard({
               onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
             />
 
-            {/* Dark gradient at bottom */}
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
 
-            {/* Rating — top right */}
+            {/* Rating */}
             <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
               {doctor.rating}
             </div>
 
-            {/* Name + specialty overlaid on image bottom */}
+            {/* Name + specialty */}
             <div className="absolute bottom-0 left-0 right-0 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-primary-foreground/70">
                 {doctor.specialty}
@@ -78,14 +77,22 @@ function DoctorCard({
               <Stethoscope className="h-3.5 w-3.5 text-primary/60" />
               {doctor.experience} exp.
             </div>
-            <div className="flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            {/*
+              Mobile: always visible
+              Desktop: hidden until hover
+            */}
+            <div className="flex items-center gap-1 text-xs font-semibold text-primary lg:opacity-0 lg:transition-opacity lg:group-hover:opacity-100">
               View Profile
               <ChevronRight className="h-3.5 w-3.5" />
             </div>
           </div>
 
-          {/* Left accent bar on hover */}
-          <div className="absolute left-0 top-0 h-full w-1 origin-bottom scale-y-0 rounded-r bg-primary transition-transform duration-300 group-hover:scale-y-100" />
+          {/*
+            Left accent bar:
+            Mobile: always fully visible
+            Desktop: animates in on hover
+          */}
+          <div className="absolute left-0 top-0 h-full w-1 rounded-r bg-primary lg:origin-bottom lg:scale-y-0 lg:transition-transform lg:duration-300 lg:group-hover:scale-y-100" />
         </div>
       </Link>
     </motion.div>
@@ -102,12 +109,23 @@ export function DoctorsHighlight() {
       ref={ref}
       className="relative overflow-hidden bg-secondary py-20 lg:py-32"
     >
-      {/* Radial glows */}
+      {/* Dot pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, currentColor 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+      {/* Floating shapes */}
+      <div className="pointer-events-none absolute right-8 top-20 h-28 w-28 rounded-full border border-primary/10" />
+      <div className="pointer-events-none absolute right-8 top-20 h-16 w-16 rounded-full border border-primary/10" />
+      <div className="pointer-events-none absolute left-1/2 bottom-16 h-10 w-10 rotate-45 rounded-lg border border-primary/10" />
       <div className="pointer-events-none absolute -right-32 top-0 h-[420px] w-[420px] rounded-full bg-primary/8 blur-[110px]" />
       <div className="pointer-events-none absolute -left-24 bottom-0 h-[320px] w-[320px] rounded-full bg-accent/40 blur-[90px]" />
 
       <div className="relative mx-auto max-w-7xl px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -131,7 +149,6 @@ export function DoctorsHighlight() {
           </p>
         </motion.div>
 
-        {/* Grid */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {doctors.map((doctor, index) => (
             <DoctorCard
@@ -143,7 +160,6 @@ export function DoctorsHighlight() {
           ))}
         </div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

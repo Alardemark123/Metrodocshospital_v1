@@ -14,7 +14,23 @@ export function HospitalIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="bg-background py-20 lg:py-20">
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-background py-20 lg:py-28"
+    >
+      {/* Plus/cross pattern top right */}
+      <div
+        className="pointer-events-none absolute right-0 top-0 h-64 w-64 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+      {/* Floating accent circles */}
+      <div className="pointer-events-none absolute -right-10 top-20 h-48 w-48 rounded-full border-2 border-dashed border-primary/10" />
+      <div className="pointer-events-none absolute bottom-10 left-10 h-24 w-24 rotate-45 rounded-xl border border-primary/10" />
+      <div className="pointer-events-none absolute right-1/4 bottom-20 h-10 w-10 rounded-full bg-primary/5" />
       <div className="mx-auto max-w-7xl px-4">
         {/* Top two-column: video left, text right */}
         <div className="mb-16 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">

@@ -17,7 +17,26 @@ export function ServicesHighlights() {
   const FeaturedIcon = featured ? ICON_MAP[featured.icon] : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-10">
+    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32">
+      {/* Diagonal stripe accent top-left */}
+      <div
+        className="pointer-events-none absolute -left-10 -top-10 h-48 w-48 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
+          backgroundSize: "12px 12px",
+        }}
+      />
+      {/* Floating shapes */}
+      <div className="pointer-events-none absolute right-10 top-16 h-16 w-16 rotate-12 rounded-2xl border border-primary/10" />
+      <div className="pointer-events-none absolute left-1/3 bottom-16 h-8 w-8 rotate-45 bg-primary/5 rounded-sm" />
+      <div className="pointer-events-none absolute right-1/4 top-1/2 h-32 w-32 rounded-full border border-primary/8" />
+
+      {/* Low-opacity background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/FRD_5333-scaled.jpg')" }}
+      />
       <div className="absolute inset-0 bg-secondary/90" />
       {/* Radial glow effects */}
       <div className="pointer-events-none absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-primary/10 blur-[120px]" />

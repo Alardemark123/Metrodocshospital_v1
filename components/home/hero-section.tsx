@@ -14,18 +14,9 @@ import {
 } from "lucide-react";
 
 const heroSlides = [
-  {
-    image: "/floating-image1.jpg",
-    tag: "Emergency Care",
-  },
-  {
-    image: "/floating-image2.jpg",
-    tag: "Expert Doctors",
-  },
-  {
-    image: "/floating-image3.jpg",
-    tag: "Modern Facilities",
-  },
+  { image: "/floating-image1.jpg", tag: "Emergency Care" },
+  { image: "/floating-image2.jpg", tag: "Expert Doctors" },
+  { image: "/floating-image3.jpg", tag: "Modern Facilities" },
 ];
 
 const stats = [
@@ -45,12 +36,43 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[92vh] overflow-hidden bg-background">
-      {/* ── Right side: full-bleed faded image slideshow ── */}
-      <div className="absolute inset-y-0 right-0 w-full lg:w-[58%]">
+    <section className="relative overflow-hidden bg-background">
+      {/* ── MOBILE: image banner at top ── */}
+      <div className="relative h-56 w-full sm:h-72 lg:hidden">
         <AnimatePresence mode="wait">
           <motion.div
-            key={index}
+            key={`mobile-${index}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroSlides[index].image})` }}
+          />
+        </AnimatePresence>
+        {/* Fades image into background below */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent" />
+
+        {/* Mobile dot indicators */}
+        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === index ? "h-1.5 w-5 bg-primary" : "h-1.5 w-1.5 bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ── DESKTOP: right-side full-bleed image ── */}
+      <div className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`desktop-${index}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -59,20 +81,12 @@ export function HeroSection() {
             style={{ backgroundImage: `url(${heroSlides[index].image})` }}
           />
         </AnimatePresence>
-
-        {/* Strong left gradient fade — main blend into content */}
         <div className="absolute inset-0 bg-gradient-to-r from-background from-[15%] via-background/70 via-[40%] to-transparent to-[75%]" />
-
-        {/* Secondary left edge hard stop */}
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent" />
-
-        {/* Top fade */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-transparent" />
-
-        {/* Bottom fade */}
         <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
 
-        {/* Slide indicators */}
+        {/* Desktop slide indicators */}
         <div className="absolute bottom-8 right-8 flex flex-col items-end gap-2">
           {heroSlides.map((slide, i) => (
             <button
@@ -104,13 +118,13 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* ── Left side: content ── */}
-      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-center px-6">
+      {/* ── Content (both mobile + desktop) ── */}
+      <div className="relative mx-auto flex max-w-7xl items-center px-6 lg:min-h-[92vh]">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="w-full max-w-xl py-20 lg:py-0"
+          className="w-full max-w-xl pb-14 pt-2 lg:py-0"
         >
           {/* Badge */}
           <motion.div
@@ -138,7 +152,6 @@ export function HeroSection() {
             Care for{" "}
             <span className="relative inline-block text-primary">
               Every Life.
-              {/* Underline accent */}
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -164,7 +177,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="mb-12 flex flex-wrap gap-3"
+            className="mb-10 flex flex-wrap gap-3"
           >
             <Button size="lg" asChild className="gap-2 shadow-md">
               <Link href="/doctors">
@@ -180,7 +193,7 @@ export function HeroSection() {
             </Button>
           </motion.div>
 
-          {/* Stats row */}
+          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import { slugify } from "@/lib/mock-api";
 import {
   Search,
   Star,
@@ -53,7 +54,7 @@ function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
       transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
       className="h-full"
     >
-      <Link href={`./doctors/${doctor.id}`} className="group block h-full">
+      <Link href={`/doctors/${slugify(doctor.name)}`} className="group block h-full">
         <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           {/* Image */}
           <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/60">

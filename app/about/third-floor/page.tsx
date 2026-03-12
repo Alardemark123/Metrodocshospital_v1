@@ -1,10 +1,11 @@
-import type { Metadata } from "next"
-import { FacilityPage } from "@/components/facility-page"
+import type { Metadata } from "next";
+import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
   title: "Third Floor",
-  description: "Outpatient services and OPD at metrodocshospital. Specialty clinics and comfortable waiting areas.",
-}
+  description:
+    "Outpatient services and OPD at metrodocshospital. Specialty clinics and comfortable waiting areas.",
+};
 
 export default function ThirdFloorPage() {
   return (
@@ -13,6 +14,18 @@ export default function ThirdFloorPage() {
       subtitle="Outpatient Services"
       description="Our third floor is dedicated to outpatient services, featuring multiple specialty clinics and a comfortable OPD waiting area. This floor is designed to provide efficient, high-quality care for patients who don't require hospitalization."
       iconName="Stethoscope"
+      images={[
+        "/about/third-floor/FRD_5242-1024x683.jpg",
+        "/about/third-floor/FRD_5243-1024x683.jpg",
+        "/about/third-floor/FRD_5245-1024x683.jpg",
+        "/about/third-floor/FRD_5253-1024x683.jpg",
+        "/about/third-floor/FRD_5254-1024x683.jpg",
+        "/about/third-floor/IMG_7968-1024x683.jpg",
+        "/about/third-floor/IMG_7971-1024x683.jpg",
+        "/about/third-floor/IMG_7974-1024x683.jpg",
+        "/about/third-floor/IMG_7976-1024x683.jpg",
+        "/about/third-floor/IMG_7978-1024x683.jpg",
+      ]}
       features={[
         "Multiple specialty consultation clinics",
         "General medicine outpatient services",
@@ -28,11 +41,13 @@ export default function ThirdFloorPage() {
       sections={[
         {
           title: "Specialty Clinics",
-          description: "Ten fully-equipped consultation rooms for various medical specialties, staffed by our expert physicians and support team.",
+          description:
+            "Ten fully-equipped consultation rooms for various medical specialties, staffed by our expert physicians and support team.",
         },
         {
           title: "OPD Waiting Area",
-          description: "A spacious, air-conditioned waiting area with comfortable seating, entertainment systems, and refreshment facilities for patients and companions.",
+          description:
+            "A spacious, air-conditioned waiting area with comfortable seating, entertainment systems, and refreshment facilities for patients and companions.",
         },
       ]}
       highlights={[
@@ -42,5 +57,5 @@ export default function ThirdFloorPage() {
         { title: "Patient Satisfaction", value: "96%" },
       ]}
     />
-  )
+  );
 }

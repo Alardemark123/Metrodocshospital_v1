@@ -15,17 +15,17 @@ import {
   Languages,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getDoctorById } from "@/lib/mock-api";
+import { getDoctorBySlug, getDoctors, slugify } from "@/lib/mock-api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function DoctorDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = use(params);
-  const doctor = getDoctorById(id);
+  const { slug } = use(params);
+  const doctor = getDoctorBySlug(slug);
   const router = useRouter();
 
   const [imgSrc, setImgSrc] = useState(
@@ -47,7 +47,7 @@ export default function DoctorDetailPage({
 
   return (
     <>
-      {/* Top hero banner — thin colored bar with back button */}
+      {/* Top hero banner */}
       <div className="border-b border-border bg-gradient-to-r from-secondary via-background to-accent">
         <div className="mx-auto max-w-7xl px-4 py-4">
           <Link
@@ -63,7 +63,6 @@ export default function DoctorDetailPage({
       {/* Profile section */}
       <section className="bg-background">
         <div className="mx-auto max-w-7xl px-4">
-          {/* Profile card — overlaps the banner */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -82,8 +81,6 @@ export default function DoctorDetailPage({
                     onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-card/20" />
-
-                  {/* Rating */}
                   {doctor.rating > 0 && (
                     <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-card/90 px-3 py-1.5 shadow backdrop-blur-sm">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -97,7 +94,6 @@ export default function DoctorDetailPage({
 
               {/* Right — details */}
               <div className="flex flex-1 flex-col justify-between p-6 lg:p-8">
-                {/* Top: name + specialty */}
                 <div>
                   <div className="mb-3 flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
@@ -109,20 +105,17 @@ export default function DoctorDetailPage({
                       </span>
                     )}
                   </div>
-
                   <h1 className="mb-1 text-3xl font-bold text-card-foreground md:text-4xl">
                     {doctor.name}
                   </h1>
                   <p className="mb-5 text-lg font-medium text-primary">
                     {doctor.specialty}
                   </p>
-
                   <p className="mb-6 max-w-2xl text-pretty text-sm leading-relaxed text-muted-foreground">
                     {doctor.fullBio ?? doctor.bio}
                   </p>
                 </div>
 
-                {/* Mid: quick stats row */}
                 <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <div className="flex items-center gap-3 rounded-xl border border-border bg-background p-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -135,7 +128,6 @@ export default function DoctorDetailPage({
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-3 rounded-xl border border-border bg-background p-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                       <Clock className="h-4 w-4 text-primary" />
@@ -151,7 +143,6 @@ export default function DoctorDetailPage({
                   </div>
                 </div>
 
-                {/* Bottom: CTA buttons */}
                 <div className="flex flex-wrap gap-3">
                   <Button size="lg" asChild className="gap-2">
                     <Link href="/contact">
@@ -160,7 +151,7 @@ export default function DoctorDetailPage({
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" asChild className="gap-2">
-                    <a href="tel:+15551234567">
+                    <a href="tel:+63282516922">
                       <Phone className="h-4 w-4" />
                       Call Now
                     </a>
@@ -172,7 +163,6 @@ export default function DoctorDetailPage({
 
           {/* Bottom info cards */}
           <div className="mt-6 grid gap-5 pb-16 lg:grid-cols-3">
-            {/* Awards */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -207,7 +197,6 @@ export default function DoctorDetailPage({
               )}
             </motion.div>
 
-            {/* Full availability */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -242,7 +231,6 @@ export default function DoctorDetailPage({
               )}
             </motion.div>
 
-            {/* Languages */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

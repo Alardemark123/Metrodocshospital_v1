@@ -1,10 +1,11 @@
-import type { Metadata } from "next"
-import { FacilityPage } from "@/components/facility-page"
+import type { Metadata } from "next";
+import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
   title: "Second Floor",
-  description: "Lobby, prayer area, and nursery complex at metrodocshospital. Patient services and family care.",
-}
+  description:
+    "Lobby, prayer area, and nursery complex at metrodocshospital. Patient services and family care.",
+};
 
 export default function SecondFloorPage() {
   return (
@@ -13,6 +14,16 @@ export default function SecondFloorPage() {
       subtitle="Patient Services"
       description="The second floor of metrodocshospital houses essential patient services including our welcoming lobby area, a peaceful prayer space for spiritual comfort, and our comprehensive nursery complex for newborns and their families."
       iconName="Building2"
+      images={[
+        "/about/second-floor/FRD_5293-1024x683.jpg",
+        "/about/second-floor/FRD_5294-1024x683.jpg",
+        "/about/second-floor/FRD_5297-1024x683.jpg",
+        "/about/second-floor/FRD_5301-1024x683.jpg",
+        "/about/second-floor/IMG_7984-1024x683.jpg",
+        "/about/second-floor/IMG_7986-1024x683.jpg",
+        "/about/second-floor/IMG_8018-1024x683.jpg",
+        "/about/second-floor/IMG_8019-1024x683.jpg",
+      ]}
       features={[
         "Spacious and comfortable lobby area",
         "Patient registration services",
@@ -28,15 +39,18 @@ export default function SecondFloorPage() {
       sections={[
         {
           title: "Lobby",
-          description: "A welcoming space designed to ease patient and visitor anxiety with comfortable seating, natural lighting, and helpful staff ready to assist.",
+          description:
+            "A welcoming space designed to ease patient and visitor anxiety with comfortable seating, natural lighting, and helpful staff ready to assist.",
         },
         {
           title: "Prayer Area",
-          description: "A serene multi-faith space where patients and families can find spiritual comfort, reflection, and peace during their hospital stay.",
+          description:
+            "A serene multi-faith space where patients and families can find spiritual comfort, reflection, and peace during their hospital stay.",
         },
         {
           title: "Nursery Complex",
-          description: "State-of-the-art facilities for newborn care, including regular nursery, NICU, and specialized care for premature and high-risk infants.",
+          description:
+            "State-of-the-art facilities for newborn care, including regular nursery, NICU, and specialized care for premature and high-risk infants.",
         },
       ]}
       highlights={[
@@ -46,5 +60,5 @@ export default function SecondFloorPage() {
         { title: "Prayer Rooms", value: "3" },
       ]}
     />
-  )
+  );
 }

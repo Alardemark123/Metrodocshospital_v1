@@ -71,7 +71,20 @@ export function Footer() {
       </div>
 
       {/* Main body — light bg so logo is visible */}
-      <div className="border-t border-border bg-card">
+      <div className="relative border-t border-border bg-card overflow-hidden">
+        {/* Dot grid pattern */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, currentColor 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        {/* Floating accent shapes */}
+        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-bl-[80px] bg-primary/3" />
+        <div className="pointer-events-none absolute -left-8 bottom-0 h-32 w-32 rounded-full border border-primary/8" />
+        <div className="pointer-events-none absolute right-1/3 top-12 h-6 w-6 rotate-45 rounded-sm border border-primary/10" />
         <div className="mx-auto max-w-7xl px-4 py-14">
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
             {/* Brand */}
@@ -199,7 +212,6 @@ export function Footer() {
         <div className="mx-auto max-w-7xl px-4 py-4">
           <div className="flex flex-col items-center justify-between gap-3 text-xs text-muted-foreground md:flex-row">
             <div className="flex items-center gap-1.5">
-              <Heart className="h-3 w-3 fill-primary text-primary" />
               <p>
                 &copy; {new Date().getFullYear()} Metro Rizal Doctors Hospital.
                 All rights reserved.

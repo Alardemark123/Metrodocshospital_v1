@@ -42,6 +42,19 @@ export function Testimonials() {
       className="relative overflow-hidden bg-primary py-20 lg:py-32"
     >
       {/* Radial glows */}
+      {/* Diagonal stripe pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
+          backgroundSize: "16px 16px",
+        }}
+      />
+      {/* Floating rings */}
+      <div className="pointer-events-none absolute left-8 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
+      <div className="pointer-events-none absolute left-8 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
+      <div className="pointer-events-none absolute bottom-12 right-1/3 h-8 w-8 rotate-45 rounded-sm border border-primary-foreground/10" />
       <div className="pointer-events-none absolute -left-24 -top-24 h-[400px] w-[400px] rounded-full bg-primary-foreground/5 blur-[100px]" />
       <div className="pointer-events-none absolute -bottom-16 right-0 h-[350px] w-[350px] rounded-full bg-primary-foreground/5 blur-[90px]" />
 

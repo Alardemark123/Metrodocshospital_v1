@@ -27,6 +27,20 @@ export function LatestNews() {
       ref={ref}
       className="relative overflow-hidden bg-background py-20 lg:py-32"
     >
+      {/* Grid line pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+      {/* Floating accents */}
+      <div className="pointer-events-none absolute right-20 top-12 h-20 w-20 rotate-45 rounded-xl border border-primary/10" />
+      <div className="pointer-events-none absolute left-12 bottom-12 h-12 w-12 rounded-full border-2 border-dashed border-primary/10" />
+      <div className="pointer-events-none absolute right-1/3 bottom-8 h-6 w-6 rotate-12 bg-primary/5 rounded-sm" />
+
       {/* Subtle radial glows */}
       <div className="pointer-events-none absolute -right-40 top-0 h-[400px] w-[400px] rounded-full bg-primary/5 blur-[100px]" />
       <div className="pointer-events-none absolute -left-20 bottom-0 h-[300px] w-[300px] rounded-full bg-accent/30 blur-[80px]" />

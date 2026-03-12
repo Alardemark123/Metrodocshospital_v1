@@ -1,4 +1,4 @@
-// Mock API shared types (icon fields are string keys for ICON_MAP)
+export { slugify, getDoctorBySlug } from "./doctors";
 
 export interface Doctor {
   id: number
@@ -103,4 +103,25 @@ export interface Testimonial {
   rating: number
   quote: string
   date: string
+}
+
+export interface Highlight {
+  title: string;
+  value: string;
+}
+
+export interface Section {
+  title: string;
+  description: string;
+}
+
+export interface FacilityPageProps {
+  title: string;
+  subtitle: string;
+  description: string;
+  iconName: string;
+  features: string[];
+  highlights: Highlight[];
+  images?: string[];
+  sections?: Section[];
 }

@@ -13,6 +13,14 @@ export default function EmergencyRoomPage() {
       subtitle="24/7 Emergency Care"
       description="Our emergency department operates around the clock, providing immediate care for life-threatening conditions and urgent medical needs. Our highly trained emergency medicine team is ready to respond to any medical crisis with speed and expertise."
       iconName="Siren"
+      images={[
+        "/about/emergency/FRD_5305-1-1024x683.jpg",
+        "/about/emergency/FRD_5307-1024x683.jpg",
+        "/about/emergency/FRD_5308-1024x683.jpg",
+        "/about/emergency/FRD_5310-1-1024x683.jpg",
+        "/about/emergency/FRD_5314-1024x683.jpg",
+        "/about/emergency/FRD_5315-1024x683.jpg",
+      ]}
       features={[
         "24/7 emergency services availability",
         "Rapid triage and assessment",

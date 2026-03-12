@@ -15,7 +15,7 @@ export type {
 } from "./types"
 
 // Doctors
-export { getDoctors, getDoctorById, getDoctorDepartmentFilters, DOCTOR_DEPARTMENT_FILTERS } from "./doctors"
+export { getDoctors, getDoctorById, getDoctorBySlug, slugify, getDoctorDepartmentFilters, DOCTOR_DEPARTMENT_FILTERS } from "./doctors"
 
 // News
 export { getNews, getNewsBySlug, getNewsCategories, NEWS_CATEGORIES } from "./news"

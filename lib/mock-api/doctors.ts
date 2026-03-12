@@ -1391,6 +1391,18 @@ const doctors: Doctor[] = [
   },
 ]
 
+export function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+export function getDoctorBySlug(slug: string) {
+  return doctors.find((d) => slugify(d.name) === slug) ?? null;
+}
+
 export function getDoctors(): Doctor[] {
   return doctors
 }
