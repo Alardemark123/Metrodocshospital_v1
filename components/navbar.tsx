@@ -40,7 +40,7 @@ export function Navbar() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>+1 (555) 123-4567</span>
+              <span>(02) 8251-6922 | (02) 8532-6505</span>
             </div>
             <div className="hidden items-center gap-2 sm:flex">
               <Clock className="h-4 w-4" />
@@ -48,8 +48,7 @@ export function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Heart className="h-4 w-4" />
-            <span className="hidden sm:inline">Caring for you, always</span>
+            <span className="hidden sm:inline">We provide quality health services. Affordable for all.</span>
           </div>
         </div>
       </div>
@@ -59,12 +58,9 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Heart className="h-6 w-6 text-primary-foreground" />
-            </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-foreground">metrodocshospital</span>
-              <span className="text-xs text-muted-foreground">Hospital</span>
+              <span className="text-xl font-bold text-foreground">
+                <img src="metrodocs-logo-new.png" alt="Logo" /></span>
             </div>
           </Link>
 
