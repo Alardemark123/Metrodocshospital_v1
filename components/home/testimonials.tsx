@@ -1,140 +1,191 @@
-"use client"
+"use client";
 
-import { motion, AnimatePresence } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef, useState, useEffect } from "react"
-import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
-import { getTestimonials } from "@/lib/mock-api"
+import { motion, AnimatePresence } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { testimonials } from "@/lib/mock-api/testimonial";
 
 export function Testimonials() {
-  const testimonials = getTestimonials()
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(0)
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1)
-      setCurrent((prev) => (prev + 1) % testimonials.length)
-    }, 6000)
-    return () => clearInterval(timer)
-  }, [])
+      setDirection(1);
+      setCurrent((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
   const navigate = (dir: number) => {
-    setDirection(dir)
+    setDirection(dir);
     setCurrent((prev) => {
-      if (dir === 1) return (prev + 1) % testimonials.length
-      return prev === 0 ? testimonials.length - 1 : prev - 1
-    })
-  }
+      if (dir === 1) return (prev + 1) % testimonials.length;
+      return prev === 0 ? testimonials.length - 1 : prev - 1;
+    });
+  };
 
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 100 : -100,
-      opacity: 0,
-    }),
-  }
+    enter: (direction: number) => ({ x: direction > 0 ? 60 : -60, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction: number) => ({ x: direction < 0 ? 60 : -60, opacity: 0 }),
+  };
+
+  const t = testimonials[current];
 
   return (
-    <section ref={ref} className="bg-primary py-20 lg:py-32">
-      <div className="mx-auto max-w-4xl px-4">
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-primary py-20 lg:py-32"
+    >
+      {/* Radial glows */}
+      <div className="pointer-events-none absolute -left-24 -top-24 h-[400px] w-[400px] rounded-full bg-primary-foreground/5 blur-[100px]" />
+      <div className="pointer-events-none absolute -bottom-16 right-0 h-[350px] w-[350px] rounded-full bg-primary-foreground/5 blur-[90px]" />
+
+      {/* Giant decorative quote */}
+      <div className="pointer-events-none absolute right-8 top-4 select-none text-[200px] font-serif leading-none text-primary-foreground/5 lg:right-24 lg:text-[280px]">
+        "
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="mb-14 text-center"
         >
-          <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary-foreground/80">
-            Testimonials
-          </span>
-          <h2 className="mb-12 text-balance text-3xl font-bold text-primary-foreground md:text-4xl">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-primary-foreground/80">
+              Testimonials
+            </span>
+          </div>
+          <h2 className="text-balance text-3xl font-bold text-primary-foreground md:text-4xl lg:text-5xl">
             What Our Patients Say
           </h2>
         </motion.div>
 
+        {/* Card */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative"
         >
-          {/* Quote Icon */}
-          <Quote className="absolute -top-4 left-0 h-16 w-16 text-primary-foreground/20 md:-left-8 md:h-24 md:w-24" />
+          <div className="relative overflow-hidden rounded-3xl border border-primary-foreground/10 bg-primary-foreground/10 backdrop-blur-sm">
+            {/* Top accent bar */}
+            <div className="h-1 w-full bg-gradient-to-r from-primary-foreground/20 via-primary-foreground/60 to-primary-foreground/20" />
 
-          {/* Testimonial Carousel */}
-          <div className="relative min-h-[200px] overflow-hidden">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={current}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4 }}
-                className="text-center"
-              >
-                <blockquote className="mb-8 text-xl leading-relaxed text-primary-foreground md:text-2xl">
-                  &ldquo;{testimonials[current].quote}&rdquo;
-                </blockquote>
-                <cite className="not-italic">
-                  <span className="block text-lg font-semibold text-primary-foreground">
-                    {testimonials[current].name}
+            <div className="p-8 md:p-12">
+              {/* Quote icon */}
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-foreground/15">
+                <Quote className="h-6 w-6 text-primary-foreground" />
+              </div>
+
+              {/* Animated quote */}
+              <div className="relative min-h-[120px]">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={current}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                  >
+                    {/* Stars */}
+                    <div className="mb-5 flex gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
+                    </div>
+
+                    <blockquote className="mb-8 text-lg leading-relaxed text-primary-foreground md:text-xl lg:text-2xl">
+                      &ldquo;{t.quote}&rdquo;
+                    </blockquote>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-4">
+                      {/* Avatar initials */}
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-foreground/20 text-sm font-bold text-primary-foreground">
+                        {t.name
+                          .split(" ")
+                          .map((n: string) => n[0])
+                          .join("")
+                          .slice(0, 2)}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-primary-foreground">
+                          {t.name}
+                        </p>
+                        <p className="text-sm text-primary-foreground/60">
+                          Patient
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Navigation */}
+              <div className="mt-8 flex items-center justify-between border-t border-primary-foreground/10 pt-6">
+                {/* Counter */}
+                <p className="text-sm text-primary-foreground/50">
+                  <span className="font-bold text-primary-foreground">
+                    {current + 1}
                   </span>
-                  <span className="text-sm text-primary-foreground/70">Patient</span>
-                </cite>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                  {" / "}
+                  {testimonials.length}
+                </p>
 
-          {/* Navigation */}
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/30 text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
+                {/* Dots + arrows */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-foreground/20 text-primary-foreground transition-all hover:bg-primary-foreground/15"
+                    aria-label="Previous"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
 
-            {/* Dots */}
-            <div className="flex gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setDirection(index > current ? 1 : -1)
-                    setCurrent(index)
-                  }}
-                  className={`h-2 rounded-full transition-all ${
-                    index === current
-                      ? "w-8 bg-primary-foreground"
-                      : "w-2 bg-primary-foreground/40"
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
+                  <div className="flex gap-1.5">
+                    {testimonials.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setDirection(i > current ? 1 : -1);
+                          setCurrent(i);
+                        }}
+                        className={`rounded-full transition-all duration-300 ${
+                          i === current
+                            ? "h-2 w-6 bg-primary-foreground"
+                            : "h-2 w-2 bg-primary-foreground/30 hover:bg-primary-foreground/60"
+                        }`}
+                        aria-label={`Go to ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => navigate(1)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-foreground/20 text-primary-foreground transition-all hover:bg-primary-foreground/15"
+                    aria-label="Next"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <button
-              onClick={() => navigate(1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/30 text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
           </div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

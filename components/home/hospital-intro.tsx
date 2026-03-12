@@ -1,101 +1,109 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
-import { getFeatures, ICON_MAP } from "@/lib/mock-api"
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { getFeatures, ICON_MAP } from "@/lib/mock-api";
+import { Button } from "@/components/ui/button";
 
 export function HospitalIntro() {
-  const features = getFeatures()
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const features = getFeatures();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="bg-background py-20 lg:py-32">
+    <section ref={ref} className="bg-background py-20 lg:py-20">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Left Content */}
+        {/* Top two-column: video left, text right */}
+        <div className="mb-16 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* LEFT — YouTube embed */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
+            className="relative"
           >
-            <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary">
-              About Us
-            </span>
-            <h2 className="mb-6 text-balance text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-              A Legacy of Healing, A Future of Hope
-            </h2>
-            <p className="mb-6 text-pretty leading-relaxed text-muted-foreground">
-              For over two decades, metrodocshospital has been at the forefront of medical excellence. Our mission is to provide compassionate, accessible, and high-quality healthcare to every patient who walks through our doors.
-            </p>
-            <p className="mb-8 text-pretty leading-relaxed text-muted-foreground">
-              We combine cutting-edge medical technology with a human touch, ensuring that you receive not just treatment, but genuine care that respects your dignity and values.
-            </p>
+            <div className="absolute -left-3 -top-3 h-24 w-24 rounded-2xl bg-primary/10 -z-10" />
+            <div className="absolute -bottom-3 -right-3 h-16 w-16 rounded-xl bg-accent -z-10" />
 
-            {/* Features Grid */}
-            <div className="grid gap-6 sm:grid-cols-2">
-              {features.map((feature, index) => {
-                const FeatureIcon = ICON_MAP[feature.icon]
-                return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                  className="group flex items-start gap-4"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    {FeatureIcon && <FeatureIcon className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />}
-                  </div>
-                  <div>
-                    <h3 className="mb-1 font-semibold text-foreground">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  </div>
-                </motion.div>
-              )})}
+            <div className="overflow-hidden rounded-2xl border border-border shadow-xl">
+              <div className="relative aspect-video w-full">
+                <iframe
+                  src="https://www.youtube.com/embed/iJMZbE_Pz7Y?autoplay=1&mute=1&rel=0&modestbranding=1&loop=1&playlist=iJMZbE_Pz7Y"
+                  title="Metro Rizal Doctors Hospital"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full"
+                />
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2">
+              <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+              <p className="text-xs text-muted-foreground">
+                Metro Rizal Doctors Hospital — Official
+              </p>
             </div>
           </motion.div>
 
-          {/* Right Visual */}
+          {/* RIGHT — text content */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="relative">
-              {/* Main Image */}
-              <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 to-accent shadow-xl">
-                <div className="h-full w-full bg-[url('/hospital-building.jpg')] bg-cover bg-center" />
-              </div>
-
-              {/* Stats Card */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="absolute -bottom-6 -left-6 rounded-2xl bg-card p-6 shadow-lg md:-bottom-8 md:-left-8"
-              >
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-primary">25+</p>
-                    <p className="text-sm text-muted-foreground">Years of Service</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-primary">98%</p>
-                    <p className="text-sm text-muted-foreground">Patient Satisfaction</p>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Decorative Element */}
-              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-2xl bg-primary/20 -z-10" />
-              <div className="absolute -bottom-4 right-8 h-16 w-16 rounded-xl bg-accent -z-10" />
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                About Us
+              </span>
             </div>
+
+            <h2 className="mb-5 text-balance text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
+              A Legacy of Healing,{" "}
+              <span className="text-primary">A Future of Hope</span>
+            </h2>
+
+            <p className="mb-6 text-pretty leading-relaxed text-muted-foreground">
+              At Metro Rizal Doctors Hospital, we are committed to providing you
+              with the highest quality of healthcare services and support. We
+              understand that seeking medical attention can be a difficult and
+              stressful experience, and we want you to know that we are here to
+              help you every step of the way.
+            </p>
+
+            {/* Stats */}
+            <div className="mb-8 flex gap-8">
+              {[
+                { value: "25+", label: "Years of Service" },
+                { value: "98%", label: "Patient Satisfaction" },
+                { value: "50+", label: "Expert Doctors" },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
+                >
+                  <p className="text-2xl font-bold text-primary">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <Button asChild className="gap-2">
+              <Link href="/about">
+                Learn More About Us
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
           </motion.div>
         </div>
       </div>
     </section>
-  )
+  );
 }

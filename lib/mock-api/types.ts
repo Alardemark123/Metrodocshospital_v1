@@ -98,5 +98,9 @@ export interface Service {
 export interface Testimonial {
   id: number
   name: string
+  role: string
+  department: string
+  rating: number
   quote: string
+  date: string
 }

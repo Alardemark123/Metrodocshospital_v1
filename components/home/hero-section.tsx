@@ -1,171 +1,212 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Search, Calendar, ArrowRight } from "lucide-react"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import {
+  Search,
+  Calendar,
+  ChevronDown,
+  Users,
+  Clock,
+  Stethoscope,
+} from "lucide-react";
+
+const heroSlides = [
+  {
+    image: "/floating-image1.jpg",
+    tag: "Emergency Care",
+  },
+  {
+    image: "/floating-image2.jpg",
+    tag: "Expert Doctors",
+  },
+  {
+    image: "/floating-image3.jpg",
+    tag: "Modern Facilities",
+  },
+];
+
+const stats = [
+  { icon: Stethoscope, number: "50+", label: "Expert Doctors" },
+  { icon: Users, number: "10K+", label: "Happy Patients" },
+  { icon: Clock, number: "24/7", label: "Emergency Care" },
+];
 
 export function HeroSection() {
-
-  const heroImages = [
-    "/floating-image1.jpg",
-    "/floating-image2.jpg",
-    "/floating-image3.jpg",
-  ]
-
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % heroImages.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [])
+      setIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-background">
+    <section className="relative min-h-[92vh] overflow-hidden bg-background">
+      {/* ── Right side: full-bleed faded image slideshow ── */}
+      <div className="absolute inset-y-0 right-0 w-full lg:w-[58%]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.4, ease: "easeInOut" }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroSlides[index].image})` }}
+          />
+        </AnimatePresence>
 
-      {/* HERO CONTAINER */}
-      <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col lg:flex-row items-center justify-between gap-12">
+        {/* Strong left gradient fade — main blend into content */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background from-[15%] via-background/70 via-[40%] to-transparent to-[75%]" />
 
-        {/* LEFT CONTENT */}
+        {/* Secondary left edge hard stop */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent" />
+
+        {/* Top fade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-transparent" />
+
+        {/* Bottom fade */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-8 right-8 flex flex-col items-end gap-2">
+          {heroSlides.map((slide, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className="group flex items-center gap-2"
+            >
+              <AnimatePresence>
+                {i === index && (
+                  <motion.span
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    className="text-xs font-medium text-white/80"
+                  >
+                    {slide.tag}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+              <span
+                className={`block rounded-full transition-all duration-500 ${
+                  i === index
+                    ? "h-8 w-1 bg-primary"
+                    : "h-1 w-1 bg-white/40 group-hover:bg-white/70"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Left side: content ── */}
+      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-center px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex-1 text-center lg:text-left"
+          transition={{ duration: 0.7 }}
+          className="w-full max-w-xl py-20 lg:py-0"
         >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                Welcome to Metrodocs
+              </span>
+            </div>
+          </motion.div>
 
-          <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2">
-            <span className="text-primary">Welcome to Metrodocs</span>
-          </span>
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mb-5 text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl"
+          >
+            Compassionate
+            <br />
+            Care for{" "}
+            <span className="relative inline-block text-primary">
+              Every Life.
+              {/* Underline accent */}
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="absolute -bottom-1 left-0 h-0.5 w-full origin-left rounded-full bg-primary/40"
+              />
+            </span>
+          </motion.h1>
 
-          <h1 className="mb-6 text-4xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
-            Compassionate Care for{" "}
-            <span className="text-primary">Every Life.</span>
-          </h1>
-
-          <p className="mx-auto mb-8 max-w-xl text-lg text-muted-foreground lg:mx-0">
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mb-8 text-base leading-relaxed text-muted-foreground md:text-lg"
+          >
             Delivering modern healthcare with trusted medical professionals.
-            Experience world-class treatment with personalized care tailored
-            to your needs.
-          </p>
+            World-class treatment with personalized care tailored to your needs.
+          </motion.p>
 
-          {/* CTA BUTTONS */}
-          <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
-
-            <Button
-              size="lg"
-              asChild
-              className="gap-2 backdrop-blur-md bg-primary/90 hover:bg-primary shadow-lg"
-            >
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mb-12 flex flex-wrap gap-3"
+          >
+            <Button size="lg" asChild className="gap-2 shadow-md">
               <Link href="/doctors">
-                <Search className="h-5 w-5" />
+                <Search className="h-4 w-4" />
                 Find a Doctor
               </Link>
             </Button>
-
-            <Button
-              size="lg"
-              variant="outline"
-              asChild
-              className="gap-2 backdrop-blur-md bg-white/40 border-white/30 shadow-lg"
-            >
+            <Button size="lg" variant="outline" asChild className="gap-2">
               <Link href="/contact">
-                <Calendar className="h-5 w-5" />
-                Contact Us
+                <Calendar className="h-4 w-4" />
+                Book Appointment
               </Link>
             </Button>
+          </motion.div>
 
-          </div>
-
-          {/* STATS */}
-          <div className="mt-12 grid grid-cols-3 gap-8 border-t pt-8">
-            {[
-              { number: "50+", label: "Expert Doctors" },
-              { number: "10K+", label: "Happy Patients" },
-              { number: "24/7", label: "Emergency Care" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-2xl font-bold text-primary">
-                  {stat.number}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-
-        </motion.div>
-
-
-        {/* RIGHT IMAGE */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="relative flex-1 flex justify-center lg:justify-end"
-        >
-
-          <div className="relative h-[420px] w-[720px] translate-x-6 -translate-y-5">
-
-            {/* IMAGE SLIDER */}
-            <AnimatePresence mode="wait">
+          {/* Stats row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="grid grid-cols-3 gap-4 border-t border-border pt-8"
+          >
+            {stats.map((stat, i) => (
               <motion.div
-                key={heroImages[index]}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="absolute inset-0 bg-contain bg-no-repeat bg-center"
-                style={{
-                  backgroundImage: `url(${heroImages[index]})`,
-                }}
-              />
-            </AnimatePresence>
-
-            {/* SOFT GRADIENT */}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-background/30" />
-
-
-            {/* FLOATING DOCTOR CARDS */}
-
-            <motion.div
-              animate={{ y: [0, -12, 0] }}
-              transition={{ repeat: Infinity, duration: 4 }}
-              className="absolute -top-5 right-0 backdrop-blur-lg bg-white-60/600 shadow-xl rounded-xl p-4"
-            >
-              <p className="text-sm font-semibold text-primary">1540+ Active Clients</p>
-              <p className="text-xs text-muted-foreground">Result you can Trust</p>
-            </motion.div>
-
-
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ repeat: Infinity, duration: 5 }}
-              className="absolute bottom-0 -left-5 backdrop-blur-lg bg-white/60 shadow-xl rounded-xl p-4"
->
-              <p className="text-sm font-semibold text-primary">Trusted by many Filipinos</p>
-              <p className="text-xs text-muted-foreground">Expert doctors</p>
-            </motion.div>
-          </div>
-
+                key={stat.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                className="flex flex-col gap-1"
+              >
+                <div className="flex items-center gap-1.5">
+                  <stat.icon className="h-3.5 w-3.5 text-primary/70" />
+                  <p className="text-2xl font-bold text-primary">
+                    {stat.number}
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
-
       </div>
-
-      {/* SCROLL INDICATOR */}
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground"
-      >
-        <ArrowRight className="rotate-90" />
-      </motion.div>
-
     </section>
-  )
+  );
 }
