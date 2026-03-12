@@ -13,6 +13,7 @@ import {
   ChevronRight,
   X,
   Stethoscope,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDoctors, getDoctorDepartmentFilters } from "@/lib/mock-api";
@@ -21,14 +22,12 @@ import Image from "next/image";
 
 function useDoctorsPerPage() {
   const [perPage, setPerPage] = useState(6);
-
   useEffect(() => {
     const update = () => setPerPage(window.innerWidth < 768 ? 3 : 6);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
-
   return perPage;
 }
 
@@ -51,13 +50,16 @@ function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
+      transition={{ duration: 0.45, delay: index * 0.05, ease: "easeOut" }}
       className="h-full"
     >
-      <Link href={`/doctors/${slugify(doctor.name)}`} className="group block h-full">
-        <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <Link
+        href={`/doctors/${slugify(doctor.name)}`}
+        className="group block h-full"
+      >
+        <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
           {/* Image */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/60">
+          <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/60">
             <Image
               src={imgSrc}
               alt={`Photo of ${doctor.name}`}
@@ -66,53 +68,49 @@ function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
               onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
             />
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
 
             {/* Rating badge */}
             {doctor.rating > 0 && (
               <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-card/90 px-2.5 py-1 shadow backdrop-blur-sm">
                 <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                <span className="text-xs font-semibold text-foreground">
+                <span className="text-xs font-bold text-foreground">
                   {doctor.rating}
                 </span>
               </div>
             )}
 
-            {/* Name overlay at bottom of image */}
+            {/* Department pill */}
+            <div className="absolute left-3 top-3">
+              <span className="rounded-full border border-primary/30 bg-primary/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                {doctor.department}
+              </span>
+            </div>
+
+            {/* Bottom name + specialty + experience */}
             <div className="absolute bottom-0 left-0 right-0 p-4">
-              <h3 className="text-base font-bold leading-tight text-white drop-shadow-sm group-hover:text-primary-foreground">
+              <h3 className="text-base font-bold leading-tight text-white">
                 {doctor.name}
               </h3>
-            </div>
-          </div>
-
-          {/* Info */}
-          <div className="flex flex-1 flex-col p-4">
-            <div className="mb-3 flex items-start justify-between gap-2">
-              <div>
-                <p className="text-sm font-semibold text-primary">
-                  {doctor.specialty}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {doctor.department}
-                </p>
-              </div>
+              <p className="mt-0.5 text-xs font-medium text-white/70">
+                {doctor.specialty}
+              </p>
               {doctor.experience && doctor.experience !== "0" && (
-                <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-foreground">
+                <span className="mt-2 inline-block rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
                   {doctor.experience}
                 </span>
               )}
             </div>
+          </div>
 
-            <p className="flex-1 text-xs leading-relaxed text-muted-foreground line-clamp-2">
+          {/* Info footer */}
+          <div className="flex items-center justify-between gap-3 border-t border-border px-4 py-3">
+            <p className="line-clamp-1 text-xs text-muted-foreground flex-1">
               {doctor.bio}
             </p>
-
-            <div className="mt-4 border-t border-border pt-3">
-              <span className="text-xs font-medium text-primary transition-colors group-hover:underline">
-                View Profile →
-              </span>
-            </div>
+            <span className="shrink-0 rounded-full bg-primary/10 p-1.5 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+              <ArrowRight className="h-3.5 w-3.5" />
+            </span>
           </div>
         </div>
       </Link>
@@ -218,11 +216,10 @@ export default function DoctorsPage() {
       if (gridRef.current) {
         const top =
           gridRef.current.getBoundingClientRect().top + window.scrollY - 170;
-        const clampedTop = Math.min(
-          top,
-          document.body.scrollHeight - window.innerHeight,
-        );
-        window.scrollTo({ top: clampedTop, behavior: "smooth" });
+        window.scrollTo({
+          top: Math.min(top, document.body.scrollHeight - window.innerHeight),
+          behavior: "smooth",
+        });
       }
     }, 50);
   };
@@ -265,9 +262,16 @@ export default function DoctorsPage() {
 
   return (
     <>
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
-        {/* Decorative circles */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, currentColor 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
         <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-accent/30 blur-2xl" />
 
@@ -295,14 +299,13 @@ export default function DoctorsPage() {
         </div>
       </section>
 
-      {/* Main Content */}
+      {/* ── Main ── */}
       <section className="bg-background py-10">
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex gap-8">
-            {/* Sidebar */}
-            <aside className="hidden w-60 shrink-0 lg:block">
+            {/* ── Sidebar ── */}
+            <aside className="hidden w-56 shrink-0 lg:block">
               <div className="sticky top-[160px] overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                {/* Sidebar header */}
                 <div className="border-b border-border bg-secondary/50 px-5 py-4">
                   <div className="flex items-center gap-2">
                     <Filter className="h-4 w-4 text-primary" />
@@ -312,10 +315,10 @@ export default function DoctorsPage() {
                   </div>
                 </div>
 
-                <div className="p-5">
+                <div className="p-4">
                   {/* Search */}
-                  <div className="mb-5">
-                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <div className="mb-4">
+                    <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                       Search
                     </label>
                     <div className="relative">
@@ -338,9 +341,9 @@ export default function DoctorsPage() {
                     </div>
                   </div>
 
-                  {/* Department Filter */}
+                  {/* Department */}
                   <div>
-                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                       Department
                     </label>
                     <div className="flex max-h-72 flex-col gap-0.5 overflow-y-auto pr-1">
@@ -363,7 +366,6 @@ export default function DoctorsPage() {
                     </div>
                   </div>
 
-                  {/* Clear filters */}
                   <AnimatePresence>
                     {isFiltered && (
                       <motion.button
@@ -382,7 +384,7 @@ export default function DoctorsPage() {
               </div>
             </aside>
 
-            {/* Mobile filter toggle */}
+            {/* ── Mobile filter button ── */}
             <div className="fixed bottom-6 right-6 z-50 lg:hidden">
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -394,7 +396,7 @@ export default function DoctorsPage() {
               </motion.button>
             </div>
 
-            {/* Mobile sidebar overlay */}
+            {/* ── Mobile drawer ── */}
             <AnimatePresence>
               {isSidebarOpen && (
                 <motion.div
@@ -423,19 +425,17 @@ export default function DoctorsPage() {
                         <X className="h-5 w-5" />
                       </button>
                     </div>
-                    <div className="mb-4">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <input
-                          type="text"
-                          placeholder="Name or specialty..."
-                          value={searchQuery}
-                          onChange={(e) => handleSearch(e.target.value)}
-                          className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                        />
-                      </div>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder="Name or specialty..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
                     </div>
-                    <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pb-1">
+                    <div className="grid max-h-56 grid-cols-2 gap-2 overflow-y-auto pb-1">
                       {departments.map((dept) => (
                         <button
                           key={dept}
@@ -463,7 +463,7 @@ export default function DoctorsPage() {
               )}
             </AnimatePresence>
 
-            {/* Doctors Grid */}
+            {/* ── Grid ── */}
             <div ref={gridRef} className="min-w-0 flex-1 scroll-mt-8">
               {/* Toolbar */}
               <div className="mb-6 flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
@@ -485,7 +485,6 @@ export default function DoctorsPage() {
                     "Showing all doctors"
                   )}
                 </p>
-
                 {isFiltered && (
                   <button
                     onClick={clearFilters}
@@ -509,7 +508,6 @@ export default function DoctorsPage() {
                     ))}
                   </div>
 
-                  {/* Page info + pagination */}
                   {totalPages > 1 && (
                     <div className="mt-8 flex flex-col items-center gap-3">
                       <p className="text-xs text-muted-foreground">
@@ -557,18 +555,34 @@ export default function DoctorsPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-secondary py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-balance text-3xl font-bold text-foreground md:text-4xl">
-            Ready to Book an Appointment?
-          </h2>
-          <p className="mb-8 text-muted-foreground">
-            Schedule a consultation with one of our expert physicians today.
-          </p>
-          <Button size="lg" asChild>
-            <Link href="/contact">Book Appointment</Link>
-          </Button>
+      {/* ── CTA ── */}
+      <section className="relative overflow-hidden bg-primary py-20">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
+            backgroundSize: "16px 16px",
+          }}
+        />
+        <div className="pointer-events-none absolute -left-16 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
+        <div className="relative mx-auto max-w-4xl px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="mb-4 text-balance text-3xl font-bold text-primary-foreground md:text-4xl">
+              Ready to Book an Appointment?
+            </h2>
+            <p className="mb-8 text-primary-foreground/80">
+              Schedule a consultation with one of our expert physicians today.
+            </p>
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/contact">Book Appointment</Link>
+            </Button>
+          </motion.div>
         </div>
       </section>
     </>
