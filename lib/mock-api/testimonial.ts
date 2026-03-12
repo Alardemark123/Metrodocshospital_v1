@@ -1,65 +1,64 @@
 import { Testimonial } from "./types";
 
-
 export const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Maria Santos",
-    role: "Cardiac Patient",
-    department: "Cardiology",
+    name: "Karen R",
+    role: "Patient",
+    department: "OB-Gynecology",
     rating: 5,
     quote:
-      "The doctors and nurses at Metro Docs were nothing short of extraordinary. After my cardiac procedure, I felt genuinely cared for — not just as a patient, but as a person. I walked out healthier and more hopeful than I had been in years.",
+      "I recently gave birth to my first child at Metro Rizal Doctors Hospital and I couldn't have been happier with my experience. The staff was incredibly friendly and knowledgeable, making me feel comfortable and at ease throughout my stay.",
     date: "February 2025",
   },
   {
     id: 2,
-    name: "Jose Reyes",
-    role: "Surgery Patient",
-    department: "Surgery",
+    name: "John Mark T.",
+    role: "Patient",
+    department: "Internal Medicine",
     rating: 5,
     quote:
-      "From admission to discharge, the entire process was seamless. The surgical team was highly professional and made me feel safe throughout my procedure. I couldn't have asked for better care.",
+      "I was diagnosed with a serious medical condition and was admitted to Metro Rizal Doctors Hospital for treatment. The care I received from the doctors and nurses was second to none. They went above and beyond to make sure I was comfortable and well taken care of, and I am now on the road to recovery.",
     date: "January 2025",
   },
   {
     id: 3,
-    name: "Ana Lim",
-    role: "Patient's Mother",
-    department: "Pediatrics",
+    name: "Michael G.",
+    role: "Patient",
+    department: "Surgery",
     rating: 5,
     quote:
-      "Bringing my son in for treatment was stressful, but the pediatric team immediately put us at ease. They were gentle, kind, and explained everything clearly every step of the way.",
+      "I had a major surgery at Metro Rizal Doctors Hospital and was extremely impressed with the level of care and professionalism of the entire staff. The surgeon was excellent, and the nursing staff was incredibly kind and attentive.",
     date: "March 2025",
   },
   {
     id: 4,
-    name: "Roberto Cruz",
-    role: "Rehabilitation Patient",
-    department: "Rehabilitation",
+    name: "David R.",
+    role: "Patient",
+    department: "Emergency",
     rating: 5,
     quote:
-      "The rehab team helped me recover from my stroke faster than anyone expected. Their dedication and personalized approach made all the difference in my recovery journey.",
+      "I was taken to Metro Rizal Doctors Hospital for a sudden emergency and was immediately impressed by the level of care I received. The emergency room staff was efficient and professional, and the doctors were quick to diagnose and treat my condition.",
     date: "December 2024",
   },
   {
     id: 5,
-    name: "Elena Garcia",
-    role: "OB-GYN Patient",
-    department: "OB-Gynecology",
+    name: "Sarah F.",
+    role: "Patient",
+    department: "Internal Medicine",
     rating: 5,
     quote:
-      "I delivered my baby here and the experience was beautiful. The nurses were so caring and supportive — I felt completely safe and in good hands the entire time.",
+      "I was admitted to Metro Rizal Doctors Hospital for a chronic illness, and the care I received was outstanding. The staff was incredibly compassionate and went above and beyond to make sure I was comfortable and well taken care of.",
     date: "February 2025",
   },
   {
     id: 6,
-    name: "Fernando Dela Cruz",
-    role: "Emergency Patient",
-    department: "Emergency",
+    name: "Eric S.",
+    role: "Patient",
+    department: "General Medicine",
     rating: 5,
     quote:
-      "I was rushed to the ER in the middle of the night and the team was ready immediately. Fast, efficient, and genuinely compassionate even under pressure. Truly lifesaving.",
+      "I recently visited Metro Rizal Doctors Hospital for a routine check-up and was blown away by the level of care I received. The staff was friendly and professional, and the doctor was thorough and knowledgeable.",
     date: "November 2024",
   },
-]
+];

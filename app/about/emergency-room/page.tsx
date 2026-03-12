@@ -1,10 +1,11 @@
-import type { Metadata } from "next"
-import { FacilityPage } from "@/components/facility-page"
+import type { Metadata } from "next";
+import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Emergency Room",
-  description: "24/7 emergency care at metrodocshospital. Rapid triage, trauma care, cardiac and stroke response, pediatric emergency.",
-}
+  title: "Emergency Room | metrodocshospital",
+  description:
+    "24/7 emergency care at metrodocshospital. Rapid triage, trauma care, cardiac and stroke response, pediatric emergency.",
+};
 
 export default function EmergencyRoomPage() {
   return (
@@ -40,5 +41,5 @@ export default function EmergencyRoomPage() {
         { title: "Lives Saved Yearly", value: "500+" },
       ]}
     />
-  )
+  );
 }

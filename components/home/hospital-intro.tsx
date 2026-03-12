@@ -52,6 +52,7 @@ export function HospitalIntro() {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="absolute inset-0 h-full w-full"
+                  suppressHydrationWarning
                 />
               </div>
             </div>

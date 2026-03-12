@@ -7,9 +7,10 @@ import { DoctorsHighlight } from "@/components/home/doctors-highlight";
 import { LatestNews } from "@/components/home/latest-news";
 import { Testimonials } from "@/components/home/testimonials";
 import { CTABanner } from "@/components/home/cta-banner";
+import { CreditedHmo } from "@/components/home/credited-hmo";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Home | metrodocshospital",
   description:
     "metrodocshospital delivers compassionate care with trusted medical professionals. Find doctors, explore departments, and access quality healthcare.",
 };
@@ -23,6 +24,7 @@ export default function HomePage() {
       {/* <DepartmentsPreview /> */}
       <LatestNews />
       <DoctorsHighlight />
+      <CreditedHmo />
       <Testimonials />
       <CTABanner />
     </>

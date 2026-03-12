@@ -14,8 +14,17 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getFaqs } from "@/lib/mock-api";
+import {
+  getContactInfo,
+  getExtraPhones,
+  getOfficeHours,
+} from "@/lib/mock-api/contact";
+import { useRecaptcha } from "@/hooks/use-recaptcha";
 
-// ---------- FAQ Accordion Item ----------
+const contact = getContactInfo();
+const phones = getExtraPhones();
+const hours = getOfficeHours();
+
 function FaqItem({
   faq,
   index,
@@ -71,6 +80,13 @@ function FaqItem({
 }
 
 export default function ContactPage() {
+  // 👇 Replace all recaptcha state/refs/useEffect with this one line
+  const {
+    token: recaptchaToken,
+    ref: recaptchaRef,
+    reset: resetRecaptcha,
+  } = useRecaptcha();
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -89,6 +105,7 @@ export default function ContactPage() {
       e.email = "Invalid email";
     if (!formState.subject) e.subject = "Please select a subject";
     if (!formState.message.trim()) e.message = "Required";
+    if (!recaptchaToken) e.recaptcha = "Please complete the reCAPTCHA";
     return e;
   };
 
@@ -99,7 +116,10 @@ export default function ContactPage() {
       setErrors(e2);
       return;
     }
+
     setIsSubmitted(true);
+    resetRecaptcha(); // 👈
+
     setTimeout(() => {
       setIsSubmitted(false);
       setFormState({
@@ -121,34 +141,6 @@ export default function ContactPage() {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
-
-  const contactCards = [
-    {
-      icon: MapPin,
-      label: "Address",
-      lines: ["156 Marick Dr, Santo Domingo,", "Cainta, 1900 Rizal"],
-    },
-    {
-      icon: Clock,
-      label: "Opening Hours",
-      lines: [
-        "Mon: 8:00 AM – 8:00 PM",
-        "Wed & Fri: 7:00 AM – 7:00 PM",
-        "Tue, Thu & Sat: 6:00 AM – 6:00 PM",
-        "Hospital: 24/7",
-      ],
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      lines: ["(02) 8251-6922", "(02) 8532-6505"],
-    },
-    {
-      icon: Mail,
-      label: "Email",
-      lines: ["info@metrodocshospital.com.ph"],
-    },
-  ];
 
   return (
     <>
@@ -180,11 +172,24 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Contact info cards */}
+      {/* Contact Cards */}
       <section className="bg-secondary/30 py-10">
         <div className="mx-auto max-w-7xl px-4">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {contactCards.map((card, i) => (
+            {[
+              { icon: MapPin, label: "Address", lines: [contact.address] },
+              { icon: Phone, label: "Phone", lines: phones },
+              { icon: Mail, label: "Email", lines: [contact.email] },
+              {
+                icon: Clock,
+                label: "Office Hours",
+                lines: hours.map((h) =>
+                  h.highlight
+                    ? `Hospital: ${h.hours}`
+                    : `${h.label}: ${h.hours}`,
+                ),
+              },
+            ].map((card, i) => (
               <motion.div
                 key={card.label}
                 initial={{ opacity: 0, y: 16 }}
@@ -193,25 +198,18 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 className="group relative flex flex-col items-start rounded-2xl border border-border bg-card px-5 py-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
               >
-                {/* Top accent bar */}
                 <div className="absolute left-0 top-0 h-1 w-12 rounded-tl-2xl bg-primary/40 transition-all duration-300 group-hover:w-full group-hover:rounded-tr-2xl group-hover:bg-primary/30" />
-
-                {/* Icon */}
                 <div className="mb-4 mt-2 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
                   <card.icon className="h-5 w-5 text-primary" />
                 </div>
-
-                {/* Label */}
                 <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   {card.label}
                 </p>
-
-                {/* Info lines */}
                 <div className="space-y-1">
                   {card.lines.map((line, j) => (
                     <p
                       key={j}
-                      className={`text-sm leading-snug ${j === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                      className={`text-sm leading-snug ${j === 0 ? "font-semibold text-foreground" : "text-muted-foreground"} ${card.label === "Office Hours" && line.startsWith("Hospital") ? "mt-1 font-semibold text-primary" : ""}`}
                     >
                       {line}
                     </p>
@@ -236,63 +234,50 @@ export default function ContactPage() {
               className="lg:col-span-2"
             >
               <div className="sticky top-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                {/* Map placeholder */}
-                <div className="relative aspect-[3/4] bg-gradient-to-br from-primary/10 via-accent/30 to-secondary">
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                      <MapPin className="h-7 w-7 text-primary" />
-                    </div>
-                    <p className="text-sm font-medium text-foreground">
-                      156 Marick Dr, Santo Domingo
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Cainta, 1900 Rizal
-                    </p>
-                  </div>
-                  {/* Decorative grid lines */}
-                  <svg
-                    className="absolute inset-0 h-full w-full opacity-10"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <pattern
-                        id="grid"
-                        width="40"
-                        height="40"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <path
-                          d="M 40 0 L 0 0 0 40"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1"
-                        />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                  </svg>
+                <div
+                  className="relative aspect-[3/4] overflow-hidden"
+                  suppressHydrationWarning
+                >
+                  <iframe
+                    src={contact.mapEmbedUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="absolute inset-0 h-full w-full"
+                    suppressHydrationWarning
+                  />
                 </div>
-
-                {/* Quick contact links */}
                 <div className="divide-y divide-border">
+                  {phones.map((p) => (
+                    <a
+                      key={p}
+                      href={`tel:${p.replace(/\D/g, "")}`}
+                      className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-accent"
+                    >
+                      <Phone className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-medium text-foreground">
+                        {p}
+                      </span>
+                    </a>
+                  ))}
                   <a
-                    href="tel:02825169222"
-                    className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-accent"
-                  >
-                    <Phone className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium text-foreground">
-                      (02) 8251-6922
-                    </span>
-                  </a>
-                  <a
-                    href="mailto:info@metrodocshospital.com.ph"
+                    href={`mailto:${contact.email}`}
                     className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-accent"
                   >
                     <Mail className="h-4 w-4 text-primary" />
                     <span className="text-sm font-medium text-foreground">
-                      info@metrodocshospital.com.ph
+                      {contact.email}
                     </span>
                   </a>
+                  <p className="flex items-start gap-3 px-5 py-3.5">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <span className="text-sm text-muted-foreground">
+                      {contact.address}
+                    </span>
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -306,7 +291,6 @@ export default function ContactPage() {
               className="lg:col-span-3"
             >
               <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                {/* Form header */}
                 <div className="border-b border-border bg-secondary/30 px-6 py-5">
                   <h2 className="font-bold text-card-foreground">
                     Send Us a Message
@@ -315,7 +299,6 @@ export default function ContactPage() {
                     We'll get back to you within 24 hours.
                   </p>
                 </div>
-
                 <div className="p-6">
                   <AnimatePresence mode="wait">
                     {isSubmitted ? (
@@ -349,7 +332,6 @@ export default function ContactPage() {
                         onSubmit={handleSubmit}
                         className="space-y-4"
                       >
-                        {/* Row 1 */}
                         <div className="grid gap-4 sm:grid-cols-2">
                           <div>
                             <label className="mb-1.5 block text-xs font-semibold text-foreground">
@@ -388,8 +370,6 @@ export default function ContactPage() {
                             )}
                           </div>
                         </div>
-
-                        {/* Row 2 */}
                         <div className="grid gap-4 sm:grid-cols-2">
                           <div>
                             <label className="mb-1.5 block text-xs font-semibold text-foreground">
@@ -436,8 +416,6 @@ export default function ContactPage() {
                             )}
                           </div>
                         </div>
-
-                        {/* Message */}
                         <div>
                           <label className="mb-1.5 block text-xs font-semibold text-foreground">
                             Message <span className="text-primary">*</span>
@@ -453,6 +431,16 @@ export default function ContactPage() {
                           {errors.message && (
                             <p className="mt-1 text-xs text-red-500">
                               {errors.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* reCAPTCHA */}
+                        <div>
+                          <div ref={recaptchaRef} />
+                          {errors.recaptcha && (
+                            <p className="mt-1 text-xs text-red-500">
+                              {errors.recaptcha}
                             </p>
                           )}
                         </div>
@@ -491,7 +479,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* FAQ — accordion */}
+      {/* FAQ */}
       <section className="bg-secondary py-16">
         <div className="mx-auto max-w-3xl px-4">
           <motion.div
@@ -508,7 +496,6 @@ export default function ContactPage() {
               Find quick answers to common questions.
             </p>
           </motion.div>
-
           <div className="space-y-2">
             {getFaqs().map((faq, index) => (
               <FaqItem key={index} faq={faq} index={index} />

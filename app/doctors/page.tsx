@@ -554,37 +554,6 @@ export default function DoctorsPage() {
           </div>
         </div>
       </section>
-
-      {/* ── CTA ── */}
-      <section className="relative overflow-hidden bg-primary py-20">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
-            backgroundSize: "16px 16px",
-          }}
-        />
-        <div className="pointer-events-none absolute -left-16 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-4 text-balance text-3xl font-bold text-primary-foreground md:text-4xl">
-              Ready to Book an Appointment?
-            </h2>
-            <p className="mb-8 text-primary-foreground/80">
-              Schedule a consultation with one of our expert physicians today.
-            </p>
-            <Button size="lg" variant="secondary" asChild>
-              <Link href="/contact">Book Appointment</Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
     </>
   );
 }

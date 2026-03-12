@@ -6,6 +6,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Calendar, Clock, Tag } from "lucide-react";
 import { getNews } from "@/lib/mock-api";
+import Image from "next/image";
 
 export function LatestNews() {
   const news = getNews().slice(0, 3);
@@ -89,6 +90,12 @@ export function LatestNews() {
               <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
                 {/* Image area */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-accent to-primary/10">
+                  <Image
+                    src={featured.image || "/placeholder-news.jpg"}
+                    alt={featured.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent" />
 
                   {/* Category pill */}

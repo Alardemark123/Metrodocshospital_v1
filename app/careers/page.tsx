@@ -23,8 +23,9 @@ import {
   ICON_MAP,
 } from "@/lib/mock-api";
 import type { Job } from "@/lib/mock-api";
+import { useRecaptcha } from "@/hooks/use-recaptcha"; // 👈
 
-// ---------- Apply Modal (wide, no scroll, 2-column) ----------
+// ---------- Apply Modal ----------
 function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
   const [form, setForm] = useState({
     firstName: "",
@@ -34,10 +35,17 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
     coverLetter: "",
     resume: null as File | null,
   });
-  const [captchaChecked, setCaptchaChecked] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // 👇 One line instead of all the recaptcha state/refs/useEffect
+  const {
+    token: recaptchaToken,
+    ref: recaptchaRef,
+    reset: resetRecaptcha,
+  } = useRecaptcha();
+
+  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -45,7 +53,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
     };
   }, []);
 
-  // close on Escape
+  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -63,7 +71,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
       e.email = "Invalid email";
     if (!form.phone.trim()) e.phone = "Required";
     if (!form.resume) e.resume = "Please attach your resume";
-    if (!captchaChecked) e.captcha = "Please verify you are not a robot";
+    if (!recaptchaToken) e.captcha = "Please verify you are not a robot";
     return e;
   };
 
@@ -73,7 +81,10 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
       setErrors(e);
       return;
     }
+
+    console.log("Submitted:", { ...form, recaptchaToken });
     setSubmitted(true);
+    resetRecaptcha(); // 👈
   };
 
   const set = (name: string, value: string) => {
@@ -88,7 +99,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
     >
-      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -96,8 +106,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
         className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
         onClick={onClose}
       />
-
-      {/* Modal — wide 2-col, fixed height */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -106,7 +114,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
         className="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-card shadow-2xl"
       >
         {submitted ? (
-          /* ── Success state ── */
           <div className="flex flex-col items-center justify-center px-10 py-16 text-center">
             <motion.div
               initial={{ scale: 0 }}
@@ -146,7 +153,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     {job.position}
                   </h2>
                 </div>
-
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
                     <Briefcase className="h-4 w-4 shrink-0" />
@@ -161,7 +167,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     {job.type}
                   </div>
                 </div>
-
                 <div className="mt-8">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground/60">
                     What to prepare
@@ -183,7 +188,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                   </ul>
                 </div>
               </div>
-
               <p className="text-xs text-primary-foreground/50">
                 Your data is handled securely and will not be shared.
               </p>
@@ -191,7 +195,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
 
             {/* Right col — form */}
             <div className="flex flex-1 flex-col">
-              {/* Form header */}
               <div className="flex items-center justify-between border-b border-border px-6 py-4">
                 <div>
                   <h3 className="font-bold text-card-foreground">
@@ -209,10 +212,8 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                 </button>
               </div>
 
-              {/* Form body — 2 columns inside */}
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                  {/* First name */}
                   <div>
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       First Name <span className="text-primary">*</span>
@@ -231,7 +232,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     )}
                   </div>
 
-                  {/* Last name */}
                   <div>
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       Last Name <span className="text-primary">*</span>
@@ -250,7 +250,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div>
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       Email <span className="text-primary">*</span>
@@ -269,7 +268,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     )}
                   </div>
 
-                  {/* Phone */}
                   <div>
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       Phone <span className="text-primary">*</span>
@@ -288,19 +286,12 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     )}
                   </div>
 
-                  {/* Resume upload — full width */}
                   <div className="col-span-2">
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       Resume / CV <span className="text-primary">*</span>
                     </label>
                     <label
-                      className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed px-4 py-3 transition-colors hover:bg-accent/20 ${
-                        errors.resume
-                          ? "border-red-400"
-                          : form.resume
-                            ? "border-primary bg-primary/5"
-                            : "border-border"
-                      }`}
+                      className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed px-4 py-3 transition-colors hover:bg-accent/20 ${errors.resume ? "border-red-400" : form.resume ? "border-primary bg-primary/5" : "border-border"}`}
                     >
                       <input
                         type="file"
@@ -345,7 +336,6 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     )}
                   </div>
 
-                  {/* Cover letter — full width */}
                   <div className="col-span-2">
                     <label className="mb-1 block text-xs font-semibold text-foreground">
                       Cover Letter{" "}
@@ -364,65 +354,16 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     />
                   </div>
 
-                  {/* reCAPTCHA + Submit — full width */}
+                  {/* reCAPTCHA + Submit */}
                   <div className="col-span-2 flex items-start justify-between gap-4">
-                    {/* reCAPTCHA */}
                     <div className="flex-1">
-                      <div
-                        className={`flex items-center justify-between rounded-lg border p-3 ${
-                          errors.captcha
-                            ? "border-red-400 bg-red-50/20"
-                            : "border-border bg-secondary/30"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCaptchaChecked((c) => !c);
-                              setErrors((er) => ({ ...er, captcha: "" }));
-                            }}
-                            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${
-                              captchaChecked
-                                ? "border-primary bg-primary text-primary-foreground"
-                                : "border-muted-foreground bg-background"
-                            }`}
-                          >
-                            {captchaChecked && (
-                              <svg
-                                viewBox="0 0 12 12"
-                                className="h-3 w-3"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                              >
-                                <polyline points="1,6 4.5,9.5 11,2" />
-                              </svg>
-                            )}
-                          </button>
-                          <span className="text-sm text-foreground">
-                            I am not a robot
-                          </span>
-                        </div>
-                        <div className="flex flex-col items-center gap-0.5">
-                          <div className="flex h-9 w-9 items-center justify-center rounded bg-[#f9f9f9]">
-                            <span className="text-center text-[7px] font-bold leading-tight text-[#4a90d9]">
-                              reCAPTCHA
-                            </span>
-                          </div>
-                          <span className="text-[8px] text-muted-foreground">
-                            Privacy · Terms
-                          </span>
-                        </div>
-                      </div>
+                      <div ref={recaptchaRef} /> {/* 👈 */}
                       {errors.captcha && (
-                        <p className="mt-0.5 text-xs text-red-500">
+                        <p className="mt-1 text-xs text-red-500">
                           {errors.captcha}
                         </p>
                       )}
                     </div>
-
-                    {/* Submit button */}
                     <Button
                       className="h-full min-h-[52px] gap-2 px-6"
                       onClick={handleSubmit}
@@ -453,7 +394,6 @@ function JobListItem({
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-30px" });
-
   return (
     <motion.button
       ref={ref}
@@ -461,19 +401,11 @@ function JobListItem({
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.35 }}
       onClick={onClick}
-      className={`w-full rounded-xl border p-4 text-left transition-all duration-200 ${
-        isSelected
-          ? "border-primary bg-primary/5 shadow-sm"
-          : "border-border bg-card hover:border-primary/40 hover:bg-accent/30"
-      }`}
+      className={`w-full rounded-xl border p-4 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card hover:border-primary/40 hover:bg-accent/30"}`}
     >
       <div className="mb-1.5 flex flex-wrap gap-1.5">
         <span
-          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-            isSelected
-              ? "bg-primary text-primary-foreground"
-              : "bg-primary/10 text-primary"
-          }`}
+          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isSelected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}
         >
           {job.type}
         </span>
@@ -591,7 +523,6 @@ export default function CareersPage() {
   const [applyJob, setApplyJob] = useState<Job | null>(null);
 
   const isFiltered = selectedDepartment !== "All" || searchQuery !== "";
-
   const filteredJobs = jobs.filter((job) => {
     const matchesDepartment =
       selectedDepartment === "All" || job.department === selectedDepartment;
@@ -650,9 +581,7 @@ export default function CareersPage() {
                 : `${jobs.length} positions available`}
             </p>
           </div>
-
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-            {/* Left panel */}
             <div className="w-full lg:w-80 xl:w-96 lg:shrink-0">
               <div className="mb-3 rounded-xl border border-border bg-card p-3 shadow-sm">
                 <div className="relative mb-2.5">
@@ -678,11 +607,7 @@ export default function CareersPage() {
                     <button
                       key={dept}
                       onClick={() => setSelectedDepartment(dept)}
-                      className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                        selectedDepartment === dept
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-secondary text-foreground hover:bg-accent"
-                      }`}
+                      className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${selectedDepartment === dept ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-accent"}`}
                     >
                       {dept}
                     </button>
@@ -706,7 +631,6 @@ export default function CareersPage() {
                   )}
                 </AnimatePresence>
               </div>
-
               <div className="flex flex-col gap-2 lg:max-h-[calc(100vh-320px)] lg:overflow-y-auto lg:pr-1">
                 {filteredJobs.length > 0 ? (
                   filteredJobs.map((job) => (
@@ -720,7 +644,6 @@ export default function CareersPage() {
                           )
                         }
                       />
-                      {/* Mobile inline detail — opens right below clicked job */}
                       <div className="lg:hidden">
                         <AnimatePresence>
                           {selectedJob?.id === job.id && (
@@ -759,8 +682,6 @@ export default function CareersPage() {
                 )}
               </div>
             </div>
-
-            {/* Right panel desktop */}
             <div className="hidden flex-1 lg:block">
               {selectedJob ? (
                 <div className="sticky top-6">

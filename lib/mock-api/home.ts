@@ -63,38 +63,7 @@ const services: Service[] = [
   },
 ]
 
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Jennifer Martinez",
-    quote:
-      "The care I received at metrodocshospital was exceptional. From the moment I walked in, the staff made me feel comfortable and well-cared for. Dr. Chen and her team saved my life.",
-  },
-  {
-    id: 2,
-    name: "Robert Thompson",
-    quote:
-      "After my knee surgery, the rehabilitation team at metrodocshospital helped me get back on my feet faster than I ever expected. Their dedication to patient recovery is truly remarkable.",
-  },
-  {
-    id: 3,
-    name: "Maria Santos",
-    quote:
-      "As a new mother, I was anxious about my baby's health. The pediatric team was incredibly supportive and patient, answering all my questions and providing excellent care for my little one.",
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    quote:
-      "The emergency department responded quickly when I had my accident. The doctors and nurses were professional, compassionate, and kept my family informed throughout my treatment.",
-  },
-  {
-    id: 5,
-    name: "Linda Foster",
-    quote:
-      "I've been a patient at metrodocshospital for over 10 years. The consistent quality of care and the genuine concern the staff shows for my well-being keeps me coming back.",
-  },
-]
+
 
 export function getFeatures(): Feature[] {
   return features
@@ -102,10 +71,6 @@ export function getFeatures(): Feature[] {
 
 export function getServices(): Service[] {
   return services
-}
-
-export function getTestimonials(): Testimonial[] {
-  return testimonials
 }
 
 export { getDepartmentsPreview }

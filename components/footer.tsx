@@ -12,6 +12,11 @@ import {
   Heart,
 } from "lucide-react";
 
+import {
+  getContactInfo,
+  getExtraPhones,
+  getOfficeHours,
+} from "@/lib/mock-api/contact";
 const quickLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
@@ -37,6 +42,9 @@ const socialLinks = [
   { name: "Instagram", icon: Instagram, href: "#" },
   { name: "LinkedIn", icon: Linkedin, href: "#" },
 ];
+const contact = getContactInfo();
+const phones = getExtraPhones();
+const hours = getOfficeHours();
 
 export function Footer() {
   return (
@@ -166,9 +174,7 @@ export function Footer() {
                     <MapPin className="h-4 w-4 text-primary" />
                   </div>
                   <span className="text-sm leading-snug text-foreground/70">
-                    156 Marick Dr, Santo Domingo,
-                    <br />
-                    Cainta, 1900 Rizal
+                    {contact.address}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -176,8 +182,9 @@ export function Footer() {
                     <Phone className="h-4 w-4 text-primary" />
                   </div>
                   <div className="text-sm text-foreground/70">
-                    <p>(02) 8251-6922</p>
-                    <p>(02) 8532-6505</p>
+                    {phones.map((p) => (
+                      <p key={p}>{p}</p>
+                    ))}
                   </div>
                 </li>
                 <li className="flex items-center gap-3">
@@ -185,7 +192,7 @@ export function Footer() {
                     <Mail className="h-4 w-4 text-primary" />
                   </div>
                   <span className="text-sm text-foreground/70">
-                    info@metrodocshospital.com.ph
+                    {contact.email}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -193,12 +200,18 @@ export function Footer() {
                     <Clock className="h-4 w-4 text-primary" />
                   </div>
                   <div className="text-sm text-foreground/70">
-                    <p>Mon: 8:00 AM – 8:00 PM</p>
-                    <p>Wed & Fri: 7:00 AM – 7:00 PM</p>
-                    <p>Tue, Thu & Sat: 6:00 AM – 6:00 PM</p>
-                    <p className="mt-1 font-semibold text-primary">
-                      Hospital: 24/7
-                    </p>
+                    {hours.map((h) => (
+                      <p
+                        key={h.label}
+                        className={
+                          h.highlight ? "mt-1 font-semibold text-primary" : ""
+                        }
+                      >
+                        {h.highlight
+                          ? `Hospital: ${h.hours}`
+                          : `${h.label}: ${h.hours}`}
+                      </p>
+                    ))}
                   </div>
                 </li>
               </ul>

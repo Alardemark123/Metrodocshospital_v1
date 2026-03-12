@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Fourth Floor",
+  title: "Fourth Floor | metrodocshospital",
   description:
     "Inpatient rooms at metrodocshospital: private suites, semi-private rooms, 24/7 nursing care.",
 };

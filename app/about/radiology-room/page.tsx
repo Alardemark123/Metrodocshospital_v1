@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Radiology Room",
+  title: "Radiology Room | metrodocshospital",
   description:
     "Diagnostic imaging at metrodocshospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
 };

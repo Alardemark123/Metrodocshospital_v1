@@ -20,13 +20,6 @@ const departments = [
   ...Array.from(new Set(testimonials.map((t) => t.department))),
 ];
 
-const stats = [
-  { value: "98%", label: "Patient Satisfaction" },
-  { value: "4.9", label: "Average Rating" },
-  { value: "10K+", label: "Patients Served" },
-  { value: "15+", label: "Years of Care" },
-];
-
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
@@ -182,31 +175,6 @@ export default function TestimonialsPage() {
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid grid-cols-2 divide-x divide-border lg:grid-cols-4">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
-                viewport={{ once: true }}
-                className="flex flex-col items-center justify-center py-6 text-center"
-              >
-                <p className="text-2xl font-bold text-primary md:text-3xl">
-                  {stat.value}
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

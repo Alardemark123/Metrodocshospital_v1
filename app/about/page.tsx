@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useAnimationControls } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -19,31 +18,7 @@ import {
   Heart,
 } from "lucide-react";
 import { getFacilities } from "@/lib/mock-api";
-
-/* ── Reusable fade-in wrapper ── */
-function FadeIn({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+import { FadeIn } from "@/components/ui/fade-in";
 
 /* ── Data ── */
 const whyChooseUs = [
@@ -91,110 +66,6 @@ const visionPoints = [
   "To be an institution where expertise of physicians and skilled allied health workers will be honed to their maximum potential.",
   "To protect the interest of our cooperators by establishing a well-founded health institution with premium on quality healthcare service.",
 ];
-
-const hmoRow1 = [
-  { name: "AMAPHIL", logo: "/about/client/1.png" },
-  { name: "Asian Life", logo: "/about/client/2.png" },
-  { name: "Generali", logo: "/about/client/3.png" },
-  { name: "East West Healthcare", logo: "/about/client/4.png" },
-  { name: "Cocolife", logo: "/about/client/5.png" },
-  { name: "HMI", logo: "/about/client/6.png" },
-  { name: "The House Printers", logo: "/about/client/7.png" },
-  { name: "Getwell Health Systems", logo: "/about/client/9.png" },
-  { name: "Maxicare", logo: "/about/client/19.png" },
-  { name: "Philcare", logo: "/about/client/21.png" },
-  { name: "Medilink", logo: "/about/client/23.png" },
-  { name: "PhilCare", logo: "/about/client/25.png" },
-];
-
-const hmoRow2 = [
-  { name: "Lacson & Lacson", logo: "/about/client/10.png" },
-  { name: "HPPI", logo: "/about/client/11.png" },
-  { name: "Avega", logo: "/about/client/12-1.png" },
-  { name: "Intellicare", logo: "/about/client/13.png" },
-  { name: "Kaiser", logo: "/about/client/14.png" },
-  { name: "Life & Health", logo: "/about/client/15.png" },
-  { name: "IMS", logo: "/about/client/16.png" },
-  { name: "Medicard", logo: "/about/client/18.png" },
-  { name: "MedAsia", logo: "/about/client/20.png" },
-  { name: "Medicare-Plus", logo: "/about/client/22.png" },
-  { name: "Pacific Cross", logo: "/about/client/24.png" },
-  { name: "Value Care", logo: "/about/client/26.png" },
-];
-
-/* ── HMO Marquee — pause on hover using useAnimationControls ── */
-function HmoMarquee() {
-  const controls1 = useAnimationControls();
-  const controls2 = useAnimationControls();
-
-  useEffect(() => {
-    controls1.start({
-      x: ["0%", "-50%"],
-      transition: { duration: 22, repeat: Infinity, ease: "linear" },
-    });
-    controls2.start({
-      x: ["-50%", "0%"],
-      transition: { duration: 26, repeat: Infinity, ease: "linear" },
-    });
-  }, [controls1, controls2]);
-
-  const pause = () => {
-    controls1.stop();
-    controls2.stop();
-  };
-
-  const resume = () => {
-    controls1.start({
-      x: ["0%", "-50%"],
-      transition: { duration: 22, repeat: Infinity, ease: "linear" },
-    });
-    controls2.start({
-      x: ["-50%", "0%"],
-      transition: { duration: 26, repeat: Infinity, ease: "linear" },
-    });
-  };
-
-  const sharedCard = (hmo: { name: string; logo: string }, i: number) => (
-    <div
-      key={i}
-      className="flex shrink-0 items-center gap-3 rounded-2xl border border-border bg-card px-6 py-4 shadow-sm"
-    >
-      <div className="relative h-10 w-20 shrink-0 overflow-hidden rounded-xl bg-white">
-        <Image
-          src={hmo.logo}
-          alt={hmo.name}
-          fill
-          className="object-contain p-1"
-        />
-      </div>
-      <span className="whitespace-nowrap text-sm font-semibold text-card-foreground">
-        {hmo.name}
-      </span>
-    </div>
-  );
-
-  return (
-    <div
-      className="space-y-4 overflow-hidden"
-      onMouseEnter={pause}
-      onMouseLeave={resume}
-    >
-      {/* Row 1 — scrolls left */}
-      <div className="flex gap-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <motion.div animate={controls1} className="flex shrink-0 gap-4">
-          {[...hmoRow1, ...hmoRow1].map((hmo, i) => sharedCard(hmo, i))}
-        </motion.div>
-      </div>
-
-      {/* Row 2 — scrolls right */}
-      <div className="flex gap-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <motion.div animate={controls2} className="flex shrink-0 gap-4">
-          {[...hmoRow2, ...hmoRow2].map((hmo, i) => sharedCard(hmo, i))}
-        </motion.div>
-      </div>
-    </div>
-  );
-}
 
 /* ─────────────────────────────────────────── */
 export default function AboutPage() {
@@ -640,58 +511,6 @@ export default function AboutPage() {
               </div>
             </FadeIn>
           </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════
-          ACCREDITED HMOs
-      ══════════════════════════════ */}
-      <section className="relative overflow-hidden bg-secondary py-20 lg:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, currentColor 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
-        <div className="pointer-events-none absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-accent/20 blur-2xl" />
-        <div className="pointer-events-none absolute right-16 bottom-10 h-16 w-16 rotate-45 rounded-lg border border-primary/10" />
-        <div className="pointer-events-none absolute left-10 top-10 h-10 w-10 rounded-full border border-primary/10" />
-
-        <div className="relative mx-auto max-w-7xl px-4">
-          <FadeIn className="mb-14 text-center">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Accredited Partners
-              </span>
-            </div>
-            <h2 className="mb-3 text-balance text-3xl font-bold text-foreground md:text-4xl">
-              Accredited <span className="text-primary">HMOs</span>
-            </h2>
-            <p className="mx-auto max-w-xl text-muted-foreground">
-              Metro Rizal Doctors Hospital works with leading health maintenance
-              organizations so you can focus on getting better — not on the
-              paperwork.
-            </p>
-          </FadeIn>
-
-          <HmoMarquee />
-
-          <FadeIn className="mt-10 text-center">
-            <p className="text-sm text-muted-foreground">
-              Don't see your HMO?{" "}
-              <Link
-                href="/contact"
-                className="font-semibold text-primary hover:underline"
-              >
-                Contact us
-              </Link>{" "}
-              — we're continuously expanding our accredited partners.
-            </p>
-          </FadeIn>
         </div>
       </section>
     </>

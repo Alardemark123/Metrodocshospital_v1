@@ -1,77 +1,172 @@
-import type { Department, DepartmentPreview } from "./types"
+import type { Department, DepartmentPreview } from "./types";
 
 const departments: Department[] = [
   {
-    id: "emergency",
+    id: "radiology",
     icon: "Siren",
-    name: "Emergency Department",
-    description: "Our 24/7 emergency department is equipped to handle all medical emergencies with rapid response teams, trauma specialists, and state-of-the-art equipment.",
-    features: ["24/7 availability", "Trauma care", "Cardiac emergencies", "Pediatric emergencies"],
+    name: "Radiology",
+    excerpt:
+      "To deliver quality imaging services with outmost compassion and with an absolute commitment to patient care as our first priority.",
+    description:
+      "To deliver quality imaging services with outmost compassion and with an absolute commitment to patient care as our first priority.",
+    features: [
+      "24/7 availability",
+      "Trauma care",
+      "Cardiac emergencies",
+      "Pediatric emergencies",
+    ],
     color: "bg-red-500/10 text-red-600",
+    image: "/departments/FRD_5342-300x200.jpg",
+    subimage: [
+      "/departments/FRD_5340-300x200.jpg",
+      "/departments/FRD_5339-300x200.jpg",
+    ],
     bgGradient: "from-red-500/20 to-red-500/5",
   },
   {
-    id: "radiology",
+    id: "Nursing",
     icon: "ScanLine",
-    name: "Radiology",
-    description: "Advanced diagnostic imaging services including MRI, CT scans, X-rays, ultrasound, and nuclear medicine for accurate diagnosis and treatment planning.",
+    name: "Nursing Services",
+    excerpt:
+      "To provide excellent and compassionate quality and holistic service to all patients under our care.",
+    description:
+      "To provide excellent and compassionate quality and holistic service to all patients under our care.",
     features: ["MRI & CT scans", "Digital X-ray", "Ultrasound", "Mammography"],
     color: "bg-blue-500/10 text-blue-600",
+    image: "/departments/6.png",
+    subimage: ["/departments/FRD_5232-1-1024x683.jpg"],
     bgGradient: "from-blue-500/20 to-blue-500/5",
   },
   {
-    id: "rehabilitation",
+    id: "ER",
     icon: "Activity",
-    name: "Rehabilitation",
-    description: "Comprehensive physical therapy and rehabilitation programs to help patients recover strength, mobility, and independence after surgery, injury, or illness.",
-    features: ["Physical therapy", "Occupational therapy", "Speech therapy", "Cardiac rehab"],
+    name: "Emergency Room",
+    excerpt:
+      "Our goal is to provide timely, life-saving emergency care to patients in a patient-focused manner. We aim to make a positive impact on the well-being of the individuals we serve by adopting a holistic approach.",
+    description:
+      "To deliver life-saving and patient-focused emergency care on well-timed manner through a holistic approach that makes a difference in the well-being of the patients we serve.",
+    features: [
+      "Physical therapy",
+      "Occupational therapy",
+      "Speech therapy",
+      "Cardiac rehab",
+    ],
+    image: "/departments/3.png",
+    subimage: [
+      "/departments/EMERGENCY-ROOM-1024x683.jpg",
+      "/departments/FRD_5307-300x200.jpg",
+      "/departments/FRD_5308-300x200.jpg",
+      "/departments/FRD_5310-1-300x200.jpg",
+      "/departments/FRD_5314-300x200.jpg",
+      "/departments/FRD_5315-300x200.jpg",
+    ],
     color: "bg-primary/10 text-primary",
     bgGradient: "from-primary/20 to-primary/5",
   },
   {
-    id: "internal-medicine",
+    id: "PM",
     icon: "Pill",
-    name: "Internal Medicine",
-    description: "Expert diagnosis and management of adult diseases, chronic conditions, and complex medical cases by our team of experienced internists.",
-    features: ["Chronic disease management", "Preventive care", "Health screenings", "Adult immunizations"],
+    name: "Pharmacy",
+    description:
+      "To provide pharmaceutical care to all patients through the responsible provision of drug therapy: for achieving positive patient outcomes that improve the quality of life of our patients.",
+    features: [
+      "Chronic disease management",
+      "Preventive care",
+      "Health screenings",
+      "Adult immunizations",
+    ],
+    image: "/departments/Pharmacy-768x1024.jpg",
+    subimage: ["/departments/Pharmacy-768x1024.jpg"],
     color: "bg-purple-500/10 text-purple-600",
     bgGradient: "from-purple-500/20 to-purple-500/5",
   },
   {
-    id: "pediatrics",
+    id: "LB",
     icon: "Baby",
-    name: "Pediatrics",
-    description: "Specialized healthcare for infants, children, and adolescents, from routine check-ups to complex pediatric conditions, in a child-friendly environment.",
-    features: ["Well-child visits", "Vaccinations", "Developmental care", "Pediatric specialists"],
+    name: "Laboratory",
+    description:
+      "To build innovative and technological systems that offer responsive services to patients and doctors through fast, accurate, affordable Laboratory test.",
+    features: [
+      "Well-child visits",
+      "Vaccinations",
+      "Developmental care",
+      "Pediatric specialists",
+    ],
     color: "bg-pink-500/10 text-pink-600",
+    image: "/departments/5.png",
+    subimage: ["/departments/5.png"],
     bgGradient: "from-pink-500/20 to-pink-500/5",
   },
   {
-    id: "cardiology",
+    id: "OPD",
     icon: "HeartPulse",
-    name: "Cardiology",
-    description: "Comprehensive heart care from prevention to intervention, including diagnostic testing, cardiac catheterization, and heart failure management.",
-    features: ["ECG & Echo", "Stress testing", "Cardiac catheterization", "Heart failure clinic"],
+    name: "Outpatients Department",
+    description:
+      "To provide high-quality, patient care to individuals seeking outpatient medical treatment in a convenient, accessible, and affordable for all.",
+    features: [
+      "ECG & Echo",
+      "Stress testing",
+      "Cardiac catheterization",
+      "Heart failure clinic",
+    ],
     color: "bg-red-500/10 text-red-600",
+    image: "/departments/Opd-768x1024.jpg",
+    subimage: ["/departments/Opd-768x1024.jpg"],
     bgGradient: "from-red-500/20 to-red-500/5",
   },
   {
-    id: "laboratory",
+    id: "Info",
     icon: "FlaskConical",
-    name: "Laboratory",
-    description: "State-of-the-art diagnostic laboratory providing accurate and timely test results to support clinical decision-making and patient care.",
+    name: "Admitting / Information",
+    description:
+      "The foundation of excellent customer care and satisfaction begins with the establishment of a strong hospital-patient relationship.",
     features: ["Blood tests", "Pathology", "Microbiology", "Rapid results"],
     color: "bg-teal-500/10 text-teal-600",
+    image: "/departments/Untitled.png",
+    subimage: ["/departments/Untitled.png"],
     bgGradient: "from-teal-500/20 to-teal-500/5",
   },
-]
+  {
+    id: "HMO",
+    icon: "FlaskConical",
+    name: "Philhealth / HMO",
+    description:
+      "The augmentation of healthcare support will enhance the optimization of healthcare claims for services.",
+    features: ["Blood tests", "Pathology", "Microbiology", "Rapid results"],
+    color: "bg-teal-500/10 text-teal-600",
+    image: "/departments/1.png",
+    subimage: ["/departments/1.png"],
+    bgGradient: "from-teal-500/20 to-teal-500/5",
+  },
+  {
+    id: "Accounting",
+    icon: "FlaskConical",
+    name: "Accounting",
+    description:
+      "Accounting plays a crucial role in supporting and benefiting patients within a hospital setting. By effectively managing financial resources, accounting helps ensure that hospitals can provide high-quality patient care and services.",
+    features: ["Blood tests", "Pathology", "Microbiology", "Rapid results"],
+    color: "bg-teal-500/10 text-teal-600",
+    image: "/departments/Accounting.png",
+    subimage: ["/departments/Accounting.png"],
+    bgGradient: "from-teal-500/20 to-teal-500/5",
+  },
+];
 
 export function getDepartments(): Department[] {
-  return departments
+  return departments;
 }
 
 export function getDepartmentFilters(): string[] {
-  return ["All", "Cardiology", "Internal Medicine", "Pediatrics", "Rehabilitation", "Emergency", "Radiology", "Laboratory"]
+  return [
+    "All",
+    "Cardiology",
+    "Internal Medicine",
+    "Pediatrics",
+    "Rehabilitation",
+    "Emergency",
+    "Radiology",
+    "Laboratory",
+  ];
 }
 
 export function getDepartmentsPreview(): DepartmentPreview[] {
@@ -94,5 +189,5 @@ export function getDepartmentsPreview(): DepartmentPreview[] {
                   : "State-of-the-art diagnostic testing with quick and accurate results.",
     color: d.color,
     href: `/departments#${d.id}`,
-  }))
+  }));
 }
