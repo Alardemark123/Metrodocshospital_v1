@@ -80,7 +80,6 @@ function FaqItem({
 }
 
 export default function ContactPage() {
-  // 👇 Replace all recaptcha state/refs/useEffect with this one line
   const {
     token: recaptchaToken,
     ref: recaptchaRef,
@@ -118,7 +117,7 @@ export default function ContactPage() {
     }
 
     setIsSubmitted(true);
-    resetRecaptcha(); // 👈
+    resetRecaptcha();
 
     setTimeout(() => {
       setIsSubmitted(false);

@@ -29,7 +29,9 @@ export function useRecaptcha() {
     if (window.grecaptcha?.ready) {
       window.grecaptcha.ready(render);
     } else {
-      const existing = document.querySelector('script[src*="recaptcha/api.js"]');
+      const existing = document.querySelector(
+        'script[src*="recaptcha/api.js"]',
+      );
       if (!existing) {
         const script = document.createElement("script");
         script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
@@ -40,7 +42,9 @@ export function useRecaptcha() {
       }
     }
 
-    return () => { widgetId.current = null; };
+    return () => {
+      widgetId.current = null;
+    };
   }, []);
 
   return { token, ref, reset };

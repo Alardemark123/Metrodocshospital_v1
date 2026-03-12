@@ -1,23 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Search,
   Calendar,
-  ChevronDown,
+  Stethoscope,
   Users,
   Clock,
-  Stethoscope,
+  Plus,
+  Activity,
+  ShieldCheck,
+  X,
 } from "lucide-react";
-
-const heroSlides = [
-  { image: "/floating-image1.jpg", tag: "Emergency Care" },
-  { image: "/floating-image2.jpg", tag: "Expert Doctors" },
-  { image: "/floating-image3.jpg", tag: "Modern Facilities" },
-];
+import Link from "next/link";
 
 const stats = [
   { icon: Stethoscope, number: "50+", label: "Expert Doctors" },
@@ -25,201 +22,332 @@ const stats = [
   { icon: Clock, number: "24/7", label: "Emergency Care" },
 ];
 
-export function HeroSection() {
-  const [index, setIndex] = useState(0);
+const photos = [
+  {
+    src: "/floating-image1.jpg",
+    alt: "Hospital facilities",
+    label: "World-Class Facilities",
+    sub: "Equipped with modern medical technology",
+  },
+  {
+    src: "/floating-image2.jpg",
+    alt: "Medical team",
+    label: "Expert Medical Team",
+    sub: "50+ specialist doctors across all departments",
+  },
+  {
+    src: "/floating-image3.jpg",
+    alt: "Patient care",
+    label: "Compassionate Care",
+    sub: "Personalized treatment tailored to every patient",
+  },
+];
 
+export function HeroSection() {
+  // which photo is on top (front of stack)
+  const [front, setFront] = useState(0);
+  // fullscreen view
+  const [fullscreen, setFullscreen] = useState<number | null>(null);
+  // pause auto-rotation when fullscreen is open
+  const paused = fullscreen !== null;
+
+  // auto-rotate every 3.5 s
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    if (paused) return;
+    const t = setInterval(() => {
+      setFront((p) => (p + 1) % photos.length);
+    }, 3500);
+    return () => clearInterval(t);
+  }, [paused]);
+
+  // stack layout: given the front index, compute
+  // position/rotation for each card by their distance from front
+  const getCardStyle = (i: number) => {
+    const dist =
+      (((i - front) % photos.length) + photos.length) % photos.length;
+    // dist 0 = front, 1 = middle, 2 = back
+    if (dist === 0)
+      return { x: 0, y: 0, rotate: 0, scale: 1, z: 10, opacity: 1 };
+    if (dist === 1)
+      return { x: -80, y: 20, rotate: -8, scale: 0.88, z: 6, opacity: 0.75 };
+    return { x: 80, y: 30, rotate: 8, scale: 0.82, z: 4, opacity: 0.55 };
+  };
 
   return (
-    <section className="relative overflow-hidden bg-background">
-      {/* ── MOBILE: image banner at top ── */}
-      <div className="relative h-56 w-full sm:h-72 lg:hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`mobile-${index}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroSlides[index].image})` }}
-          />
-        </AnimatePresence>
-        {/* Fades image into background below */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent" />
-
-        {/* Mobile dot indicators */}
-        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === index ? "h-1.5 w-5 bg-primary" : "h-1.5 w-1.5 bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* ── DESKTOP: right-side full-bleed image ── */}
-      <div className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`desktop-${index}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.4, ease: "easeInOut" }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroSlides[index].image})` }}
-          />
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-r from-background from-[15%] via-background/70 via-[40%] to-transparent to-[75%]" />
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-
-        {/* Desktop slide indicators */}
-        <div className="absolute bottom-8 right-8 flex flex-col items-end gap-2">
-          {heroSlides.map((slide, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className="group flex items-center gap-2"
-            >
-              <AnimatePresence>
-                {i === index && (
-                  <motion.span
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    className="text-xs font-medium text-white/80"
-                  >
-                    {slide.tag}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-              <span
-                className={`block rounded-full transition-all duration-500 ${
-                  i === index
-                    ? "h-8 w-1 bg-primary"
-                    : "h-1 w-1 bg-white/40 group-hover:bg-white/70"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Content (both mobile + desktop) ── */}
-      <div className="relative mx-auto flex max-w-7xl items-center px-6 lg:min-h-[92vh]">
+    <section
+      className="relative flex min-h-screen w-full flex-col overflow-hidden text-[#1a3c2a] lg:flex-row"
+      style={{
+        fontFamily: "'Poppins', sans-serif",
+        backgroundColor: "#f5fbf2",
+      }}
+    >
+      {/* ══════════════════════
+          LEFT — content
+      ══════════════════════ */}
+      <div className="relative order-last lg:order-none flex flex-1 flex-col justify-center overflow-hidden px-8 py-16 lg:px-20 lg:py-20 xl:px-28">
+        {/* dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.22]"
+          style={{
+            backgroundImage:
+              "radial-gradient(#5CA51B 1.5px, transparent 1.5px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="pointer-events-none absolute -left-[10%] -top-[10%] h-[500px] w-[500px] rounded-full bg-[#5CA51B] opacity-[0.07] blur-[120px]" />
+        <div className="pointer-events-none absolute bottom-[10%] left-[20%] h-[400px] w-[400px] rounded-full bg-[#5CA51B] opacity-[0.04] blur-[100px]" />
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="w-full max-w-xl pb-14 pt-2 lg:py-0"
+          animate={{ x: [-200, 200], opacity: [0, 0.08, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="pointer-events-none absolute right-0 top-[25%] text-[#5CA51B]"
         >
-          {/* Badge */}
+          <Activity size={280} strokeWidth={0.5} />
+        </motion.div>
+        <div className="pointer-events-none absolute bottom-[20%] left-[5%] rotate-12 text-[#5CA51B] opacity-[0.03]">
+          <ShieldCheck size={180} strokeWidth={0.5} />
+        </div>
+        <Plus
+          className="absolute left-12 top-12 animate-pulse text-[#5CA51B] opacity-30"
+          size={28}
+        />
+        <Plus
+          className="absolute bottom-12 left-[45%] text-[#5CA51B] opacity-15"
+          size={20}
+        />
+
+        <div className="relative z-20 max-w-xl">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#5CA51B]/20 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm"
           >
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Welcome to Metrodocs
-              </span>
-            </div>
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5CA51B] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5CA51B]" />
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#5CA51B]">
+              Welcome to Metrodocs
+            </span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mb-5 text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-6 text-5xl font-extrabold leading-[1.1] tracking-tight text-[#0a2e1a] lg:text-7xl"
           >
-            Compassionate
-            <br />
-            Care for{" "}
-            <span className="relative inline-block text-primary">
+            Compassionate <br /> Care for{" "}
+            <span className="relative inline-block italic text-[#5CA51B]">
               Every Life.
               <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute -bottom-1 left-0 h-0.5 w-full origin-left rounded-full bg-primary/40"
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="absolute bottom-2 left-0 -z-10 h-[8px] rounded-full bg-[#5CA51B]/12"
               />
             </span>
           </motion.h1>
 
-          {/* Subtext */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mb-8 text-base leading-relaxed text-muted-foreground md:text-lg"
+            transition={{ duration: 0.6, delay: 0.22 }}
+            className="mb-10 max-w-md text-[16px] font-medium leading-[1.7] text-slate-500"
           >
             Delivering modern healthcare with trusted medical professionals.
-            World-class treatment with personalized care tailored to your needs.
+            Experience world-class facilities tailored to your needs.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="mb-10 flex flex-wrap gap-3"
+            transition={{ duration: 0.6, delay: 0.32 }}
+            className="mb-14 flex flex-row gap-4"
           >
-            <Button size="lg" asChild className="gap-2 shadow-md">
-              <Link href="/doctors">
-                <Search className="h-4 w-4" />
-                Find a Doctor
+            <Button
+              asChild
+              size="lg"
+              className="h-[56px] rounded-xl border-none bg-[#5CA51B] px-8 font-bold text-white shadow-lg shadow-[#5CA51B]/20 transition-transform hover:scale-105 hover:bg-[#4d8b16]"
+            >
+              <Link href="/doctors" className="flex items-center gap-2">
+                <Search size={18} strokeWidth={3} /> Find a Doctor
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="gap-2">
-              <Link href="/contact">
-                <Calendar className="h-4 w-4" />
-                Book Appointment
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-[56px] rounded-xl border-slate-200 bg-white px-8 font-bold text-slate-600 transition-all hover:bg-[#f0f9f1]"
+            >
+              <Link href="/contact" className="flex items-center gap-2">
+                <Calendar size={18} /> Book Appointment
               </Link>
             </Button>
           </motion.div>
 
-          {/* Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="grid grid-cols-3 gap-4 border-t border-border pt-8"
+            transition={{ duration: 0.6, delay: 0.44 }}
+            className="flex flex-row items-center gap-8 border-t border-slate-100 pt-10 lg:gap-12"
           >
             {stats.map((stat, i) => (
               <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 12 }}
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                className="flex flex-col gap-1"
+                transition={{ delay: i * 0.1 + 0.5 }}
+                className="group flex flex-col gap-1"
               >
-                <div className="flex items-center gap-1.5">
-                  <stat.icon className="h-3.5 w-3.5 text-primary/70" />
-                  <p className="text-2xl font-bold text-primary">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-lg bg-[#5CA51B]/5 p-1.5 text-[#5CA51B] transition-colors duration-300 group-hover:bg-[#5CA51B] group-hover:text-white">
+                    <stat.icon size={16} />
+                  </div>
+                  <span className="text-2xl font-extrabold text-[#5CA51B]">
                     {stat.number}
-                  </p>
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
+                <span className="text-[10px] font-bold uppercase leading-none tracking-widest text-slate-400">
+                  {stat.label}
+                </span>
               </motion.div>
             ))}
           </motion.div>
-        </motion.div>
+        </div>
       </div>
+
+      {/* ══════════════════════
+          RIGHT — auto-carousel stack + click-to-fullscreen
+      ══════════════════════ */}
+      <div className="relative order-first lg:order-none flex h-[480px] w-full items-center justify-center overflow-hidden p-6 lg:h-auto lg:flex-[0.85]">
+        {/* dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.22]"
+          style={{
+            backgroundImage:
+              "radial-gradient(#5CA51B 1.5px, transparent 1.5px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="pointer-events-none absolute -right-[10%] -top-[10%] h-[420px] w-[420px] rounded-full bg-[#5CA51B] opacity-[0.07] blur-[120px]" />
+        <div className="pointer-events-none absolute bottom-[5%] right-[15%] h-[320px] w-[320px] rounded-full bg-[#5CA51B] opacity-[0.04] blur-[100px]" />
+
+        {/* dot indicators bottom */}
+        <div className="absolute bottom-5 left-0 right-0 z-30 flex items-center justify-center gap-2">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setFront(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === front ? "h-2 w-6 bg-[#5CA51B]" : "h-2 w-2 bg-[#5CA51B]/30"
+              }`}
+            />
+          ))}
+        </div>
+
+        <div className="pointer-events-none absolute bottom-12 left-0 right-0 z-20 text-center">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-[#5CA51B]/50">
+            Click photo to expand
+          </span>
+        </div>
+
+        {/* ── card stack ── */}
+        <div className="relative flex h-[300px] w-[300px] items-center justify-center lg:h-[75%] lg:w-[75%]">
+          {photos.map((photo, i) => {
+            const s = getCardStyle(i);
+            const isFront = i === front;
+            return (
+              <motion.div
+                key={i}
+                animate={{
+                  x: s.x,
+                  y: s.y,
+                  rotate: s.rotate,
+                  scale: s.scale,
+                  opacity: s.opacity,
+                  zIndex: s.z,
+                }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                onClick={() => isFront && setFullscreen(i)}
+                className={`absolute inset-0 overflow-hidden rounded-2xl shadow-xl ${
+                  isFront
+                    ? "cursor-pointer"
+                    : "cursor-default pointer-events-none"
+                }`}
+                style={{
+                  border: isFront
+                    ? "2px solid rgba(92,165,27,0.5)"
+                    : "2px solid rgba(255,255,255,0.25)",
+                  boxShadow: isFront
+                    ? "0 16px 48px rgba(92,165,27,0.22)"
+                    : "0 6px 24px rgba(0,0,0,0.10)",
+                }}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ══════════════════════
+          FULLSCREEN OVERLAY
+      ══════════════════════ */}
+      <AnimatePresence>
+        {fullscreen !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setFullscreen(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative max-h-[88vh] max-w-[88vw] overflow-hidden rounded-3xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={photos[fullscreen].src}
+                alt={photos[fullscreen].alt}
+                className="block max-h-[88vh] max-w-[88vw] object-contain"
+              />
+              {/* caption */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#5CA51B] shadow-[0_0_6px_#5CA51B]" />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-[#5CA51B]">
+                    Metrodocs
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-white">
+                  {photos[fullscreen].label}
+                </p>
+                <p className="text-sm text-white/70">
+                  {photos[fullscreen].sub}
+                </p>
+              </div>
+              {/* close button */}
+              <button
+                onClick={() => setFullscreen(null)}
+                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/80"
+              >
+                <X size={16} />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

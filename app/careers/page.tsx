@@ -84,7 +84,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
 
     console.log("Submitted:", { ...form, recaptchaToken });
     setSubmitted(true);
-    resetRecaptcha(); // 👈
+    resetRecaptcha();
   };
 
   const set = (name: string, value: string) => {
@@ -357,7 +357,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                   {/* reCAPTCHA + Submit */}
                   <div className="col-span-2 flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div ref={recaptchaRef} /> {/* 👈 */}
+                      <div ref={recaptchaRef} />
                       {errors.captcha && (
                         <p className="mt-1 text-xs text-red-500">
                           {errors.captcha}
@@ -562,7 +562,8 @@ export default function CareersPage() {
             <p className="text-pretty text-base text-muted-foreground md:text-lg">
               Join dedicated healthcare professionals committed to making a
               difference. Competitive benefits, growth opportunities, and a
-              supportive environment.
+              supportive environment.(Below are key career references. This list
+              uses mock data and can be updated with real jobs.)
             </p>
           </motion.div>
         </div>

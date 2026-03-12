@@ -231,19 +231,7 @@ export function Footer() {
               </p>
             </div>
             <div className="flex items-center gap-1">
-              <Link
-                href="/privacy"
-                className="transition-colors hover:text-primary"
-              >
-                Privacy Policy
-              </Link>
-              <span className="mx-2 opacity-30">·</span>
-              <Link
-                href="/terms"
-                className="transition-colors hover:text-primary"
-              >
-                Terms of Service
-              </Link>
+              Powered by AP Global IT Solutions
             </div>
           </div>
         </div>
