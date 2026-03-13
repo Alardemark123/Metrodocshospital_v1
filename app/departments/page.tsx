@@ -119,7 +119,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
             key={i}
             onClick={() => setCurrentIndex(i)}
             className={`h-1.5 transition-all duration-300 rounded-full ${
-              i === currentIndex ? "w-6 bg-[#1a5da1]" : "w-1.5 bg-slate-200"
+              i === currentIndex ? "w-6 bg-[#5CA51B]" : "w-1.5 bg-slate-200"
             }`}
           />
         ))}
