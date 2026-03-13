@@ -59,6 +59,7 @@ export default function SecondFloorPage() {
         { title: "NICU Beds", value: "12" },
         { title: "Prayer Rooms", value: "3" },
       ]}
+      breadcrumblabel="Second Floor"
     />
   );
 }

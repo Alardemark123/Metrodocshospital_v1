@@ -70,6 +70,7 @@ export default function FourthFloorPage() {
         { title: "Nurse Stations", value: "4" },
         { title: "Nurses on Duty", value: "20" },
       ]}
+      breadcrumblabel="Fourth Floor"
     />
   );
 }

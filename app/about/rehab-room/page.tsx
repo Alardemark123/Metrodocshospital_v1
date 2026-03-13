@@ -39,6 +39,7 @@ export default function RehabRoomPage() {
         { title: "Recovery Rate", value: "95%" },
         { title: "Equipment Types", value: "30+" },
       ]}
+      breadcrumblabel="Rehab Room"
     />
   );
 }

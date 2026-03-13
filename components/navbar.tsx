@@ -92,6 +92,7 @@ export function Navbar() {
                     item.dropdown && setActiveDropdown(item.name)
                   }
                   onMouseLeave={() => setActiveDropdown(null)}
+                  onClick={() => setActiveDropdown(null)}
                 >
                   <Link
                     href={item.href}
@@ -137,6 +138,7 @@ export function Navbar() {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
+                                onClick={() => setActiveDropdown(null)}
                                 className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
                                   subActive
                                     ? "bg-primary/10 font-semibold text-primary"
@@ -222,7 +224,10 @@ export function Navbar() {
                       <div className="flex items-center justify-between">
                         <Link
                           href={item.href}
-                          onClick={() => !item.dropdown && setIsOpen(false)}
+                          onClick={() => {
+                            setIsOpen(false);
+                            setMobileDropdown(null);
+                          }}
                           className={`flex-1 py-3 text-sm font-medium transition-colors ${
                             active ? "text-primary" : "text-foreground"
                           }`}

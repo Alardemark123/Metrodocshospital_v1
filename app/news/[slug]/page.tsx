@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getNewsBySlug, getNews } from "@/lib/mock-api";
+import { Breadcrumb } from "@/components/breadcrumb";
 
 export default function NewsDetailPage({
   params,
@@ -72,14 +73,26 @@ export default function NewsDetailPage({
     <>
       <div className="bg-background">
         <div className="mx-auto max-w-3xl px-4 py-10">
-          {/* Back link */}
-          <Link
-            href="/news"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="mb-8"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Articles
-          </Link>
+            <Breadcrumb
+              items={[
+                { label: "Home", href: "/" },
+                { label: "News & Events", href: "/news" },
+                {
+                  label: (
+                    <span className="block truncate max-w-[180px] xs:max-w-[180px] sm:max-w-none">
+                      {article.title || "News & Events"}
+                    </span>
+                  ),
+                },
+              ]}
+            />
+          </motion.div>
 
           {/* Meta row */}
           <motion.div
@@ -110,27 +123,24 @@ export default function NewsDetailPage({
           >
             {article.title}
           </motion.h1>
-
-          {/* Author row */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-8 flex items-center justify-between rounded-xl border border-border bg-secondary/50 px-4 py-3"
+            className="mb-8 flex w-fit items-center gap-4"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
-                <User className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-3.5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#5CA51B]/10">
+                <User className="h-5.5 w-5.5 text-[#5CA51B]" strokeWidth={2} />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">
+
+              <div className="flex flex-col">
+                <p className="text-[16px]  leading-tight text-[#0a2e1a]">
                   {article.author}
                 </p>
               </div>
             </div>
-            {/* Share icons */}
           </motion.div>
-
           {/* Featured image */}
           {article.image && (
             <motion.div
@@ -232,14 +242,14 @@ export default function NewsDetailPage({
               Share this article:
             </span>
             <div className="flex gap-2">
-              {[Facebook, Twitter, Linkedin].map((Icon, i) => (
-                <button
-                  key={i}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-                >
-                  <Icon className="h-4 w-4" />
-                </button>
-              ))}
+              <Link
+                href="https://www.facebook.com/metrorizaldoctors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-foreground transition-all hover:bg-[#5CA51B] hover:text-white hover:shadow-lg hover:shadow-[#5CA51B]/20"
+              >
+                <Facebook className="h-4.5 w-4.5" />
+              </Link>
             </div>
           </div>
         </div>

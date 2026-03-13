@@ -56,6 +56,7 @@ export default function ThirdFloorPage() {
         { title: "Average Wait Time", value: "15min" },
         { title: "Patient Satisfaction", value: "96%" },
       ]}
+      breadcrumblabel="Third Floor"
     />
   );
 }

@@ -15,6 +15,7 @@ import {
   Languages,
   Stethoscope,
   BadgeCheck,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDoctorBySlug, getDoctors, slugify } from "@/lib/mock-api";
@@ -63,21 +64,29 @@ export default function DoctorDetailPage({
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-accent/30 blur-2xl" />
 
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-6">
-          {/* Back link */}
-          <motion.div
+          {/* Breadcrumb */}
+          <motion.nav
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-8"
+            className="mb-8 flex items-center gap-1.5 text-sm"
           >
             <Link
-              href="/doctors"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              href="/"
+              className="font-medium text-muted-foreground transition-colors hover:text-primary"
             >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Doctors
+              Home
             </Link>
-          </motion.div>
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+            <Link
+              href="/doctors"
+              className="font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Doctors
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+            <span className="font-medium text-foreground">{doctor.name}</span>
+          </motion.nav>
 
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_340px]">
             {/* Left — info */}

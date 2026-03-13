@@ -40,6 +40,7 @@ export default function EmergencyRoomPage() {
         { title: "ER Specialists", value: "15" },
         { title: "Lives Saved Yearly", value: "500+" },
       ]}
+      breadcrumblabel="Emergency Room"
     />
   );
 }

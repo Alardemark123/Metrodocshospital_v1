@@ -60,17 +60,14 @@ export function HeroSection() {
     return () => clearInterval(t);
   }, [paused]);
 
-  // stack layout: given the front index, compute
-  // position/rotation for each card by their distance from front
   const getCardStyle = (i: number) => {
     const dist =
       (((i - front) % photos.length) + photos.length) % photos.length;
-    // dist 0 = front, 1 = middle, 2 = back
     if (dist === 0)
       return { x: 0, y: 0, rotate: 0, scale: 1, z: 10, opacity: 1 };
     if (dist === 1)
-      return { x: -80, y: 20, rotate: -8, scale: 0.88, z: 6, opacity: 0.75 };
-    return { x: 80, y: 30, rotate: 8, scale: 0.82, z: 4, opacity: 0.55 };
+      return { x: -50, y: 12, rotate: -7, scale: 0.88, z: 6, opacity: 0.75 };
+    return { x: 50, y: 20, rotate: 7, scale: 0.82, z: 4, opacity: 0.55 };
   };
 
   return (
@@ -81,10 +78,8 @@ export function HeroSection() {
         backgroundColor: "#f5fbf2",
       }}
     >
-      {/* ══════════════════════
-          LEFT — content
-      ══════════════════════ */}
-      <div className="relative order-last lg:order-none flex flex-1 flex-col justify-center overflow-hidden px-8 py-16 lg:px-20 lg:py-20 xl:px-28">
+      {/*LEFT — content */}
+      <div className="relative order-last lg:order-none flex flex-1 flex-col justify-center overflow-hidden px-6 py-16 pr-6 lg:px-20 lg:py-20 xl:px-28">
         {/* dot grid */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.22]"
@@ -115,7 +110,7 @@ export function HeroSection() {
           size={20}
         />
 
-        <div className="relative z-20 max-w-xl">
+        <div className="relative z-20 w-full max-w-xl">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -134,7 +129,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-6 text-5xl font-extrabold leading-[1.1] tracking-tight text-[#0a2e1a] lg:text-7xl"
+            className="mb-6 text-4xl font-extrabold leading-[1.1] tracking-tight text-[#0a2e1a] sm:text-5xl lg:text-7xl"
           >
             Compassionate <br /> Care for{" "}
             <span className="relative inline-block italic text-[#5CA51B]">
@@ -162,7 +157,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.32 }}
-            className="mb-14 flex flex-row gap-4"
+            className="mb-14 flex flex-col gap-3 sm:flex-row sm:gap-4"
           >
             <Button
               asChild
@@ -216,10 +211,9 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* ══════════════════════
-          RIGHT — auto-carousel stack + click-to-fullscreen
-      ══════════════════════ */}
-      <div className="relative order-first lg:order-none flex h-[480px] w-full items-center justify-center overflow-hidden p-6 lg:h-auto lg:flex-[0.85]">
+      {/* RIGHT — auto-carousel stack + click-to-fullscreen */}
+      <div className="relative order-first lg:order-none flex h-[55vw] min-h-[280px] max-h-[420px] w-full items-center justify-center overflow-hidden p-6 lg:h-auto lg:max-h-none lg:flex-[0.85]">
+        {" "}
         {/* dot grid */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.22]"
@@ -231,28 +225,41 @@ export function HeroSection() {
         />
         <div className="pointer-events-none absolute -right-[10%] -top-[10%] h-[420px] w-[420px] rounded-full bg-[#5CA51B] opacity-[0.07] blur-[120px]" />
         <div className="pointer-events-none absolute bottom-[5%] right-[15%] h-[320px] w-[320px] rounded-full bg-[#5CA51B] opacity-[0.04] blur-[100px]" />
-
-        {/* dot indicators bottom */}
-        <div className="absolute bottom-5 left-0 right-0 z-30 flex items-center justify-center gap-2">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setFront(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === front ? "h-2 w-6 bg-[#5CA51B]" : "h-2 w-2 bg-[#5CA51B]/30"
-              }`}
-            />
-          ))}
+        {/* ── Indicators & Instruction Container ── */}
+        <div className="absolute bottom-1 left-0 right-0 z-30 flex flex-col items-center gap-2 lg:bottom-8 lg:gap-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="pointer-events-none px-6 text-center"
+          >
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5CA51B] drop-shadow-sm">
+              <span className="lg:hidden">Tap</span>
+              <span className="hidden lg:inline">Click</span>
+              {" photo to expand"}
+            </span>
+          </motion.div>
+          <div className="flex items-center justify-center gap-2">
+            {photos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setFront(i)}
+                className="group relative py-1"
+                aria-label={`Go to slide ${i + 1}`}
+              >
+                <div
+                  className={`transition-all duration-500 ease-out ${
+                    i === front
+                      ? "h-2 w-8 rounded-full bg-[#5CA51B]"
+                      : "h-2 w-2 rounded-full bg-[#5CA51B]/30"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
         </div>
-
-        <div className="pointer-events-none absolute bottom-12 left-0 right-0 z-20 text-center">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-[#5CA51B]/50">
-            Click photo to expand
-          </span>
-        </div>
-
         {/* ── card stack ── */}
-        <div className="relative flex h-[300px] w-[300px] items-center justify-center lg:h-[75%] lg:w-[75%]">
+        <div className="relative flex h-[80%] w-[80%] items-center justify-center lg:h-[75%] lg:w-[75%]">
+          {" "}
           {photos.map((photo, i) => {
             const s = getCardStyle(i);
             const isFront = i === front;

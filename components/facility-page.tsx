@@ -16,6 +16,7 @@ import {
 import { ICON_MAP } from "@/lib/mock-api";
 import { Button } from "@/components/ui/button";
 import type { FacilityPageProps } from "@/lib/mock-api/types";
+import { Breadcrumb } from "./breadcrumb";
 
 function FadeIn({
   children,
@@ -127,6 +128,7 @@ export function FacilityPage({
   highlights,
   images = [],
   sections = [],
+  breadcrumblabel,
 }: FacilityPageProps) {
   const Icon = ICON_MAP[iconName];
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -206,19 +208,20 @@ export function FacilityPage({
         <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-4">
-          {/* Back link */}
+          {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
+            className="mb-8"
           >
-            <Link
-              href="/about#facilities"
-              className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-            >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Facilities
-            </Link>
+            <Breadcrumb
+              items={[
+                { label: "Home", href: "/" },
+                { label: "About", href: "/about" },
+                { label: breadcrumblabel || "Facility" },
+              ]}
+            />
           </motion.div>
 
           {/* Mobile: gallery first, then text. Desktop: side by side */}

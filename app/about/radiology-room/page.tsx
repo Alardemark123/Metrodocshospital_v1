@@ -37,6 +37,7 @@ export default function RadiologyRoomPage() {
         { title: "Report Turnaround", value: "24h" },
         { title: "Accuracy Rate", value: "99%" },
       ]}
+      breadcrumblabel="Radiology Room"
     />
   );
 }

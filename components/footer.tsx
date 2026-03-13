@@ -37,10 +37,11 @@ const departments = [
 ];
 
 const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
-  { name: "Instagram", icon: Instagram, href: "#" },
-  { name: "LinkedIn", icon: Linkedin, href: "#" },
+  {
+    name: "Facebook",
+    icon: Facebook,
+    href: "https://www.facebook.com/metrorizaldoctors",
+  },
 ];
 const contact = getContactInfo();
 const phones = getExtraPhones();

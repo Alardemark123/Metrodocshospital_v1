@@ -1,6 +1,7 @@
 export { slugify, getDoctorBySlug } from "./doctors";
 
 export interface Doctor {
+  slug: any;
   id: number;
   name: string;
   specialty: string;
@@ -29,6 +30,7 @@ export interface NewsArticle {
   image?: string;
   subImages?: string[];
   featured?: boolean;
+  breadcrumblabel?: string;
 }
 
 export interface Department {
@@ -128,6 +130,7 @@ export interface FacilityPageProps {
   highlights: Highlight[];
   images?: string[];
   sections?: Section[];
+  breadcrumblabel?: string;
 }
 
 export interface ContactInfo {
