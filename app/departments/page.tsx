@@ -84,7 +84,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
                 {/* Content Section */}
                 <div className="flex flex-1 flex-col p-7">
                   {/* Meta (Style from reference) */}
-                  <div className="mb-4 flex items-center gap-2 text-[12px] font-bold text-[#1a5da1]">
+                  <div className="mb-4 flex items-center gap-2 text-[12px] font-bold text-[#5CA51B]">
                     <span>MetroDocs Hospital</span>
                   </div>
 
