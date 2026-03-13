@@ -39,7 +39,7 @@ export function HospitalIntro() {
             initial={{ opacity: 0, x: -24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
-            className="relative"
+            className="relative order-last lg:order-first"
           >
             <div className="absolute -left-3 -top-3 h-24 w-24 rounded-2xl bg-primary/10 -z-10" />
             <div className="absolute -bottom-3 -right-3 h-16 w-16 rounded-xl bg-accent -z-10" />
@@ -70,6 +70,7 @@ export function HospitalIntro() {
             initial={{ opacity: 0, x: 24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
+            className="order-first lg:order-last"
           >
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />

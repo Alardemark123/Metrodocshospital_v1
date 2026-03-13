@@ -62,9 +62,6 @@ export function Navbar() {
               <span className="text-xs">24/7 Emergency Services</span>
             </div>
           </div>
-          <p className="hidden text-xs text-primary-foreground/80 sm:block">
-            Quality health services. Affordable for all.
-          </p>
         </div>
       </div>
 
@@ -163,12 +160,6 @@ export function Navbar() {
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <div className="hidden lg:block">
-              <Button size="sm" asChild>
-                <Link href="/contact">Book Appointment</Link>
-              </Button>
-            </div>
-
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-foreground transition-colors hover:bg-accent lg:hidden"
@@ -288,12 +279,6 @@ export function Navbar() {
                     </div>
                   );
                 })}
-
-                <Button asChild className="mt-4 w-full">
-                  <Link href="/contact" onClick={() => setIsOpen(false)}>
-                    Book Appointment
-                  </Link>
-                </Button>
               </div>
             </motion.div>
           )}

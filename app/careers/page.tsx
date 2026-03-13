@@ -1,9 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import {
   Search,
   Briefcase,
@@ -11,536 +9,437 @@ import {
   Clock,
   X,
   Upload,
-  FileText,
   CheckCircle,
   ChevronRight,
+  ShieldCheck,
+  Award,
+  Calendar,
+  SlidersHorizontal,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  getJobs,
-  getJobDepartmentFilters,
-  getBenefits,
-  ICON_MAP,
-} from "@/lib/mock-api";
+import { getJobs, getJobDepartmentFilters } from "@/lib/mock-api";
 import type { Job } from "@/lib/mock-api";
-import { useRecaptcha } from "@/hooks/use-recaptcha"; // 👈
+import { useRecaptcha } from "@/hooks/use-recaptcha";
 
-// ---------- Apply Modal ----------
+const DESKTOP_PAGE_SIZE = 6;
+const MOBILE_PAGE_SIZE = 3;
+
+// ─── 1. APPLY MODAL ───
 function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    coverLetter: "",
-    resume: null as File | null,
-  });
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // 👇 One line instead of all the recaptcha state/refs/useEffect
-  const {
-    token: recaptchaToken,
-    ref: recaptchaRef,
-    reset: resetRecaptcha,
-  } = useRecaptcha();
-
-  // Lock body scroll
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  // Close on Escape
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
-
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!form.firstName.trim()) e.firstName = "Required";
-    if (!form.lastName.trim()) e.lastName = "Required";
-    if (!form.email.trim()) e.email = "Required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = "Invalid email";
-    if (!form.phone.trim()) e.phone = "Required";
-    if (!form.resume) e.resume = "Please attach your resume";
-    if (!recaptchaToken) e.captcha = "Please verify you are not a robot";
-    return e;
-  };
-
-  const handleSubmit = () => {
-    const e = validate();
-    if (Object.keys(e).length > 0) {
-      setErrors(e);
-      return;
-    }
-
-    console.log("Submitted:", { ...form, recaptchaToken });
-    setSubmitted(true);
-    resetRecaptcha();
-  };
-
-  const set = (name: string, value: string) => {
-    setForm((f) => ({ ...f, [name]: value }));
-    setErrors((er) => ({ ...er, [name]: "" }));
-  };
+  const { token, ref: recaptchaRef } = useRecaptcha();
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:p-4 bg-black/40 backdrop-blur-sm"
     >
+      <div className="absolute inset-0" onClick={onClose} />
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 16 }}
-        transition={{ type: "spring", damping: 28, stiffness: 300 }}
-        className="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-card shadow-2xl"
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+        className="relative z-10 w-full sm:max-w-4xl bg-white sm:rounded-[2rem] rounded-t-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[95vh] sm:max-h-[90vh]"
       >
-        {submitted ? (
-          <div className="flex flex-col items-center justify-center px-10 py-16 text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", damping: 14 }}
-              className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10"
-            >
-              <CheckCircle className="h-10 w-10 text-primary" />
-            </motion.div>
-            <h3 className="mb-2 text-2xl font-bold text-card-foreground">
-              Application Submitted!
-            </h3>
-            <p className="mb-2 text-muted-foreground">
-              Thank you for applying for{" "}
-              <span className="font-semibold text-foreground">
-                {job.position}
-              </span>
-              .
+        <div className="hidden md:flex w-[300px] bg-[#68A32B] p-10 text-white flex-col justify-between shrink-0">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-widest opacity-80 mb-2">
+              Applying For
             </p>
-            <p className="mb-8 text-sm text-muted-foreground">
-              We'll review your application and get back to you shortly.
-            </p>
-            <Button onClick={onClose} size="lg">
-              Close
-            </Button>
-          </div>
-        ) : (
-          <div className="flex h-full">
-            {/* Left col — job info sidebar */}
-            <div className="hidden w-64 shrink-0 flex-col justify-between bg-primary p-6 md:flex">
-              <div>
-                <div className="mb-6">
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground/60">
-                    Applying for
-                  </p>
-                  <h2 className="text-lg font-bold leading-snug text-primary-foreground">
-                    {job.position}
-                  </h2>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
-                    <Briefcase className="h-4 w-4 shrink-0" />
-                    {job.department}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
-                    <MapPin className="h-4 w-4 shrink-0" />
-                    {job.location}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
-                    <Clock className="h-4 w-4 shrink-0" />
-                    {job.type}
-                  </div>
-                </div>
-                <div className="mt-8">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground/60">
-                    What to prepare
-                  </p>
-                  <ul className="space-y-1.5">
-                    {[
-                      "Updated resume/CV",
-                      "Valid contact info",
-                      "Cover letter (optional)",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-center gap-2 text-xs text-primary-foreground/80"
-                      >
-                        <ChevronRight className="h-3 w-3 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <h2 className="text-3xl font-black leading-tight mb-10">
+              {job.position}
+            </h2>
+            <div className="space-y-5 mb-12 text-sm font-medium">
+              <div className="flex items-center gap-4">
+                <Briefcase size={18} /> {job.department}
               </div>
-              <p className="text-xs text-primary-foreground/50">
-                Your data is handled securely and will not be shared.
+              <div className="flex items-center gap-4">
+                <MapPin size={18} /> {job.location}
+              </div>
+              <div className="flex items-center gap-4">
+                <Clock size={18} /> {job.type}
+              </div>
+            </div>
+            <p className="text-[11px] font-bold uppercase tracking-widest opacity-80 mb-4">
+              What to prepare
+            </p>
+            <ul className="space-y-2 text-[13px] font-medium">
+              <li className="flex items-center gap-3">
+                <ChevronRight size={14} /> Updated resume/CV
+              </li>
+              <li className="flex items-center gap-3">
+                <ChevronRight size={14} /> Valid contact info
+              </li>
+              <li className="flex items-center gap-3">
+                <ChevronRight size={14} /> Cover letter (optional)
+              </li>
+            </ul>
+          </div>
+          <p className="text-[11px] text-white/70 font-medium">
+            Your data is handled securely and will not be shared.
+          </p>
+        </div>
+
+        <div className="md:hidden bg-[#68A32B] px-6 py-5 text-white flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">
+              Applying for
+            </p>
+            <h2 className="text-lg font-black leading-tight">{job.position}</h2>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-full bg-white/15">
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="flex-1 bg-white p-6 md:p-12 overflow-y-auto">
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 hidden md:block"
+          >
+            <X size={22} />
+          </button>
+          {submitted ? (
+            <div className="h-full flex flex-col items-center justify-center text-center py-16">
+              <CheckCircle size={72} className="text-[#68A32B] mb-6" />
+              <h3 className="text-2xl font-bold text-gray-900">
+                Application Submitted!
+              </h3>
+              <p className="text-gray-500 mt-2 mb-8 text-sm">
+                We'll be in touch soon.
               </p>
+              <Button
+                onClick={onClose}
+                className="bg-[#68A32B] rounded-xl px-12 h-12"
+              >
+                Close
+              </Button>
             </div>
-
-            {/* Right col — form */}
-            <div className="flex flex-1 flex-col">
-              <div className="flex items-center justify-between border-b border-border px-6 py-4">
-                <div>
-                  <h3 className="font-bold text-card-foreground">
-                    Your Application
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Fill in the details below to apply
-                  </p>
-                </div>
-                <button
-                  onClick={onClose}
-                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+          ) : (
+            <>
+              <div className="mb-6 hidden md:block">
+                <h3 className="text-2xl font-bold">Your Application</h3>
+                <p className="text-gray-500 text-sm">
+                  Fill in the details below to apply
+                </p>
+              </div>
+              <div className="mt-2 md:mt-0 mb-6">
+                <h3 className="text-lg font-bold md:hidden">
+                  Your Application
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <input
+                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
+                  placeholder="First Name"
+                />
+                <input
+                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
+                  placeholder="Last Name"
+                />
+                <input
+                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full sm:col-span-2"
+                  placeholder="Email Address"
+                />
+                <input
+                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full sm:col-span-2"
+                  placeholder="Phone Number"
+                />
+              </div>
+              <div className="mb-4 border-2 border-dashed border-gray-200 rounded-2xl p-5 flex flex-col items-center bg-gray-50 cursor-pointer">
+                <Upload size={22} className="text-[#68A32B] mb-2" />
+                <p className="text-sm font-bold">Click to upload resume</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">
+                  PDF, DOC, DOCX — MAX 5MB
+                </p>
+              </div>
+              <textarea
+                className="w-full border border-gray-200 bg-gray-50 p-4 rounded-xl text-sm h-24 resize-none mb-6 outline-none"
+                placeholder="Cover Letter (optional)"
+              />
+              <div className="flex items-center justify-between gap-4">
+                <div ref={recaptchaRef} className="scale-90 origin-left" />
+                <Button
+                  onClick={() => setSubmitted(true)}
+                  className="bg-[#68A32B] h-12 px-8 rounded-xl text-sm font-bold shadow-lg shadow-[#68A32B]/20 shrink-0"
                 >
-                  <X className="h-5 w-5" />
-                </button>
+                  <Briefcase size={16} className="mr-2" /> Submit Application
+                </Button>
               </div>
-
-              <div className="p-6">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                  <div>
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      First Name <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Juan"
-                      value={form.firstName}
-                      onChange={(e) => set("firstName", e.target.value)}
-                      className={`w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.firstName ? "border-red-400" : "border-input focus:border-primary"}`}
-                    />
-                    {errors.firstName && (
-                      <p className="mt-0.5 text-xs text-red-500">
-                        {errors.firstName}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      Last Name <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="dela Cruz"
-                      value={form.lastName}
-                      onChange={(e) => set("lastName", e.target.value)}
-                      className={`w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.lastName ? "border-red-400" : "border-input focus:border-primary"}`}
-                    />
-                    {errors.lastName && (
-                      <p className="mt-0.5 text-xs text-red-500">
-                        {errors.lastName}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      Email <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="juan@email.com"
-                      value={form.email}
-                      onChange={(e) => set("email", e.target.value)}
-                      className={`w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.email ? "border-red-400" : "border-input focus:border-primary"}`}
-                    />
-                    {errors.email && (
-                      <p className="mt-0.5 text-xs text-red-500">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      Phone <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="+63 912 345 6789"
-                      value={form.phone}
-                      onChange={(e) => set("phone", e.target.value)}
-                      className={`w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary ${errors.phone ? "border-red-400" : "border-input focus:border-primary"}`}
-                    />
-                    {errors.phone && (
-                      <p className="mt-0.5 text-xs text-red-500">
-                        {errors.phone}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      Resume / CV <span className="text-primary">*</span>
-                    </label>
-                    <label
-                      className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed px-4 py-3 transition-colors hover:bg-accent/20 ${errors.resume ? "border-red-400" : form.resume ? "border-primary bg-primary/5" : "border-border"}`}
-                    >
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0] ?? null;
-                          setForm((f) => ({ ...f, resume: file }));
-                          setErrors((er) => ({ ...er, resume: "" }));
-                        }}
-                      />
-                      {form.resume ? (
-                        <>
-                          <FileText className="h-5 w-5 shrink-0 text-primary" />
-                          <div className="min-w-0">
-                            <p className="truncate text-xs font-semibold text-primary">
-                              {form.resume.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Click to change file
-                            </p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="h-5 w-5 shrink-0 text-muted-foreground" />
-                          <div>
-                            <p className="text-xs font-semibold text-foreground">
-                              Click to upload resume
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              PDF, DOC, DOCX — max 5MB
-                            </p>
-                          </div>
-                        </>
-                      )}
-                    </label>
-                    {errors.resume && (
-                      <p className="mt-0.5 text-xs text-red-500">
-                        {errors.resume}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-span-2">
-                    <label className="mb-1 block text-xs font-semibold text-foreground">
-                      Cover Letter{" "}
-                      <span className="text-xs font-normal text-muted-foreground">
-                        (optional)
-                      </span>
-                    </label>
-                    <textarea
-                      rows={2}
-                      placeholder="Tell us why you're a great fit..."
-                      value={form.coverLetter}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, coverLetter: e.target.value }))
-                      }
-                      className="w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
-
-                  {/* reCAPTCHA + Submit */}
-                  <div className="col-span-2 flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div ref={recaptchaRef} />
-                      {errors.captcha && (
-                        <p className="mt-1 text-xs text-red-500">
-                          {errors.captcha}
-                        </p>
-                      )}
-                    </div>
-                    <Button
-                      className="h-full min-h-[52px] gap-2 px-6"
-                      onClick={handleSubmit}
-                    >
-                      <Briefcase className="h-4 w-4" />
-                      Submit
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </motion.div>
     </motion.div>
   );
 }
 
-// ---------- Job List Item ----------
-function JobListItem({
+// ─── 2. JOB DETAILS MODAL ───
+function JobDetailsModal({
   job,
-  isSelected,
-  onClick,
+  onApply,
+  onClose,
 }: {
   job: Job;
-  isSelected: boolean;
-  onClick: () => void;
+  onApply: () => void;
+  onClose: () => void;
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-30px" });
   return (
-    <motion.button
-      ref={ref}
-      initial={{ opacity: 0, x: -16 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.35 }}
-      onClick={onClick}
-      className={`w-full rounded-xl border p-4 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card hover:border-primary/40 hover:bg-accent/30"}`}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center sm:p-4 bg-black/60 backdrop-blur-md"
     >
-      <div className="mb-1.5 flex flex-wrap gap-1.5">
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isSelected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}
-        >
-          {job.type}
-        </span>
-      </div>
-      <h3
-        className={`mb-1 text-sm font-bold ${isSelected ? "text-primary" : "text-card-foreground"}`}
+      <div className="absolute inset-0" onClick={onClose} />
+      <motion.div
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+        className="relative z-10 w-full sm:max-w-5xl sm:max-h-[90vh] max-h-[95vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden flex flex-col"
       >
-        {job.position}
-      </h3>
-      <p className="text-xs text-muted-foreground">{job.department}</p>
-      <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-        <MapPin className="h-3 w-3" />
-        {job.location}
-      </div>
-    </motion.button>
+        <div className="bg-[#68A32B] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white shrink-0">
+              <ShieldCheck size={11} /> {job.department}
+            </div>
+            <h2 className="text-base sm:text-xl font-black text-white tracking-tight truncate">
+              {job.position}
+            </h2>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              onClick={onApply}
+              className="bg-white text-[#68A32B] hover:bg-gray-100 font-bold px-4 sm:px-6 py-2 rounded-xl shadow-md text-xs sm:text-sm"
+            >
+              Apply
+            </Button>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full bg-white/15 hover:bg-white/25 text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row flex-1 overflow-hidden">
+          <div className="sm:w-2/5 border-b sm:border-b-0 sm:border-r border-gray-100 overflow-y-auto p-5 sm:p-8 flex flex-col gap-4 sm:gap-6">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">
+                Role Overview
+              </p>
+              <p className="text-sm sm:text-lg leading-relaxed text-gray-500 font-medium">
+                {job.description}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { icon: MapPin, label: job.location },
+                { icon: Clock, label: job.type },
+                { icon: Briefcase, label: "2+ Years" },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-500"
+                >
+                  <item.icon size={11} className="text-[#68A32B]" />{" "}
+                  {item.label}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+            <div className="p-5 sm:p-8">
+              <h4 className="font-bold mb-4 flex items-center gap-2 text-[#68A32B] text-xs sm:text-sm uppercase tracking-wide">
+                <CheckCircle size={14} /> Requirements
+              </h4>
+              <ul className="grid grid-cols-1 gap-2.5 sm:gap-3">
+                {job.requirements.map((r, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 text-xs sm:text-sm text-gray-500 font-medium"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#68A32B]/50" />
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="p-5 sm:p-8">
+              <h4 className="font-bold mb-4 flex items-center gap-2 text-gray-800 text-xs sm:text-sm uppercase tracking-wide">
+                <Award size={14} /> Benefits
+              </h4>
+              <ul className="grid grid-cols-1 gap-2.5 sm:gap-3">
+                {job.benefits.map((b, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 text-xs sm:text-sm text-gray-500 font-medium"
+                  >
+                    <CheckCircle
+                      size={13}
+                      className="text-[#68A32B]/60 shrink-0 mt-0.5"
+                    />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
-// ---------- Job Detail Panel ----------
-function JobDetail({ job, onApply }: { job: Job; onApply: () => void }) {
+// ─── 3. JOB CARD ───
+function JobCard({
+  job,
+  onOpen,
+  onApply,
+}: {
+  job: Job;
+  onOpen: () => void;
+  onApply: () => void;
+}) {
   return (
     <motion.div
-      key={job.id}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      className="overflow-hidden rounded-2xl border border-border bg-card"
+      whileHover={{ y: -3 }}
+      className="group flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm transition-all hover:shadow-xl hover:border-[#68A32B]/30"
     >
-      <div className="border-b border-border bg-secondary/30 px-6 py-5">
-        <div className="mb-2 flex flex-wrap gap-2">
-          <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+      <div>
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-[#1a3c2a] group-hover:text-[#68A32B] transition-colors leading-tight">
+            {job.position}
+          </h3>
+          <span className="shrink-0 rounded-full bg-[#68A32B]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#68A32B]">
             {job.type}
           </span>
-          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-foreground">
-            {job.department}
-          </span>
         </div>
-        <h2 className="mb-1 text-2xl font-bold text-card-foreground">
-          {job.position}
-        </h2>
-        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <MapPin className="h-3.5 w-3.5 text-primary/70" />
-            {job.location}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-3.5 w-3.5 text-primary/70" />
-            {job.type}
-          </span>
-          <span className="flex items-center gap-1">
-            <Briefcase className="h-3.5 w-3.5 text-primary/70" />
-            {job.department}
-          </span>
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 mb-3 font-medium">
+          <MapPin size={14} className="text-[#68A32B]/60" /> {job.location}
         </div>
-      </div>
-      <div
-        className="overflow-y-auto px-6 py-5"
-        style={{ maxHeight: "calc(100vh - 340px)" }}
-      >
-        <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
+        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4 font-medium">
           {job.description}
         </p>
-        <div className="mb-6 grid gap-5 sm:grid-cols-2">
-          <div>
-            <h4 className="mb-3 flex items-center gap-2 text-sm font-bold text-card-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Requirements
-            </h4>
-            <ul className="space-y-2">
-              {job.requirements.map((req, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2 text-sm text-muted-foreground"
-                >
-                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                  {req}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="mb-3 flex items-center gap-2 text-sm font-bold text-card-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Benefits
-            </h4>
-            <ul className="space-y-2">
-              {job.benefits.map((benefit, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2 text-sm text-muted-foreground"
-                >
-                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </div>
+      </div>
+      <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50 gap-2">
+        <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
+          <Calendar size={12} className="text-[#68A32B]/40" /> Dec 21, 2025
         </div>
-        <Button className="gap-2" onClick={onApply}>
-          <Briefcase className="h-4 w-4" />
-          Apply for This Position
-        </Button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onOpen}
+            className="rounded-xl border border-gray-200 px-3 sm:px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            Details
+          </button>
+          <button
+            onClick={onApply}
+            className="rounded-xl bg-[#68A32B] px-3 sm:px-4 py-2 text-xs font-bold text-white hover:bg-[#598d24] transition-colors shadow-lg shadow-[#68A32B]/20"
+          >
+            Apply Now
+          </button>
+        </div>
       </div>
     </motion.div>
   );
 }
 
-// ---------- Main Page ----------
+// ─── PAGINATION CONTROLS ───
+function PaginationControls({
+  currentPage,
+  totalPages,
+  onPrev,
+  onNext,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <button
+        onClick={onPrev}
+        disabled={currentPage === 1}
+        className="flex items-center gap-1.5 rounded-xl border border-gray-100 px-4 py-2.5 text-xs font-bold text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+      >
+        <ChevronLeft size={14} /> Prev
+      </button>
+      <span className="text-xs font-black text-gray-700">
+        {currentPage} / {totalPages || 1}
+      </span>
+      <button
+        onClick={onNext}
+        disabled={currentPage >= totalPages}
+        className="flex items-center gap-1.5 rounded-xl border border-gray-100 px-4 py-2.5 text-xs font-bold text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+      >
+        Next <ChevronRight size={14} />
+      </button>
+    </div>
+  );
+}
+
+// ─── 4. MAIN CAREERS PAGE ───
 export default function CareersPage() {
   const jobs = getJobs();
-  const departments = getJobDepartmentFilters();
-  const [selectedDepartment, setSelectedDepartment] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedJob, setSelectedJob] = useState<Job | null>(jobs[0] ?? null);
+  const departments = Array.from(
+    new Set(["All", ...getJobDepartmentFilters()]),
+  );
+
+  const [selectedDept, setSelectedDept] = useState("All");
+  const [query, setQuery] = useState("");
+  const [viewingJob, setViewingJob] = useState<Job | null>(null);
   const [applyJob, setApplyJob] = useState<Job | null>(null);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const isFiltered = selectedDepartment !== "All" || searchQuery !== "";
-  const filteredJobs = jobs.filter((job) => {
-    const matchesDepartment =
-      selectedDepartment === "All" || job.department === selectedDepartment;
-    const matchesSearch =
-      job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.department.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesDepartment && matchesSearch;
-  });
+  // Detect mobile via window width
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
-  const clearFilters = () => {
-    setSelectedDepartment("All");
-    setSearchQuery("");
+  const pageSize = isMobile ? MOBILE_PAGE_SIZE : DESKTOP_PAGE_SIZE;
+
+  const filtered = jobs.filter(
+    (j) =>
+      (selectedDept === "All" || j.department === selectedDept) &&
+      j.position.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  const totalPages = Math.ceil(filtered.length / pageSize);
+
+  // Reset to page 1 when filters/search/screen size change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, selectedDept, isMobile]);
+
+  const paginatedJobs = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
+
+  const handlePrev = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const handleNext = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+
+  const handleFilterChange = (dept: string) => {
+    setSelectedDept(dept);
+    setShowMobileFilters(false);
   };
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-16 sm:py-20 lg:py-28">
         <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-accent/30 blur-2xl" />
         <div className="relative mx-auto max-w-7xl px-4">
@@ -556,220 +455,196 @@ export default function CareersPage() {
                 Join Our Team
               </span>
             </div>
-            <h1 className="mb-4 text-balance text-4xl font-bold text-foreground md:text-5xl">
+            <h1 className="mb-4 text-balance text-3xl sm:text-4xl font-bold text-foreground md:text-5xl">
               Build Your Career With Us
             </h1>
-            <p className="text-pretty text-base text-muted-foreground md:text-lg">
+            <p className="text-pretty text-sm sm:text-base text-muted-foreground md:text-lg">
               Join dedicated healthcare professionals committed to making a
               difference. Competitive benefits, growth opportunities, and a
-              supportive environment.(Below are key career references. This list
-              uses mock data and can be updated with real jobs.)
+              supportive environment.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Open Positions */}
-      <section className="bg-secondary/40 py-14">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-6">
-            <h2 className="mb-1 text-2xl font-bold text-foreground">
-              Open Positions
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {isFiltered
-                ? `${filteredJobs.length} result${filteredJobs.length !== 1 ? "s" : ""} found`
-                : `${jobs.length} positions available`}
-            </p>
-          </div>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-            <div className="w-full lg:w-80 xl:w-96 lg:shrink-0">
-              <div className="mb-3 rounded-xl border border-border bg-card p-3 shadow-sm">
-                <div className="relative mb-2.5">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search positions..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {departments.map((dept) => (
-                    <button
-                      key={dept}
-                      onClick={() => setSelectedDepartment(dept)}
-                      className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${selectedDepartment === dept ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-accent"}`}
-                    >
-                      {dept}
-                    </button>
-                  ))}
-                </div>
-                <AnimatePresence>
-                  {isFiltered && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mt-2 border-t border-border pt-2"
-                    >
-                      <button
-                        onClick={clearFilters}
-                        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
-                      >
-                        <X className="h-3 w-3" /> Clear filters
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              <div className="flex flex-col gap-2 lg:max-h-[calc(100vh-320px)] lg:overflow-y-auto lg:pr-1">
-                {filteredJobs.length > 0 ? (
-                  filteredJobs.map((job) => (
-                    <div key={job.id}>
-                      <JobListItem
-                        job={job}
-                        isSelected={selectedJob?.id === job.id}
-                        onClick={() =>
-                          setSelectedJob(
-                            selectedJob?.id === job.id ? null : job,
-                          )
-                        }
-                      />
-                      <div className="lg:hidden">
-                        <AnimatePresence>
-                          {selectedJob?.id === job.id && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3, ease: "easeInOut" }}
-                              className="overflow-hidden"
-                            >
-                              <div className="pt-2">
-                                <JobDetail
-                                  job={job}
-                                  onApply={() => setApplyJob(job)}
-                                />
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="flex flex-col items-center rounded-xl border border-dashed border-border bg-card py-10 text-center">
-                    <Search className="mb-2 h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium text-foreground">
-                      No positions found
-                    </p>
-                    <button
-                      onClick={clearFilters}
-                      className="mt-2 text-xs text-primary underline"
-                    >
-                      Clear filters
-                    </button>
-                  </div>
-                )}
-              </div>
+      <div className="min-h-screen bg-[#F8FAF8] py-10 sm:py-20 px-4 sm:px-6">
+        <div className="mx-auto max-w-[1400px]">
+          {/* ── MOBILE FILTER BAR ── */}
+          <div className="lg:hidden mb-5 flex items-center gap-3">
+            <div className="relative flex-1">
+              <input
+                className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-4 pr-10 text-sm outline-none focus:ring-2 ring-[#68A32B]/20 shadow-sm"
+                placeholder="Search positions..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <Search
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300"
+                size={16}
+              />
             </div>
-            <div className="hidden flex-1 lg:block">
-              {selectedJob ? (
-                <div className="sticky top-6">
-                  <JobDetail
-                    job={selectedJob}
-                    onApply={() => setApplyJob(selectedJob)}
-                  />
+            <button
+              onClick={() => setShowMobileFilters((v) => !v)}
+              className={`flex items-center gap-2 rounded-2xl border px-4 py-3 text-xs font-bold shadow-sm transition-colors ${
+                showMobileFilters
+                  ? "bg-[#68A32B] border-[#68A32B] text-white"
+                  : "bg-white border-gray-200 text-gray-600"
+              }`}
+            >
+              <SlidersHorizontal size={14} /> Filter
+            </button>
+          </div>
+
+          {/* ── MOBILE FILTER DROPDOWN ── */}
+          <AnimatePresence>
+            {showMobileFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="lg:hidden overflow-hidden mb-5"
+              >
+                <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                  <label className="mb-2 block text-[10px] font-black uppercase tracking-widest text-gray-400">
+                    Department
+                  </label>
+                  <select
+                    className="w-full rounded-xl border border-gray-100 bg-gray-50 py-3 px-4 text-sm outline-none font-bold text-gray-700"
+                    value={selectedDept}
+                    onChange={(e) => handleFilterChange(e.target.value)}
+                  >
+                    {departments.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              ) : (
-                <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-border bg-card text-muted-foreground">
-                  <p className="text-sm">Select a position to view details</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ── MAIN LAYOUT ── */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* SIDEBAR — desktop only */}
+            <aside className="hidden lg:block w-[300px] shrink-0">
+              <div className="sticky top-10 rounded-3xl bg-white p-8 shadow-sm border border-gray-100">
+                <div className="space-y-8">
+                  <div>
+                    <label className="mb-3 block text-xs font-black uppercase tracking-widest text-gray-400">
+                      Search
+                    </label>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded-2xl border border-gray-100 bg-gray-50 py-3 pl-4 pr-12 text-sm outline-none focus:ring-2 ring-[#68A32B]/20 transition-all"
+                        placeholder="Search positions..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                      />
+                      <Search
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300"
+                        size={18}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-xs font-black uppercase tracking-widest text-gray-400">
+                      Department
+                    </label>
+                    <select
+                      className="w-full rounded-2xl border border-gray-100 bg-gray-50 py-3.5 px-4 text-sm outline-none focus:ring-2 ring-[#68A32B]/20 appearance-none font-bold text-gray-700"
+                      value={selectedDept}
+                      onChange={(e) => handleFilterChange(e.target.value)}
+                    >
+                      {departments.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Desktop pagination in sidebar */}
+                  <div>
+                    <label className="mb-3 block text-xs font-black uppercase tracking-widest text-gray-400">
+                      Page
+                    </label>
+                    <PaginationControls
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPrev={handlePrev}
+                      onNext={handleNext}
+                    />
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            {/* JOB GRID */}
+            <div className="flex-1 flex flex-col gap-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${currentPage}-${selectedDept}-${query}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2"
+                >
+                  {paginatedJobs.map((j) => (
+                    <JobCard
+                      key={j.id}
+                      job={j}
+                      onOpen={() => setViewingJob(j)}
+                      onApply={() => setApplyJob(j)}
+                    />
+                  ))}
+                  {filtered.length === 0 && (
+                    <div className="col-span-full py-16 text-center rounded-3xl bg-white border border-dashed border-gray-200">
+                      <Briefcase
+                        size={36}
+                        className="mx-auto text-gray-200 mb-4"
+                      />
+                      <p className="text-gray-400 font-bold text-sm">
+                        No positions found.
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Mobile pagination — below cards */}
+              {totalPages > 1 && (
+                <div className="lg:hidden">
+                  <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                    <PaginationControls
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPrev={handlePrev}
+                      onNext={handleNext}
+                    />
+                  </div>
                 </div>
               )}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Benefits */}
-      <section className="bg-background py-14">
-        <div className="mx-auto max-w-7xl px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="mb-10 text-center"
-          >
-            <h2 className="mb-2 text-2xl font-bold text-foreground md:text-3xl">
-              Why Work With Us
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              We invest in our employees because they are our greatest asset.
-            </p>
-          </motion.div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {getBenefits().map((benefit, index) => {
-              const BenefitIcon = ICON_MAP[benefit.icon];
-              return (
-                <motion.div
-                  key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: index * 0.08 }}
-                  viewport={{ once: true }}
-                  className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
-                >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
-                    {BenefitIcon && (
-                      <BenefitIcon className="h-5 w-5 text-primary" />
-                    )}
-                  </div>
-                  <h3 className="mb-1.5 font-semibold text-card-foreground">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {benefit.description}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-primary py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-balance text-3xl font-bold text-primary-foreground md:text-4xl">
-            {"Don't See the Right Position?"}
-          </h2>
-          <p className="mb-8 text-sm text-primary-foreground/80 md:text-base">
-            Submit your resume and we will contact you when a matching
-            opportunity becomes available.
-          </p>
-          <Button size="lg" variant="secondary" asChild>
-            <Link href="/contact">Submit Your Resume</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Apply Modal */}
-      <AnimatePresence>
-        {applyJob && (
-          <ApplyModal job={applyJob} onClose={() => setApplyJob(null)} />
-        )}
-      </AnimatePresence>
+        <AnimatePresence>
+          {viewingJob && (
+            <JobDetailsModal
+              job={viewingJob}
+              onClose={() => setViewingJob(null)}
+              onApply={() => {
+                setApplyJob(viewingJob);
+                setViewingJob(null);
+              }}
+            />
+          )}
+          {applyJob && (
+            <ApplyModal job={applyJob} onClose={() => setApplyJob(null)} />
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 }

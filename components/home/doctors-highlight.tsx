@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Star, Stethoscope, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getDoctors } from "@/lib/mock-api";
+import { getDoctors, slugify } from "@/lib/mock-api";
 import Image from "next/image";
 
 function DoctorCard({
@@ -40,7 +40,7 @@ function DoctorCard({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.1 }}
     >
-      <Link href={`/doctors/${doctor.id}`} className="group block">
+      <Link href={`/doctors/${slugify(doctor.name)}`} className="group block">
         <div className="relative overflow-hidden rounded-3xl bg-card shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
           {/* Portrait image */}
           <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/50">

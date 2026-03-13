@@ -223,114 +223,6 @@ export default function DoctorDetailPage({
         </div>
       </section>
 
-      {/* ── Info Cards ── */}
-      <section className="bg-background py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                  <Clock className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                </div>
-                <h3 className="font-bold text-card-foreground">
-                  Clinic Schedule
-                </h3>
-              </div>
-              {doctor.availability ? (
-                <div className="space-y-2.5">
-                  {doctor.availability.split("|").map((slot, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 rounded-xl bg-secondary/60 px-4 py-2.5"
-                    >
-                      <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
-                      <span className="text-sm text-foreground">
-                        {slot.trim()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  Contact for availability
-                </p>
-              )}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                  <Award className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                </div>
-                <h3 className="font-bold text-card-foreground">
-                  Awards & Recognition
-                </h3>
-              </div>
-              {(doctor.awards ?? []).length > 0 ? (
-                <ul className="space-y-3">
-                  {(doctor.awards ?? []).map((award) => (
-                    <li
-                      key={award}
-                      className="flex items-start gap-3 text-sm text-muted-foreground"
-                    >
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                      {award}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No awards listed
-                </p>
-              )}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                  <Languages className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                </div>
-                <h3 className="font-bold text-card-foreground">
-                  Languages Spoken
-                </h3>
-              </div>
-              {(doctor.languages ?? []).length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {(doctor.languages ?? []).map((lang) => (
-                    <span
-                      key={lang}
-                      className="rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
-                    >
-                      {lang}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">Not specified</p>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* ── CTA ── */}
       <section className="relative overflow-hidden bg-primary py-16">
         <div
@@ -369,7 +261,7 @@ export default function DoctorDetailPage({
                 className="gap-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <a href="tel:+63282516922">
-                  <Phone className="h-4 w-4" />
+                  <Phone className="h-4 w-4 text-primary-foreground" />
                   (02) 8251-6922
                 </a>
               </Button>
