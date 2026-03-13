@@ -54,7 +54,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
         {/* Left Arrow */}
         <button
           onClick={prev}
-          className="absolute -left-2 lg:-left-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-[#1a5da1] shadow-xl transition-all hover:bg-[#1a5da1] hover:text-white"
+          className="absolute -left-2 lg:-left-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-[#0a2e1a] shadow-xl transition-all hover:bg-[#5CA51B] hover:text-white"
         >
           <ChevronLeft size={24} />
         </button>
@@ -106,7 +106,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
         {/* Right Arrow */}
         <button
           onClick={next}
-          className="absolute -right-2 lg:-right-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-[#1a5da1] shadow-xl transition-all hover:bg-[#1a5da1] hover:text-white"
+          className="absolute -right-2 lg:-right-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-[#0a2e1a] shadow-xl transition-all hover:bg-[#5CA51B] hover:text-white"
         >
           <ChevronRight size={24} />
         </button>
