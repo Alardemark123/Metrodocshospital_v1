@@ -66,8 +66,8 @@ export function HeroSection() {
     if (dist === 0)
       return { x: 0, y: 0, rotate: 0, scale: 1, z: 10, opacity: 1 };
     if (dist === 1)
-      return { x: -50, y: 12, rotate: -7, scale: 0.88, z: 6, opacity: 0.75 };
-    return { x: 50, y: 20, rotate: 7, scale: 0.82, z: 4, opacity: 0.55 };
+      return { x: -90, y: 12, rotate: -7, scale: 0.88, z: 6, opacity: 0.75 };
+    return { x: 90, y: 20, rotate: 7, scale: 0.82, z: 4, opacity: 0.55 };
   };
 
   return (
@@ -103,11 +103,11 @@ export function HeroSection() {
         </div>
         <Plus
           className="absolute left-12 top-12 animate-pulse text-[#5CA51B] opacity-30"
-          size={28}
+          size={200}
         />
         <Plus
           className="absolute bottom-12 left-[45%] text-[#5CA51B] opacity-15"
-          size={20}
+          size={200}
         />
 
         <div className="relative z-20 w-full max-w-xl">
