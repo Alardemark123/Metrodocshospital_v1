@@ -34,6 +34,7 @@ export interface NewsArticle {
 }
 
 export interface Department {
+  slug: any;
   id: string;
   icon: string;
   name: string;

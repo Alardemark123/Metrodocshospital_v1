@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 interface BreadcrumbItem {
-  // Changed to ReactNode so you can pass a <span> with custom width from the page level
   label: string | ReactNode;
   href?: string;
 }
