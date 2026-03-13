@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Doctor Not Found" };
   }
   return {
-    title: doctor.name,
+    title: `${doctor.name} | metrodocshospital`,
     description: doctor.bio,
     openGraph: {
       title: `${doctor.name} | metrodocshospital`,

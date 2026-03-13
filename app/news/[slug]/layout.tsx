@@ -1,19 +1,19 @@
-import type { Metadata } from "next"
-import { getNewsBySlug } from "@/lib/mock-api"
+import type { Metadata } from "next";
+import { getNewsBySlug } from "@/lib/mock-api";
 
 type Props = {
-  params: Promise<{ slug: string }>
-  children: React.ReactNode
-}
+  params: Promise<{ slug: string }>;
+  children: React.ReactNode;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const article = getNewsBySlug(slug)
+  const { slug } = await params;
+  const article = getNewsBySlug(slug);
   if (!article) {
-    return { title: "Article Not Found" }
+    return { title: "Article Not Found" };
   }
   return {
-    title: article.title,
+    title: `${article.title} | metrodocshospital`,
     description: article.excerpt,
     openGraph: {
       title: article.title,
@@ -21,9 +21,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       publishedTime: article.date,
     },
-  }
+  };
 }
 
-export default function NewsArticleLayout({ children }: { children: React.ReactNode }) {
-  return children
+export default function NewsArticleLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
 }
