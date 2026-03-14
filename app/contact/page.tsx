@@ -78,8 +78,8 @@ function FaqItem({
     </motion.div>
   );
 }
-
 export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     token: recaptchaToken,
     ref: recaptchaRef,
@@ -108,30 +108,69 @@ export default function ContactPage() {
     return e;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Validation Check
     const e2 = validate();
     if (Object.keys(e2).length > 0) {
       setErrors(e2);
       return;
     }
 
-    setIsSubmitted(true);
-    resetRecaptcha();
+    setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
+    try {
+      // 2. Prepare Data
+      const data = new FormData();
+      data.append("type", "contact");
+      data.append("name", formState.name);
+      data.append("email", formState.email);
+      data.append("phone", formState.phone);
+      data.append("subject", formState.subject);
+      data.append("message", formState.message);
+
+      // Add the reCAPTCHA token if you are using one
+      if (recaptchaToken) data.append("token", recaptchaToken);
+
+      // 3. Single Fetch Request
+      const res = await fetch("/api/apply", {
+        method: "POST",
+        body: data,
       });
-      setErrors({});
-    }, 4000);
-  };
 
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        throw new Error(json.error ?? "Failed to send message");
+      }
+
+      // 4. Success State
+      setIsSubmitted(true);
+      if (resetRecaptcha) resetRecaptcha();
+
+      // 5. Reset Form after a delay
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormState({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+        setErrors({});
+      }, 4000);
+    } catch (err: any) {
+      console.error("Submission Error:", err);
+      setErrors({
+        message: err.message || "Something went wrong. Please try again.",
+      });
+    } finally {
+      // 6. Always stop the loading state
+      setIsSubmitting(false);
+    }
+  };
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -444,9 +483,23 @@ export default function ContactPage() {
                           )}
                         </div>
 
-                        <Button type="submit" className="gap-2">
-                          <Send className="h-4 w-4" />
-                          Send Message
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting} // Disables clicking
+                          className={`gap-2 transition-colors ${
+                            isSubmitting
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-[#5aa61b]"
+                          }`}
+                        >
+                          {isSubmitting ? (
+                            <>Submitting...</>
+                          ) : (
+                            <>
+                              <Send className="h-4 w-4" />
+                              Send Message
+                            </>
+                          )}
                         </Button>
                       </motion.form>
                     )}

@@ -14,6 +14,178 @@ const transporter = nodemailer.createTransport({
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
+    const type = formData.get("type") as string;
+    // ── Route: Contact Form ──────────────────────────────────────────
+    if (type === "contact") {
+      const name = formData.get("name") as string;
+      const email = formData.get("email") as string;
+      const phone = formData.get("phone") as string;
+      const subject = formData.get("subject") as string;
+      const message = formData.get("message") as string;
+
+      // Email 1: Notify HR/Admin
+      await transporter.sendMail({
+        from: `"Contact Form" <${process.env.SMTP_USER}>`,
+        to: process.env.HR_EMAIL,
+        replyTo: email,
+        subject: `New Message: ${subject} — ${name}`,
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0f4f0;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f0;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#5aa61b;border-radius:12px 12px 0 0;padding:36px 40px;text-align:center;">
+              <p style="margin:0 0 6px;color:rgba(255,255,255,0.75);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">New Contact Message</p>
+              <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;line-height:1.3;">${subject}</h1>
+              <p style="margin:10px 0 0;color:rgba(255,255,255,0.8);font-size:14px;">From: ${name}</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:36px 40px;">
+              <p style="margin:0 0 20px;font-size:13px;font-weight:700;color:#5aa61b;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #f0f4f0;padding-bottom:10px;">Sender Information</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;width:140px;font-size:13px;font-weight:700;color:#888;">Full Name</td>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;font-size:14px;color:#1a3c2a;font-weight:600;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;font-size:13px;font-weight:700;color:#888;">Email</td>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;font-size:14px;">
+                    <a href="mailto:${email}" style="color:#5aa61b;text-decoration:none;font-weight:600;">${email}</a>
+                  </td>
+                </tr>
+                ${
+                  phone
+                    ? `
+                <tr>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;font-size:13px;font-weight:700;color:#888;">Phone</td>
+                  <td style="padding:10px 0;border-bottom:1px solid #f0f4f0;font-size:14px;color:#333;">${phone}</td>
+                </tr>`
+                    : ""
+                }
+                <tr>
+                  <td style="padding:10px 0;font-size:13px;font-weight:700;color:#888;">Subject</td>
+                  <td style="padding:10px 0;font-size:14px;color:#333;">${subject}</td>
+                </tr>
+              </table>
+
+              <!-- Message -->
+              <p style="margin:28px 0 12px;font-size:13px;font-weight:700;color:#5aa61b;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #f0f4f0;padding-bottom:10px;">Message</p>
+              <div style="background:#f8faf8;border-left:4px solid #5aa61b;border-radius:0 8px 8px 0;padding:16px 20px;">
+                <p style="margin:0;font-size:14px;color:#444;line-height:1.8;white-space:pre-wrap;">${message}</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f8faf8;border-top:1px solid #e8f0e8;border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#aaa;">Sent from your website's Contact Form.<br/>Reply directly to respond to ${name}.</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        `,
+      });
+
+      // Email 2: Auto-reply to sender
+      await transporter.sendMail({
+        from: `"Careers" <${process.env.SMTP_USER}>`,
+        to: email,
+        replyTo: process.env.HR_EMAIL,
+        subject: `We received your message — ${subject}`,
+        priority: "high",
+        headers: {
+          "X-Priority": "1",
+          "X-MSMail-Priority": "High",
+          Importance: "High",
+        },
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0f4f0;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f0;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#5aa61b;border-radius:12px 12px 0 0;padding:36px 40px;text-align:center;">
+              <div style="width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:50%;margin:0 auto 16px;line-height:56px;font-size:26px;">✓</div>
+              <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;">Message Received!</h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.85);font-size:15px;">Thank you for reaching out, ${name}.</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:36px 40px;">
+              <p style="margin:0 0 16px;font-size:15px;color:#333;line-height:1.7;">Hi <strong style="color:#1a3c2a;">${name}</strong>,</p>
+              <p style="margin:0 0 16px;font-size:15px;color:#555;line-height:1.7;">
+                We've received your message regarding <strong style="color:#5aa61b;">${subject}</strong>. Our team will review it and get back to you within <strong>24 hours</strong>.
+              </p>
+              <p style="margin:0 0 28px;font-size:13px;color:#888;background:#fffbe6;border:1px solid #ffe58f;border-radius:8px;padding:12px 16px;">
+                💡 <strong>Tip:</strong> If you don't see future emails from us in your inbox, please check your <strong>Spam</strong> or <strong>Promotions</strong> folder and mark us as "Not Spam".
+              </p>
+
+              <!-- Message Summary -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faf8;border:1px solid #e0ece0;border-radius:10px;">
+                <tr>
+                  <td style="padding:20px 24px;">
+                    <p style="margin:0 0 14px;font-size:11px;font-weight:700;color:#5aa61b;text-transform:uppercase;letter-spacing:1.5px;">Your Message Summary</p>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding:7px 0;border-bottom:1px solid #e8f0e8;width:100px;font-size:13px;color:#888;font-weight:600;">Subject</td>
+                        <td style="padding:7px 0;border-bottom:1px solid #e8f0e8;font-size:13px;color:#1a3c2a;font-weight:700;">${subject}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding:7px 0;font-size:13px;color:#888;font-weight:600;vertical-align:top;">Message</td>
+                        <td style="padding:7px 0;font-size:13px;color:#333;line-height:1.6;white-space:pre-wrap;">${message}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f8faf8;border-top:1px solid #e8f0e8;border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;">
+              <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#5aa61b;">The Team</p>
+              <p style="margin:0;font-size:12px;color:#aaa;">This is an automated confirmation. Reply to reach us directly.</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        `,
+      });
+
+      return NextResponse.json({ success: true });
+    }
+
+    // ── Route: Job Application ───────────────────────────────────────
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;
@@ -22,6 +194,13 @@ export async function POST(req: Request) {
     const location = formData.get("location") as string;
     const coverLetter = formData.get("coverLetter") as string;
     const resume = formData.get("resume") as File | null;
+
+    console.log("Apply form received:", {
+      firstName,
+      lastName,
+      email,
+      position,
+    });
 
     let attachments: any[] = [];
     if (resume && resume.size > 0) {
