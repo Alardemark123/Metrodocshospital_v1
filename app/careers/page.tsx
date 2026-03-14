@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Search,
   Briefcase,
@@ -25,17 +25,21 @@ const DESKTOP_PAGE_SIZE = 6;
 const MOBILE_PAGE_SIZE = 3;
 
 // ——— 1. APPLY MODAL ———
+
 function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const { token, ref: recaptchaRef } = useRecaptcha();
   const [showDetails, setShowDetails] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null); // ← new
 
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    coverLetter: "", // ← new
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,22 +48,56 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name);
-    }
-  };
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+    const allowed = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+    if (!allowed.includes(file.type)) {
+      alert("Only PDF or DOCX files are allowed.");
+      e.target.value = ""; // reset
+      return;
+    }
+
+    setFileName(file.name);
+  };
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) {
       alert("Please verify you are human via reCAPTCHA.");
       return;
     }
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setError(null);
+
+    try {
+      const data = new FormData();
+      data.append("firstName", formData.firstName);
+      data.append("lastName", formData.lastName);
+      data.append("email", formData.email);
+      data.append("coverLetter", formData.coverLetter);
+      data.append("position", job.position);
+      data.append("department", job.department);
+      data.append("location", job.location);
+
+      const file = fileRef.current?.files?.[0];
+      if (file) data.append("resume", file);
+
+      const res = await fetch("/api/apply", { method: "POST", body: data });
+      const json = await res.json();
+
+      if (!json.success) throw new Error(json.error ?? "Unknown error");
+
       setSubmitted(true);
-    }, 1500);
+    } catch (err: any) {
+      setError("Something went wrong. Please try again.");
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,15 +109,20 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
     >
       <div className="absolute inset-0 z-0" onClick={onClose} />
 
+      {/*
+        KEY FIX: No overflow on this wrapper at all.
+        overflow-hidden or overflow-y-hidden creates a clipping context that
+        traps the reCAPTCHA iframe's pointer events on mobile (especially Safari).
+      */}
       <motion.div
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
-        className="relative z-10 w-full sm:max-w-4xl bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[95vh] sm:max-h-[90vh] pointer-events-auto overflow-hidden"
+        className="relative z-10 w-full sm:max-w-4xl bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[95vh] sm:max-h-[90vh] pointer-events-auto"
       >
         {/* --- MOBILE HEADER & ACCORDION (Visible < 768px) --- */}
-        <div className="md:hidden bg-[#5aa61b] text-white shrink-0">
+        <div className="md:hidden bg-[#5aa61b] text-white shrink-0 rounded-t-[2.5rem]">
           <div className="px-6 py-6">
             <div className="flex justify-between items-start">
               <div>
@@ -144,8 +187,9 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
             )}
           </AnimatePresence>
         </div>
-        {/* Sidebar (Desktop) */}
-        <div className="hidden md:flex w-[300px] bg-[#5aa61b] p-10 text-white flex-col justify-between shrink-0">
+
+        {/* Sidebar (Desktop only) */}
+        <div className="hidden md:flex w-[300px] bg-[#5aa61b] p-10 text-white flex-col justify-between shrink-0 rounded-l-[2.5rem]">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-widest opacity-80 mb-2">
               Applying For
@@ -167,7 +211,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
               </div>
             </div>
 
-            {/* Requirements Mapping */}
+            {/* Requirements */}
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-3">
                 Key Requirements
@@ -183,10 +227,9 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
             </div>
           </div>
         </div>
-
-        <div className="flex-1 bg-white p-6 md:p-12 overflow-y-auto">
+        <div className="flex-1 flex flex-col min-h-0 bg-white rounded-b-[2.5rem] md:rounded-r-[2.5rem] md:rounded-bl-none">
           {submitted ? (
-            <div className="h-full flex flex-col items-center justify-center text-center py-16">
+            <div className="flex-1 flex flex-col items-center justify-center text-center py-16 px-6 md:px-12">
               <CheckCircle size={72} className="text-[#5aa61b] mb-6" />
               <h3 className="text-2xl font-bold text-gray-900">
                 Application Submitted!
@@ -199,87 +242,108 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
               </Button>
             </div>
           ) : (
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div className="mb-2">
-                <h3 className="text-xl md:text-2xl font-bold">
-                  Your Application
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Fill in the details below
-                </p>
-              </div>
+            <>
+              {/* Scrollable form fields */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-12 pb-4">
+                <form
+                  id="apply-form"
+                  onSubmit={handleFormSubmit}
+                  className="space-y-4"
+                >
+                  <div className="mb-2">
+                    <h3 className="text-xl md:text-2xl font-bold">
+                      Your Application
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Fill in the details below
+                    </p>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
-                  placeholder="First Name"
-                  required
-                />
-                <input
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
-                  placeholder="Last Name"
-                  required
-                />
-                <input
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full sm:col-span-2"
-                  placeholder="Email Address"
-                  required
-                />
-              </div>
-
-              <label className="relative border-2 border-dashed border-gray-200 rounded-2xl p-5 flex flex-col items-center bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors">
-                <input
-                  type="file"
-                  required
-                  className="absolute inset-0 opacity-0 cursor-pointer z-0"
-                  onChange={handleFileChange}
-                />
-                <div className="relative z-10 flex flex-col items-center pointer-events-none">
-                  {fileName ? (
-                    <>
-                      <FileText size={22} className="text-[#5aa61b] mb-2" />
-                      <p className="text-sm font-bold text-gray-700">
-                        {fileName}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <Upload size={22} className="text-[#5aa61b] mb-2" />
-                      <p className="text-sm font-bold">
-                        Upload Resume (Required)
-                      </p>
-                    </>
-                  )}
-                </div>
-              </label>
-
-              <textarea
-                className="w-full border border-gray-200 bg-gray-50 p-4 rounded-xl text-sm h-24 resize-none outline-none"
-                placeholder="Cover Letter (optional)"
-              />
-
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-2">
-                <div className="flex justify-center sm:justify-start w-full sm:w-auto">
-                  <div className="relative z-[70] pointer-events-auto min-h-[78px] min-w-[302px]">
-                    <div
-                      ref={recaptchaRef}
-                      className="scale-90 sm:scale-100 origin-left"
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
+                      placeholder="First Name"
+                      required
+                    />
+                    <input
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full"
+                      placeholder="Last Name"
+                      required
+                    />
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="border border-gray-200 bg-gray-50 p-3.5 rounded-xl text-sm outline-none w-full sm:col-span-2"
+                      placeholder="Email Address"
+                      required
                     />
                   </div>
+
+                  <label className="relative border-2 border-dashed border-gray-200 rounded-2xl p-5 flex flex-col items-center bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors">
+                    <input
+                      type="file"
+                      required
+                      ref={fileRef}
+                      accept=".pdf,.docx"
+                      className="absolute inset-0 opacity-0 cursor-pointer z-0"
+                      onChange={handleFileChange}
+                    />
+                    <div className="relative z-10 flex flex-col items-center pointer-events-none">
+                      {fileName ? (
+                        <>
+                          <FileText size={22} className="text-[#5aa61b] mb-2" />
+                          <p className="text-sm font-bold text-gray-700">
+                            {fileName}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={22} className="text-[#5aa61b] mb-2" />
+                          <p className="text-sm font-bold">
+                            Upload Resume (Required)
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </label>
+
+                  <textarea
+                    name="coverLetter"
+                    className="w-full border border-gray-200 bg-gray-50 p-4 rounded-xl text-sm h-24 resize-none outline-none"
+                    placeholder="Cover Letter (optional)"
+                    value={formData.coverLetter}
+                    onChange={(e) =>
+                      setFormData((p) => ({
+                        ...p,
+                        coverLetter: e.target.value,
+                      }))
+                    }
+                  />
+                </form>
+              </div>
+
+              <div className="shrink-0 px-6 md:px-12 pb-6 md:pb-10 pt-4 border-t border-gray-100 bg-white rounded-b-[2.5rem] md:rounded-br-[2.5rem] md:rounded-bl-none flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="w-full sm:w-auto">
+                  <div
+                    ref={recaptchaRef}
+                    className="scale-[0.82] sm:scale-100 origin-left"
+                  />
                 </div>
+                {error && (
+                  <p className="text-sm text-red-500 font-medium">{error}</p>
+                )}
 
                 <Button
                   type="submit"
+                  form="apply-form"
                   disabled={!token || isSubmitting}
                   className={`w-full sm:w-auto h-12 px-8 rounded-xl text-sm font-bold shadow-lg transition-all
                     ${!token ? "bg-gray-300 cursor-not-allowed text-gray-500" : "bg-[#5aa61b] text-white hover:opacity-90"}`}
@@ -287,13 +351,14 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                   {isSubmitting ? "Sending..." : "Submit Application"}
                 </Button>
               </div>
-            </form>
+            </>
           )}
         </div>
       </motion.div>
     </motion.div>
   );
 }
+
 // ——— 2. JOB DETAILS MODAL ———
 function JobDetailsModal({
   job,
@@ -317,7 +382,7 @@ function JobDetailsModal({
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
-        className="relative z-10 w-full sm:max-w-5xl sm:max-h-[90vh] max-h-[95vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden flex flex-col pointer-event-auto"
+        className="relative z-10 w-full sm:max-w-5xl sm:max-h-[90vh] max-h-[95vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
       >
         <div className="bg-[#5aa61b] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 shrink-0 text-white">
           <h2 className="text-base sm:text-xl font-black truncate">
