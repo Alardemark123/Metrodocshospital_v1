@@ -23,8 +23,6 @@ export async function POST(req: Request) {
     const coverLetter = formData.get("coverLetter") as string;
     const resume = formData.get("resume") as File | null;
 
-    console.log("Form received:", { firstName, lastName, email, position });
-
     let attachments: any[] = [];
     if (resume && resume.size > 0) {
       const bytes = await resume.arrayBuffer();
@@ -130,8 +128,6 @@ export async function POST(req: Request) {
 </html>
       `,
     });
-
-    console.log("HR email sent");
 
     // ── Email 2: Applicant Confirmation ───────────────────────────────
     await transporter.sendMail({
@@ -240,8 +236,6 @@ export async function POST(req: Request) {
 </html>
       `,
     });
-
-    console.log("Applicant email sent");
 
     return NextResponse.json({ success: true });
   } catch (err) {
