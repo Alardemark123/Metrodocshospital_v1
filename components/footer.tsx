@@ -69,12 +69,6 @@ export function Footer() {
               <Phone className="h-4 w-4" />
               (02) 8251-6922
             </a>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-5 py-2.5 text-sm font-semibold text-primary transition-all hover:bg-primary-foreground/90"
-            >
-              Book Appointment
-            </Link>
           </div>
         </div>
       </div>

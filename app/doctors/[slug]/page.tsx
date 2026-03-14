@@ -137,17 +137,6 @@ export default function DoctorDetailPage({
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="mb-8 flex flex-wrap gap-3"
               >
-                {doctor.rating > 0 && (
-                  <div className="flex items-center gap-2 rounded-xl border border-border bg-card/80 px-4 py-2.5 backdrop-blur-sm">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-bold text-foreground">
-                      {doctor.rating}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      Rating
-                    </span>
-                  </div>
-                )}
                 {doctor.experience && doctor.experience !== "0" && (
                   <div className="flex items-center gap-2 rounded-xl border border-border bg-card/80 px-4 py-2.5 backdrop-blur-sm">
                     <BadgeCheck className="h-4 w-4 text-primary" />
@@ -175,20 +164,7 @@ export default function DoctorDetailPage({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.24 }}
                 className="flex flex-wrap gap-3"
-              >
-                <Button size="lg" asChild className="gap-2">
-                  <Link href="/contact">
-                    <Calendar className="h-4 w-4" />
-                    Book Appointment
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild className="gap-2">
-                  <a href="tel:+63282516922">
-                    <Phone className="h-4 w-4" />
-                    Call Now
-                  </a>
-                </Button>
-              </motion.div>
+              ></motion.div>
             </div>
 
             {/* Right — photo */}
@@ -220,53 +196,6 @@ export default function DoctorDetailPage({
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="relative overflow-hidden bg-primary py-16">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
-            backgroundSize: "16px 16px",
-          }}
-        />
-        <div className="pointer-events-none absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
-        <div className="relative mx-auto max-w-3xl px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-3 text-2xl font-bold text-primary-foreground md:text-3xl">
-              Book a Consultation with {doctor.name}
-            </h2>
-            <p className="mb-6 text-primary-foreground/80">
-              Our team is ready to help. Schedule your appointment today.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Button size="lg" variant="secondary" asChild className="gap-2">
-                <Link href="/contact">
-                  <Calendar className="h-4 w-4" />
-                  Book Appointment
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                asChild
-                className="gap-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <a href="tel:+63282516922">
-                  <Phone className="h-4 w-4 text-primary-foreground" />
-                  (02) 8251-6922
-                </a>
-              </Button>
-            </div>
-          </motion.div>
         </div>
       </section>
     </>

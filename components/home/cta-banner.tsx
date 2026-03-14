@@ -43,12 +43,6 @@ export function CTABanner() {
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" variant="secondary" asChild className="gap-2">
-                  <Link href="/contact">
-                    <Calendar className="h-5 w-5" />
-                    Book Appointment
-                  </Link>
-                </Button>
                 <Button
                   size="lg"
                   variant="outline"

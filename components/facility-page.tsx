@@ -386,14 +386,7 @@ export function FacilityPage({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="mt-6"
-              >
-                <Button asChild size="lg" className="gap-2">
-                  <Link href="/contact">
-                    Book Appointment
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </motion.div>
+              ></motion.div>
             </div>
           </div>
         </div>
