@@ -34,7 +34,7 @@ function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex-1 rounded-full border border-gray-100 bg-white py-2 text-[11px] font-bold text-gray-400 transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        className="flex-1 rounded-full border border-gray-100 bg-primary py-2 text-[11px] font-bold text-white transition-all"
       >
         Prev
       </button>
@@ -46,7 +46,7 @@ function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages || totalPages === 0}
-        className="flex-1 rounded-full border border-gray-100 bg-white py-2 text-[11px] font-bold text-gray-400 transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        className="flex-1 rounded-full border border-gray-100 bg-primary py-2 text-[11px] font-bold text-white transition-all"
       >
         Next
       </button>
