@@ -57,8 +57,8 @@ const whyChooseUs = [
 const stats = [
   { number: "25+", label: "Years of Excellence" },
   { number: "50+", label: "Expert Doctors" },
-  { number: "10K+", label: "Patients Treated" },
-  { number: "7", label: "Departments" },
+  { number: "10k+", label: "Patients Treated" },
+  { number: "9", label: "Departments" },
 ];
 
 const visionPoints = [
@@ -103,8 +103,8 @@ export default function AboutPage() {
               </span>
             </div>
             <h1 className="mb-6 text-balance text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-              A Legacy of Healing,{" "}
-              <span className="text-primary">A Future of Hope</span>
+              A Legacy of Healing, <br />
+              <span className="mt-2 block text-primary"> A Future of Hope</span>
             </h1>
             <p className="text-pretty text-lg text-muted-foreground">
               For over 25 years, Metro Rizal Doctors Hospital has been dedicated
@@ -139,14 +139,13 @@ export default function AboutPage() {
                   "
                 </div>
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-                  <Heart className="h-3.5 w-3.5 text-primary" />
                   <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                     We Are Always Glad To Help
                   </span>
                 </div>
                 <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">
                   Your Health Is Our{" "}
-                  <span className="text-primary">Priority</span>
+                  <span className="text-primary">Top Priority</span>
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p className="leading-relaxed">
@@ -248,44 +247,50 @@ export default function AboutPage() {
             </h2>
           </FadeIn>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-2 items-stretch">
+            {/* Mission Card */}
             <FadeIn delay={0.1}>
-              <div className="relative overflow-hidden rounded-3xl bg-primary p-8 text-primary-foreground shadow-lg md:p-10">
+              <div className="flex flex-col h-full relative overflow-hidden rounded-3xl bg-primary p-8 text-primary-foreground shadow-lg md:p-10">
                 <div className="pointer-events-none absolute -right-8 -top-8 h-44 w-44 rounded-full bg-white/10" />
                 <div className="pointer-events-none absolute -bottom-6 -left-6 h-28 w-28 rounded-full bg-white/5" />
                 <div className="pointer-events-none absolute right-6 bottom-6 h-6 w-6 rotate-45 rounded-sm border border-white/10" />
-                <div className="relative">
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
-                    <Target className="h-7 w-7" />
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-20 w-20 rounded-full bg-white/10 blur-md" />
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 shadow-md ring-2 ring-white/30">
+                    <Target className="h-7 w-7 text-white" />
                   </div>
-                  <span className="mb-2 block text-xs font-bold uppercase tracking-widest text-primary-foreground/60">
+                  <span className="text-lg font-bold uppercase tracking-widest">
                     Our Mission
                   </span>
-                  <h3 className="mb-4 text-xl font-bold md:text-2xl">
-                    Quality Health Service Affordable for All
-                  </h3>
-                  <p className="leading-relaxed text-primary-foreground/85">
-                    To provide quality health service affordable for all —
-                    delivering compassionate, patient-centered healthcare that
-                    improves the quality of life for individuals and
-                    communities. We are committed to excellence in clinical care
-                    and community service.
-                  </p>
                 </div>
+
+                <h3 className="mb-4 text-xl font-bold md:text-xl">
+                  Quality Health Service Affordable for All
+                </h3>
+                <p className="leading-relaxed text-primary-foreground/85">
+                  To provide quality health service affordable for all — delivering compassionate, patient-centered healthcare that improves the quality
+                  of life for individuals and communities. We are committed to excellence in clinical care and community service.
+                </p>
               </div>
             </FadeIn>
 
+            {/* Vision Card */}
             <FadeIn delay={0.2}>
-              <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-sm md:p-10">
+              <div className="flex flex-col h-full relative overflow-hidden rounded-3xl border border-border bg-card p-8 shadow-sm md:p-10">
                 <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-bl-[60px] bg-primary/4" />
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                  <Eye className="h-7 w-7 text-primary" />
+                <div className="pointer-events-none absolute -left-6 bottom-6 h-20 w-20 rounded-full bg-primary/5" />
+                <div className="pointer-events-none absolute right-1/2 top-1/2 h-16 w-16 rounded-full bg-primary/10 blur-md" />
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 shadow-md ring-2 ring-primary/20">
+                    <Eye className="h-7 w-7 text-primary" />
+                  </div>
+                  <span className="text-lg text-primary font-bold uppercase tracking-widest">
+                    Our Vision
+                  </span>
                 </div>
-                <span className="mb-2 block text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Our Vision
-                </span>
-                <h3 className="mb-5 text-xl font-bold text-card-foreground md:text-2xl">
-                  Leading Healthcare in the Eastern Metropolis
+
+                <h3 className="mb-5 text-xl font-bold text-primary text-card-foreground md:text-xl">
+                  Excellence in Eastern Metropolis Healthcare
                 </h3>
                 <ul className="space-y-4">
                   {visionPoints.map((point, i) => (
@@ -304,7 +309,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
+      
       {/* ══════════════════════════════
           WHY CHOOSE US
       ══════════════════════════════ */}
