@@ -10,9 +10,9 @@ import { CTABanner } from "@/components/home/cta-banner";
 import { CreditedHmo } from "@/components/home/credited-hmo";
 
 export const metadata: Metadata = {
-  title: "Home | metrodocshospital",
+  title: "Home | Metro Rizal Doctors Hospital",
   description:
-    "metrodocshospital delivers compassionate care with trusted medical professionals. Find doctors, explore departments, and access quality healthcare.",
+    "Metro Rizal Doctors Hospital delivers compassionate care with trusted medical professionals. Find doctors, explore departments, and access quality healthcare.",
 };
 
 export default function HomePage() {

@@ -53,7 +53,7 @@ export function Footer() {
       {/* Top CTA band */}
       <div className="bg-primary px-4 py-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
-          <div>
+          <div className="text-center md:text-left">
             <p className="text-lg font-bold text-primary-foreground">
               Need medical assistance?
             </p>
@@ -61,7 +61,7 @@ export function Footer() {
               Our team is available 24/7 for emergencies.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
             <a
               href="tel:028251-6922"
               className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/25"
@@ -73,9 +73,9 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Main body — light bg so logo is visible */}
+      {/* Main body */}
       <div className="relative border-t border-border bg-card overflow-hidden">
-        {/* Dot grid pattern */}
+        {/* Background accents */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.025]"
           style={{
@@ -84,33 +84,34 @@ export function Footer() {
             backgroundSize: "24px 24px",
           }}
         />
-        {/* Floating accent shapes */}
-        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-bl-[80px] bg-primary/3" />
-        <div className="pointer-events-none absolute -left-8 bottom-0 h-32 w-32 rounded-full border border-primary/8" />
-        <div className="pointer-events-none absolute right-1/3 top-12 h-6 w-6 rotate-45 rounded-sm border border-primary/10" />
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 text-center md:text-left items-center md:items-start">
             {/* Brand */}
-            <div className="lg:col-span-4">
-              <Link href="/" className="mb-5 inline-block">
+            <div className="lg:col-span-4 flex flex-col items-center md:items-start">
+              <Link href="/" className="mb-2 inline-block">
                 <img
                   src="/metrodocs-logo-new.png"
                   alt="Metro Docs Hospital"
-                  className="h-12 w-auto"
+                  className="h-20 w-auto"
                 />
               </Link>
-              <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-                Delivering compassionate, world-class healthcare with
-                cutting-edge technology and trusted medical professionals
-                dedicated to your well-being.
+              <p className="mb-3 text-sm leading-relaxed text-gray-600 text-center md:text-left">
+                Delivering compassionate, world-class healthcare with cutting-edge technology 
+                and trusted medical professionals dedicated to your well-being.
               </p>
-              <div className="flex gap-2">
+               {/* Follow us */}
+               <p className="mt-3 mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Follow Us on Social Media
+              </p>
+              <div className="flex gap-2 justify-center md:justify-start">
                 {socialLinks.map((social) => (
                   <a
                     key={social.name}
                     href={social.href}
                     aria-label={social.name}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                    target="_black"
+                    rel="noopener noreferrer"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white transition-colors hover:bg-primary"
                   >
                     <social.icon className="h-4 w-4" />
                   </a>
@@ -119,7 +120,7 @@ export function Footer() {
             </div>
 
             {/* Quick Links */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
               <p className="mb-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Quick Links
               </p>
@@ -128,9 +129,9 @@ export function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="group flex items-center gap-1.5 text-sm text-foreground/70 transition-colors hover:text-primary"
+                      className="group flex items-center justify-center md:justify-start gap-1.5 text-sm text-foreground/70 transition-colors hover:text-primary"
                     >
-                      <ChevronRight className="h-3 w-3 shrink-0 opacity-0 transition-all group-hover:opacity-100" />
+                      <ChevronRight className="hidden md:block h-3 w-3 shrink-0 opacity-0 transition-all group-hover:opacity-100" />
                       {link.name}
                     </Link>
                   </li>
@@ -139,7 +140,7 @@ export function Footer() {
             </div>
 
             {/* Departments */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
               <p className="mb-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Departments
               </p>
@@ -148,9 +149,9 @@ export function Footer() {
                   <li key={dept.name}>
                     <Link
                       href={dept.href}
-                      className="group flex items-center gap-1.5 text-sm text-foreground/70 transition-colors hover:text-primary"
+                      className="group flex items-center justify-center md:justify-start gap-1.5 text-sm text-foreground/70 transition-colors hover:text-primary"
                     >
-                      <ChevronRight className="h-3 w-3 shrink-0 opacity-0 transition-all group-hover:opacity-100" />
+                      <ChevronRight className="hidden md:block h-3 w-3 shrink-0 opacity-0 transition-all group-hover:opacity-100" />
                       {dept.name}
                     </Link>
                   </li>
@@ -159,52 +160,51 @@ export function Footer() {
             </div>
 
             {/* Contact */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
               <p className="mb-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Contact Us
               </p>
               <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <MapPin className="h-4 w-4 text-primary" />
+                <li className="flex flex-col items-center md:flex-row md:items-start gap-3 text-center md:text-left">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary transition-colors">
+                    <MapPin className="h-4 w-4 text-white transition-colors hover:text-primary-foreground" />
                   </div>
                   <span className="text-sm leading-snug text-foreground/70">
                     {contact.address}
                   </span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <Phone className="h-4 w-4 text-primary" />
+                <li className="flex flex-col items-center md:flex-row md:items-start gap-3 text-center md:text-left">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary transition-colors">
+                    <Phone className="h-4 w-4 text-white transition-colors hover:text-primary-foreground" />
                   </div>
-                  <div className="text-sm text-foreground/70">
+                  <div className="text-sm leading-snug text-foreground/70">
                     {phones.map((p) => (
                       <p key={p}>{p}</p>
                     ))}
                   </div>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <Mail className="h-4 w-4 text-primary" />
+                <li className="flex flex-col items-center md:flex-row md:items-start gap-3 text-center md:text-left">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary transition-colors">
+                    <Mail className="h-4 w-4 text-white transition-colors hover:text-primary-foreground" />
                   </div>
-                  <span className="text-sm text-foreground/70">
+                  <span className="text-sm leading-snug text-foreground/70">
                     {contact.email}
                   </span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <Clock className="h-4 w-4 text-primary" />
+                <li className="flex flex-col items-center md:flex-row md:items-start gap-3 text-center md:text-left">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary transition-colors">
+                    <Clock className="h-4 w-4 text-white transition-colors hover:text-primary-foreground" />
                   </div>
-                  <div className="text-sm text-foreground/70">
+                  <div className="text-sm leading-snug text-foreground/70">
                     {hours.map((h) => (
                       <p
                         key={h.label}
                         className={
-                          h.highlight ? "mt-1 font-semibold text-primary" : ""
-                        }
+                          h.highlight 
+                          ? "inline-block rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
+                          : "text-sm text-foreground/70"}
                       >
-                        {h.highlight
-                          ? `Hospital: ${h.hours}`
-                          : `${h.label}: ${h.hours}`}
+                        {h.highlight ? `Hospital: ${h.hours}` : `${h.label}: ${h.hours}`}
                       </p>
                     ))}
                   </div>
@@ -216,21 +216,21 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-border bg-background">
-        <div className="mx-auto max-w-7xl px-4 py-4">
-          <div className="flex flex-col items-center justify-between gap-3 text-xs text-muted-foreground md:flex-row">
-            <div className="flex items-center gap-1.5">
-              <p>
-                &copy; {new Date().getFullYear()} Metro Rizal Doctors Hospital.
-                All rights reserved.
-              </p>
-            </div>
-            <div className="flex items-center gap-1">
-              Powered by AP Global IT Solutions
-            </div>
-          </div>
-        </div>
+      <div className="relative border-t border-border py-4 text-center text-xs text-gray-500">
+        © {new Date().getFullYear()} Metro Rizal Doctors Hospital. All rights reserved.
+        <span className="ml-2">
+          Developed by{" "}
+          <a 
+            href="https://www.apgitsolutions.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            AP Global IT Solutions, Inc.
+          </a>
+        </span>
       </div>
     </footer>
   );
 }
+
