@@ -136,9 +136,8 @@ export function Navbar() {
                         <div className="h-0.5 w-full bg-primary" />
                         <div className="p-1.5">
                           {item.dropdown.map((subItem) => {
-                            const subActive =
-                              pathname === subItem.href ||
-                              pathname.startsWith(subItem.href + "/");
+                            const subActive = pathname  === subItem.href;
+                            
                             return (
                               <Link
                                 key={subItem.name}

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Rehabilitation Room | metrodocshospital",
+  title: "Rehabilitation Room | Metro Rizal Doctors Hospital",
   description:
-    "Recovery and therapy at metrodocshospital: physical, occupational, and speech therapy; post-surgical and stroke rehabilitation.",
+    "Recovery and therapy at Metro Rizal Doctors Hospital: physical, occupational, and speech therapy; post-surgical and stroke rehabilitation.",
 };
 
 export default function RehabRoomPage() {
