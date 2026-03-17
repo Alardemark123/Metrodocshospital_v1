@@ -69,12 +69,20 @@ export function Navbar() {
       <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           {/* Logo */}
-          <Link href="/" className="shrink-0">
+          <Link href="/" className=" flex items-center shrink-0">
             <img
-              src="/metrodocs-logo-new.png"
-              alt="Metro Docs Hospital"
-              className="h-10 w-auto"
+              src="/metro-logo-2.png"
+              alt="Metro Rizal Doctors Hospital"
+              className="h-14 w-auto"
             />
+            <div className="ml-2 flex flex-col">   
+              <span className="text-base font-old font-semibold text-green-800 leading-none">
+                Metro Rizal
+              </span>
+              <span className="text-sm font-thin text-green-800 leading-none mt-0.5 tracking-wider">
+                Doctors Hospital
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
