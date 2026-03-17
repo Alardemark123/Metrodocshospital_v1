@@ -34,10 +34,6 @@ export default function RehabRoomPage() {
         "Hydrotherapy pool",
       ]}
       highlights={[
-        { title: "Therapy Sessions Daily", value: "50+" },
-        { title: "Certified Therapists", value: "12" },
-        { title: "Recovery Rate", value: "95%" },
-        { title: "Equipment Types", value: "30+" },
       ]}
       breadcrumblabel="Rehab Room"
     />

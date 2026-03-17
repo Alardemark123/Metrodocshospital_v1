@@ -65,10 +65,6 @@ export default function FourthFloorPage() {
         },
       ]}
       highlights={[
-        { title: "Total Beds", value: "120" },
-        { title: "Private Suites", value: "15" },
-        { title: "Nurse Stations", value: "4" },
-        { title: "Nurses on Duty", value: "20" },
       ]}
       breadcrumblabel="Fourth Floor"
     />

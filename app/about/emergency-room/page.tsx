@@ -35,10 +35,6 @@ export default function EmergencyRoomPage() {
         "Ambulance and helicopter transport",
       ]}
       highlights={[
-        { title: "Average Response Time", value: "<5min" },
-        { title: "Emergency Beds", value: "24" },
-        { title: "ER Specialists", value: "15" },
-        { title: "Lives Saved Yearly", value: "500+" },
       ]}
       breadcrumblabel="Emergency Room"
     />

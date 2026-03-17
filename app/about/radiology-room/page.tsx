@@ -32,10 +32,6 @@ export default function RadiologyRoomPage() {
         "Image-guided interventions",
       ]}
       highlights={[
-        { title: "Scans Per Day", value: "100+" },
-        { title: "Imaging Machines", value: "8" },
-        { title: "Report Turnaround", value: "24h" },
-        { title: "Accuracy Rate", value: "99%" },
       ]}
       breadcrumblabel="Radiology Room"
     />

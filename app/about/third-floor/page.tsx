@@ -51,10 +51,6 @@ export default function ThirdFloorPage() {
         },
       ]}
       highlights={[
-        { title: "Daily Consultations", value: "200+" },
-        { title: "Specialty Clinics", value: "10" },
-        { title: "Average Wait Time", value: "15min" },
-        { title: "Patient Satisfaction", value: "96%" },
       ]}
       breadcrumblabel="Third Floor"
     />

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Second Floor | metrodocshospital",
+  title: "Second Floor | Metro Rizal Doctors Hospital",
   description:
-    "Lobby, prayer area, and nursery complex at metrodocshospital. Patient services and family care.",
+    "Lobby, prayer area, and nursery complex at Metro Rizal Doctors Hospital.Patient services and family care.",
 };
 
 export default function SecondFloorPage() {
@@ -12,7 +12,7 @@ export default function SecondFloorPage() {
     <FacilityPage
       title="Second Floor"
       subtitle="Patient Services"
-      description="The second floor of metrodocshospital houses essential patient services including our welcoming lobby area, a peaceful prayer space for spiritual comfort, and our comprehensive nursery complex for newborns and their families."
+      description="The second floor of Metro Rizal Doctors Hospital houses essential patient services including our welcoming lobby area, a peaceful prayer space for spiritual comfort, and our comprehensive nursery complex for newborns and their families."
       iconName="Building2"
       images={[
         "/about/second-floor/FRD_5293-1024x683.jpg",
@@ -36,12 +36,31 @@ export default function SecondFloorPage() {
         "Family waiting areas",
         "Visitor information desk",
       ]}
+
       sections={[
         {
           title: "Lobby",
           description:
             "A welcoming space designed to ease patient and visitor anxiety with comfortable seating, natural lighting, and helpful staff ready to assist.",
         },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {
           title: "Prayer Area",
           description:
@@ -54,10 +73,6 @@ export default function SecondFloorPage() {
         },
       ]}
       highlights={[
-        { title: "Seating Capacity", value: "100+" },
-        { title: "Nursery Beds", value: "40" },
-        { title: "NICU Beds", value: "12" },
-        { title: "Prayer Rooms", value: "3" },
       ]}
       breadcrumblabel="Second Floor"
     />
