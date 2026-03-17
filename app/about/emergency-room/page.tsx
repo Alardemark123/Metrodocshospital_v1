@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Emergency Room | metrodocshospital",
+  title: "Emergency Room | Metro Rizal Doctors Hospital",
   description:
-    "24/7 emergency care at metrodocshospital. Rapid triage, trauma care, cardiac and stroke response, pediatric emergency.",
+    "24/7 emergency care at Metro Rizal Doctors Hospital. Rapid triage, trauma care, cardiac and stroke response, pediatric emergency.",
 };
 
 export default function EmergencyRoomPage() {

@@ -38,19 +38,19 @@ const whyChooseUs = [
     icon: UserCheck,
     title: "Qualified Doctors",
     description:
-      "Doctors at Metrodocs Hospital are skilled medical professionals who assist in treating and healing patients of a variety of health ailments.",
+      "Doctors at Metro Rizal Doctors Hospital are skilled medical professionals who assist in treating and healing patients of a variety of health ailments.",
   },
   {
     icon: Phone,
     title: "Emergency Help",
     description:
-      "Calling our emergency hotline at (02) 8251-6922 | (02) 8532-6505 Local 104 can connect you to Metrodocs Hospital's immediate assistance during an emergency.",
+      "Calling our emergency hotline at (02) 8251-6922 | (02) 8532-6505 Local 104 can connect you to Metro Rizal Doctors Hospital's immediate assistance during an emergency.",
   },
   {
     icon: Star,
     title: "Quality & Safety",
     description:
-      "Metrodocs Hospital evaluates the effectiveness, timeliness, safety, and responsiveness of the care by examining these factors.",
+      "Metro Rizal Doctors Hospital evaluates the effectiveness, timeliness, safety, and responsiveness of the care by examining these factors.",
   },
 ];
 

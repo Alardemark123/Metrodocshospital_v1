@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Radiology Room | metrodocshospital",
+  title: "Radiology Room | Metro Rizal Doctors Hospital",
   description:
-    "Diagnostic imaging at metrodocshospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
+    "Diagnostic imaging at Metro Rizal Doctors Hospital: MRI, CT, X-ray, ultrasound, mammography, and image-guided interventions.",
 };
 
 export default function RadiologyRoomPage() {
