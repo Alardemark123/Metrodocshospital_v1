@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Article Not Found" };
   }
   return {
-    title: `${article.title} | metrodocshospital`,
+    title: `${article.title} | Metro Rizal Doctors Hospital`,
     description: article.excerpt,
     openGraph: {
       title: article.title,

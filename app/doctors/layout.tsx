@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Our Doctors",
-  description: "Meet our expert physicians at metrodocshospital. Board-certified doctors across cardiology, neurology, pediatrics, and more.",
+  description: "Meet our expert physicians at Metro Rizal Doctors Hospital. Board-certified doctors across cardiology, neurology, pediatrics, and more.",
 }
 
 export default function DoctorsLayout({

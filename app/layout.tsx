@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://metrodocshospital.com",
   ),
   title: {
-    default: "metrodocshospital | Compassionate Care for Every Life",
-    template: "%s | metrodocshospital",
+    default: "Metro Rizal Doctors Hospital | Compassionate Care for Every Life",
+    template: "%s | Metro Rizal Doctors Hospital",
   },
   description:
     "Delivering modern healthcare with trusted medical professionals. Find doctors, explore departments, and access quality medical care.",
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    title: "metrodocshospital | Compassionate Care for Every Life",
+    title: "Metro Rizal Doctors Hospital | Compassionate Care for Every Life",
     description:
       "Delivering modern healthcare with trusted medical professionals. Find doctors, explore departments, and access quality medical care.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "metrodocshospital | Compassionate Care for Every Life",
+    title: "Metro Rizal Doctors Hospital | Compassionate Care for Every Life",
     description:
       "Delivering modern healthcare with trusted medical professionals.",
   },
