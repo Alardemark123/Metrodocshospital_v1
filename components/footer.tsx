@@ -86,15 +86,26 @@ export function Footer() {
         />
         <div className="mx-auto max-w-7xl px-4 py-14">
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 text-center md:text-left items-center md:items-start">
-            {/* Brand */}
+            {/* Logo */}
             <div className="lg:col-span-4 flex flex-col items-center md:items-start">
-              <Link href="/" className="mb-2 inline-block">
+              <Link href="/" className=" flex items-center shrink-0">
                 <img
-                  src="/metrodocs-logo-new.png"
-                  alt="Metro Docs Hospital"
+                  src="/metro-logo-2.png"
+                  alt="Metro Rizal Doctors Hospital"
                   className="h-20 w-auto"
                 />
+                <div className="ml-2 flex flex-col">   
+                  <span className="text-lg font-old font-semibold text-green-800 leading-none">
+                    Metro Rizal
+                  </span>
+                  <span className="text-lg font-semibold text-green-800 leading-none mt-0.5 tracking-wider">
+                    Doctors Hospital
+                  </span>
+                </div>
               </Link>
+
+
+
               <p className="mb-3 text-sm leading-relaxed text-gray-600 text-center md:text-left">
                 Delivering compassionate, world-class healthcare with cutting-edge technology 
                 and trusted medical professionals dedicated to your well-being.
