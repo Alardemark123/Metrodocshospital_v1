@@ -79,7 +79,7 @@ export function Navbar() {
               <span className="text-base font-old font-semibold text-green-800 leading-none">
                 Metro Rizal
               </span>
-              <span className="text-sm font-thin text-green-800 leading-none mt-0.5 tracking-wider">
+              <span className="text-base font-semibold text-green-800 leading-none mt-0.5 tracking-wider">
                 Doctors Hospital
               </span>
             </div>
