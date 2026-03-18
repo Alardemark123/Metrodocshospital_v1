@@ -133,15 +133,13 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
   );
 }
 
-// ─── Main Page Component (The Default Export) ───────────────────────────────
-
 export default function DepartmentsPage() {
   const departments = getDepartments();
 
   return (
     <div className="bg-[#f8faff] min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
         <div className="relative mx-auto max-w-7xl px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

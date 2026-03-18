@@ -247,27 +247,6 @@ export default function TestimonialsPage() {
           </AnimatePresence>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="bg-primary py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <div className="mb-3 flex justify-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-foreground/10">
-              <Quote className="h-7 w-7 text-primary-foreground" />
-            </div>
-          </div>
-          <h2 className="mb-4 text-balance text-3xl font-bold text-primary-foreground md:text-4xl">
-            Share Your Experience
-          </h2>
-          <p className="mb-8 text-sm text-primary-foreground/80 md:text-base">
-            Your story could inspire others to seek the care they need. We'd
-            love to hear about your visit.
-          </p>
-          <Button size="lg" variant="secondary" asChild>
-            <Link href="/contact">Leave a Testimonial</Link>
-          </Button>
-        </div>
-      </section>
     </>
   );
 }
