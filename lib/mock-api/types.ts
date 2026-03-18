@@ -136,6 +136,8 @@ export interface FacilityPageProps {
   images?: string[];
   sections?: Section[];
   sections2?: Section[];
+  sections3?: Section[];
+  sections4?: Section[];
   breadcrumblabel?: string;
 }
 

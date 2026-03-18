@@ -129,6 +129,8 @@ export function FacilityPage({
   images = [],
   sections = [],
   sections2 = [],
+  sections3 = [],
+  sections4 = [],
   breadcrumblabel,
 }: FacilityPageProps) {
   const Icon = ICON_MAP[iconName];
@@ -444,7 +446,7 @@ export function FacilityPage({
               </div>
             </FadeIn>
 
-            {/* Second Floor | Lobby and Prayer Area */}
+            {/* ── Section 1 ── */}
             {sections?.length > 0 && (
               <div className="space-y-8">
                 {sections.map((section, idx) => {
@@ -455,7 +457,6 @@ export function FacilityPage({
                       key={idx}
                       className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
                     >
-                      {/* Left side: main image */}
                       {(section.images?.length ?? 0) > 0 && (
                         <div className="sm:w-1/2 sm:mr-8">
                           <button
@@ -520,8 +521,6 @@ export function FacilityPage({
                           </div>
                         </div>
                       )}
-
-                      {/* Right side: text */}
                       <div className="w-full sm:flex-1 flex items-start justify-start">
                         <div className="max-w-prose text-center sm:text-left space-y-6">
                           <span className="block text-lg sm:text-5xl font-bold text-primary">
@@ -553,7 +552,6 @@ export function FacilityPage({
                       key={idx}
                       className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
                     >
-                      {/* ── Text first on left ── */}
                       <div className="w-full sm:flex-1 flex items-start justify-start order-2 sm:order-1">
                         <div className="max-w-prose text-center sm:text-left space-y-6">
                           <span className="block text-lg sm:text-5xl font-bold text-primary">
@@ -564,8 +562,6 @@ export function FacilityPage({
                           </p>
                         </div>
                       </div>
-
-                      {/* ── Image second on right ── */}
                       {(section.images?.length ?? 0) > 0 && (
                         <div className="sm:w-1/2 sm:ml-8 order-1 sm:order-2">
                           <button
@@ -633,7 +629,184 @@ export function FacilityPage({
             </div>
           </section>
         )}
-        
+
+          {/* ── Section 3 ── */}
+          {sections3?.length > 0 && (
+            <section className="relative overflow-hidden bg-secondary/30 py-20 lg:py-28">
+              <div className="relative mx-auto max-w-7xl px-4">
+                <div className="space-y-8">
+                  {sections3.map((section, idx) => {
+                    const [activeImg, setActiveImg] = useState(section.images?.[0]);
+
+                    return (
+                      <FadeIn
+                        key={idx}
+                        className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
+                      >
+                        {(section.images?.length ?? 0) > 0 && (
+                          <div className="sm:w-1/2 sm:mr-8">
+                            <button
+                              onClick={() => {
+                                const el = document.getElementById(`expanded3-${idx}`);
+                                if (el) el.classList.toggle("hidden");
+                              }}
+                              className="w-full"
+                            >
+                              <img
+                                src={activeImg}
+                                alt={section.title}
+                                className="w-full h-100 object-cover rounded-lg shadow"
+                              />
+                            </button>
+
+                            <div className="flex justify-center gap-3 overflow-x-auto mt-4">
+                              {section.images?.map((src, i) => (
+                                <button
+                                  key={i}
+                                  onClick={() => setActiveImg(src)}
+                                  className={`relative h-16 w-24 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border-2 ${
+                                    activeImg === src
+                                      ? "border-primary"
+                                      : "border-transparent opacity-60"
+                                  }`}
+                                >
+                                  <img
+                                    src={src}
+                                    alt={`${section.title} thumbnail ${i + 1}`}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </button>
+                              ))}
+                            </div>
+                            <div
+                              id={`expanded3-${idx}`}
+                              onClick={() =>
+                                document
+                                  .getElementById(`expanded3-${idx}`)
+                                  ?.classList.add("hidden")
+                              }
+                              className="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+                            >
+                              <img
+                                src={activeImg}
+                                alt={`${section.title} expanded`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="max-h-[90%] max-w-[90%] rounded-lg"
+                              />
+                              <button className="absolute top-4 right-4 text-white text-3xl">
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        <div className="w-full sm:flex-1">
+                          <div className="max-w-prose text-center sm:text-left space-y-6">
+                            <span className="block text-lg sm:text-5xl font-bold text-primary">
+                              {section.title}
+                            </span>
+                            <p className="text-sm sm:text-base text-gray-600">
+                              {section.description}
+                            </p>
+                          </div>
+                        </div>
+                      </FadeIn>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          )}
+
+            {/* ── Section 4 ── */}
+            {sections4.length > 0 && (
+              <section className="relative overflow-hidden bg-accent/5 py-20 lg:py-28">
+                <div className="relative mx-auto max-w-7xl px-4">
+                  <div className="space-y-8">
+                    {sections4.map((section, idx) => {
+                      const [activeImg, setActiveImg] = useState(section.images?.[0]);
+                      return (
+                        <FadeIn
+                          key={idx}
+                          className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
+                        >
+                          <div className="w-full sm:flex-1 flex items-start justify-start order-2 sm:order-1">
+                            <div className="max-w-prose text-center sm:text-left space-y-6">
+                              <span className="block text-lg sm:text-5xl font-bold text-primary">
+                                {section.title}
+                              </span>
+                              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                                {section.description}
+                              </p>
+                            </div>
+                          </div>
+                          {(section.images?.length ?? 0) > 0 && (
+                            <div className="sm:w-1/2 sm:ml-8 order-1 sm:order-2">
+                              <button
+                                onClick={() => {
+                                  const el = document.getElementById(`expanded2-${idx}`);
+                                  if (el) el.classList.toggle("hidden");
+                                }}
+                                className="w-full"
+                              >
+                                <img
+                                  src={activeImg}
+                                  alt={section.title}
+                                  className="w-full h-100 object-cover rounded-lg shadow"
+                                />
+                              </button>
+
+                              <div className="flex justify-center gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mt-4">
+                                {section.images?.map((src, i) => (
+                                  <button
+                                    key={i}
+                                    onClick={() => setActiveImg(src)}
+                                    className={`relative h-16 w-24 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 hover:opacity-50 ${
+                                      activeImg === src
+                                        ? "border-primary"
+                                        : "border-transparent opacity-60 hover:opacity-100"
+                                    }`}
+                                  >
+                                    <img
+                                      src={src}
+                                      alt={`${section.title} thumbnail ${i + 1}`}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+
+                              <div
+                                id={`expanded2-${idx}`}
+                                onClick={() =>
+                                  document.getElementById(`expanded2-${idx}`)?.classList.add("hidden")
+                                }
+                                className="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+                              >
+                                <img
+                                  src={activeImg}
+                                  alt={`${section.title} expanded`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
+                                />
+                                <button
+                                  onClick={() =>
+                                    document.getElementById(`expanded2-${idx}`)?.classList.add("hidden")
+                                  }
+                                  className="absolute top-4 right-4 text-white text-3xl"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </FadeIn>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            )}
+
       {/* ── Features ── */}
       <section className="relative overflow-hidden bg-background py-20 lg:py-28">
         <div

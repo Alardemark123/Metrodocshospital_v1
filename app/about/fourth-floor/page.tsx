@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Fourth Floor | metrodocshospital",
+  title: "Fourth Floor | Metro Rizal Doctors Hospital",
   description:
-    "Inpatient rooms at metrodocshospital: private suites, semi-private rooms, 24/7 nursing care.",
+    "Inpatient rooms at Metro Rizal Doctors Hospital: private suites, semi-private rooms, 24/7 nursing care.",
 };
 
 export default function FourthFloorPage() {
@@ -47,21 +47,47 @@ export default function FourthFloorPage() {
           title: "Private Room",
           description:
             "Single-occupancy rooms offering privacy and comfort, ideal for patients who prefer personal space during their recovery.",
+          images: [
+            "/about/fourth-floor/FRD_5218-1024x683.jpg",
+            "/about/fourth-floor/FRD_5224-1024x682.jpg",
+            "/about/fourth-floor/FRD_5225-1024x683.jpg",
+          ],
         },
+      ]}
+      sections2={[
         {
           title: "Semi-Private Room",
           description:
             "Shared accommodations with curtain dividers, providing a balance of community support and personal space at an affordable rate.",
+          images: [
+            "/about/fourth-floor/FRD_5230-1024x683.jpg",
+            "/about/fourth-floor/FRD_5232-1024x683.jpg",
+            "/about/fourth-floor/FRD_5234-1024x683.jpg",
+          ],
         },
+      ]}
+      sections3={[
         {
           title: "Suite Room",
           description:
             "Premium accommodations with living area, private bathroom, and enhanced amenities for patients seeking the highest level of comfort.",
+          images: [
+            "/about/fourth-floor/FRD_5235-1024x683.jpg",
+            "/about/fourth-floor/IMG_7938-1024x683.jpg",
+            "/about/fourth-floor/IMG_7945-1024x683.jpg",
+          ],
         },
+      ]}
+      sections4={[
         {
           title: "Nurse Station",
           description:
             "Centrally located nursing stations ensuring rapid response to patient needs with continuous monitoring and care coordination.",
+          images: [
+            "/about/fourth-floor/IMG_7949-1024x682.jpg",
+            "/about/fourth-floor/IMG_7951-1024x683.jpg",
+            "/about/fourth-floor/IMG_7954-1024x683.jpg",
+          ],
         },
       ]}
       highlights={[
