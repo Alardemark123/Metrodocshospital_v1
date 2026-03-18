@@ -192,7 +192,7 @@ export default function NewsDetailPage({
 
             {/* ── SIDEBAR (Right Side) ── */}
             <aside className="lg:col-span-4">
-              <div className="sticky top-24 space-y-10">
+              <div className="sticky top-32 space-y-10">
                 {/* Related Posts Widget */}
                 <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
                   <div className="mb-6 flex items-center gap-2 border-b border-border pb-3">

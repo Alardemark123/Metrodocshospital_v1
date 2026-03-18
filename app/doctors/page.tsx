@@ -222,7 +222,7 @@ export default function DoctorsPage() {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar */}
             <aside className="w-full lg:w-64 shrink-0">
-              <div className="sticky top-24 space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+              <div className="sticky top-32 space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                 <div>
                   <label className="mb-2 block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Search
