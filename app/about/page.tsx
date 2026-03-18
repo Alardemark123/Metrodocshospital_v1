@@ -348,7 +348,9 @@ export default function AboutPage() {
             {whyChooseUs.map((item, index) => (
               <FadeIn key={item.title} delay={index * 0.07}>
                 <div className="group relative flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-                  <div className="absolute left-0 top-0 h-0.5 w-0 rounded-t-2xl bg-primary transition-all duration-500 group-hover:w-full" />
+                  
+                  {/* Animated border overlay */}
+                  <div className="absolute left-0 top-0 w-0 h-0 border-1 border-primary rounded-2xl transition-all duration-500 group-hover:w-full group-hover:h-full" />
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
                     <item.icon className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
                   </div>
