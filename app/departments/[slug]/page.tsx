@@ -88,7 +88,7 @@ export default function DepartmentDetailPage({
             {department.name}
           </h1>
           <p className="mt-3 text-sm text-slate-400 italic">
-            By admin &nbsp;·&nbsp; Specialized Medical Units
+            &nbsp;·&nbsp; Specialized Medical Units
           </p>
         </motion.header>
 
@@ -268,10 +268,10 @@ export default function DepartmentDetailPage({
             </div>
 
             {/* RECENT POSTS CARD */}
-            <div className="rounded-3xl bg-[#0a2e1a] p-8 shadow-xl text-white overflow-hidden relative">
+            <div className="rounded-3xl bg-white p-8 shadow-xl text-green-800 overflow-hidden relative">
               <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-[#5CA51B]/10 blur-2xl" />
               <h3 className="text-lg font-bold mb-8 flex items-center gap-2">
-                <Calendar size={18} className="text-[#5CA51B]" />
+                <Calendar size={18} className="text-shadow-green-700" />
                 Recent Updates
               </h3>
               <div className="space-y-6">
@@ -281,10 +281,10 @@ export default function DepartmentDetailPage({
                     href={`/news/${post.slug}`}
                     className="group block"
                   >
-                    <h4 className="text-xs font-black uppercase text-[#5CA51B] leading-snug group-hover:text-white transition-colors">
+                    <h4 className="text-xs font-bold uppercase text-primary leading-snug transition-colors">
                       {post.title}
                     </h4>
-                    <p className="mt-1.5 text-[10px] font-bold text-white/40 uppercase">
+                    <p className="mt-1.5 text-[12px] font-semibold text-green-700 uppercase">
                       {post.date}
                     </p>
                   </Link>
