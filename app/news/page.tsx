@@ -367,46 +367,6 @@ export default function NewsPage() {
           )}
         </div>
       </section>
-
-      {/* ── Newsletter CTA ── */}
-      <section className="relative overflow-hidden bg-primary py-16">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
-            backgroundSize: "16px 16px",
-          }}
-        />
-        <div className="pointer-events-none absolute -left-16 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
-        <div className="relative mx-auto max-w-2xl px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-3 text-2xl font-bold text-primary-foreground md:text-3xl">
-              Stay Updated with Our Newsletter
-            </h2>
-            <p className="mb-7 text-sm text-primary-foreground/80">
-              Subscribe to receive the latest news, health tips, and event
-              announcements directly in your inbox.
-            </p>
-            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2.5 text-sm text-primary-foreground placeholder:text-primary-foreground/50 focus:border-primary-foreground/40 focus:outline-none sm:w-72"
-              />
-              <Button variant="secondary" type="submit" className="gap-2">
-                Subscribe
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </>
   );
 }
