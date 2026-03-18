@@ -92,7 +92,7 @@ export function Footer() {
                 <img
                   src="/metro-logo-2.png"
                   alt="Metro Rizal Doctors Hospital"
-                  className="h-20 w-auto"
+                  className="h-20 w-20"
                 />
                 <div className="ml-2 flex flex-col">   
                   <span className="text-lg font-old font-semibold text-green-800 leading-none">
