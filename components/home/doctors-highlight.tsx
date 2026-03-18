@@ -18,21 +18,16 @@ function DoctorCard({
   index: number;
   isInView: boolean;
 }) {
-  const [imgSrc, setImgSrc] = useState(() => {
-    const isExternal = doctor.image?.startsWith("http");
-    return isExternal
-      ? "/doctors/placeholder-doctor.jpg"
-      : doctor.image || "/doctors/placeholder-doctor.jpg";
-  });
+  const malePlaceholder = "/doctors/placeholder-doctor.jpg";
+  const femalePlaceholder = "/doctors/doctor-280x281.png";
+  const fallbackImg =
+    doctor.gender === "female" ? femalePlaceholder : malePlaceholder;
+  const [imgSrc, setImgSrc] = useState(doctor.image || fallbackImg);
 
   useEffect(() => {
     const isExternal = doctor.image?.startsWith("http");
-    setImgSrc(
-      isExternal
-        ? "/doctors/placeholder-doctor.jpg"
-        : doctor.image || "/doctors/placeholder-doctor.jpg",
-    );
-  }, [doctor.image]);
+    setImgSrc(doctor.image || fallbackImg);
+  }, [doctor.image, fallbackImg]);
 
   return (
     <motion.div
@@ -49,16 +44,17 @@ function DoctorCard({
               alt={`Photo of ${doctor.name}`}
               fill
               className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
+              // 5. If the provided image path 404s, swap to the correct gender fallback
+              onError={() => setImgSrc(fallbackImg)}
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
 
             {/* Rating */}
-            <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+            {/* <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
               {doctor.rating}
-            </div>
+            </div>  */}
 
             {/* Name + specialty */}
             <div className="absolute bottom-0 left-0 right-0 p-4">

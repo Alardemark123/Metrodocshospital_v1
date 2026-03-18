@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { use, useState } from "react";
 import Link from "next/link";
 import {
@@ -16,11 +16,14 @@ import {
   Stethoscope,
   BadgeCheck,
   ChevronRight,
+  X,
+  ZoomIn,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDoctorBySlug, getDoctors, slugify } from "@/lib/mock-api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DoctorDetailPage({
   params,
@@ -31,9 +34,30 @@ export default function DoctorDetailPage({
   const doctor = getDoctorBySlug(slug);
   const router = useRouter();
 
-  const [imgSrc, setImgSrc] = useState(
-    doctor?.image ?? "/doctors/placeholder-doctor.jpg",
-  );
+  const malePlaceholder = "/doctors/placeholder-doctor.jpg";
+  const femalePlaceholder = "/doctors/doctor-280x281.png";
+  const fallbackImg =
+    doctor?.gender === "female" ? femalePlaceholder : malePlaceholder;
+  const [imgSrc, setImgSrc] = useState(doctor?.image || fallbackImg);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    const isExternal = doctor?.image?.startsWith("http");
+    setImgSrc(doctor?.image || fallbackImg);
+  }, [doctor?.image, fallbackImg]);
+
+  // lock body scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightboxOpen]);
 
   if (!doctor) {
     return (
@@ -156,6 +180,19 @@ export default function DoctorDetailPage({
                     </span>
                   </div>
                 )}
+                {doctor.availability && (
+                  <div className="flex items-center gap-2 rounded-xl border border-border bg-card/80 px-4 py-2.5 backdrop-blur-sm">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <div className="flex flex-col">
+                      <span className="text-xs text-muted-foreground">
+                        Schedule
+                      </span>
+                      <span className="text-sm font-bold text-foreground">
+                        {doctor.availability}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </motion.div>
 
               {/* CTAs */}
@@ -164,7 +201,7 @@ export default function DoctorDetailPage({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.24 }}
                 className="flex flex-wrap gap-3"
-              ></motion.div>
+              />
             </div>
 
             {/* Right — photo */}
@@ -177,27 +214,86 @@ export default function DoctorDetailPage({
               <div className="relative">
                 <div className="absolute -inset-3 rounded-3xl border border-primary/10" />
                 <div className="absolute -inset-6 rounded-3xl border border-primary/5" />
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border shadow-2xl">
-                  <Image
-                    src={imgSrc}
-                    alt={`Photo of ${doctor.name}`}
-                    fill
-                    className="object-cover object-top"
-                    onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-sm font-semibold text-white/90">
-                      {doctor.specialty}
-                    </p>
-                    <p className="text-xs text-white/60">{doctor.department}</p>
+
+                {/* Clickable image */}
+                <button
+                  onClick={() => setLightboxOpen(true)}
+                  className="group relative block w-full cursor-zoom-in"
+                  aria-label="View full photo"
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border shadow-2xl">
+                    <Image
+                      src={imgSrc}
+                      alt={`Photo of ${doctor.name}`}
+                      fill
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      onError={() => setImgSrc(fallbackImg)}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent" />
+
+                    {/* zoom hint overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
+                      <div className="flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg">
+                        <ZoomIn className="h-4 w-4 text-foreground" />
+                        <span className="text-xs font-semibold text-foreground">
+                          View photo
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </button>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={() => setLightboxOpen(false)}
+          >
+            {/* backdrop */}
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+
+            {/* close button */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 transition-colors"
+              aria-label="Close lightbox"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative z-10 max-h-[90vh] max-w-sm w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl shadow-2xl border border-white/10">
+                <Image
+                  src={imgSrc}
+                  alt={`Photo of ${doctor.name}`}
+                  fill
+                  className="object-cover object-top"
+                  onError={() => setImgSrc(fallbackImg)}
+                  sizes="(max-width: 768px) 100vw, 384px"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

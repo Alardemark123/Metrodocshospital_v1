@@ -91,17 +91,17 @@ export function HmoMarquee() {
       onMouseLeave={resume}
     >
       {/* Row 1 — scrolls left */}
-      <div className="flex gap-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <motion.div animate={controls1} className="flex shrink-0 gap-4">
+      <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
+        <div className="flex shrink-0 gap-4 animate-marquee-left hover:[animation-play-state:paused]">
           {[...hmoRow1, ...hmoRow1].map((hmo, i) => sharedCard(hmo, i))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Row 2 — scrolls right */}
-      <div className="flex gap-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <motion.div animate={controls2} className="flex shrink-0 gap-4">
+      <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
+        <div className="flex shrink-0 gap-4 animate-marquee-right hover:[animation-play-state:paused]">
           {[...hmoRow2, ...hmoRow2].map((hmo, i) => sharedCard(hmo, i))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import type { Department, DepartmentPreview } from "./types";
 
-const departments: Department[] = [
+const departments: Omit<Department, "slug">[] = [
   {
     id: "radiology",
     icon: "Siren",
@@ -153,7 +153,10 @@ const departments: Department[] = [
 ];
 
 export function getDepartments(): Department[] {
-  return departments;
+  return departments.map((dept) => ({
+    ...dept,
+    slug: slugify(dept.name),
+  })) as Department[];
 }
 
 export function getDepartmentFilters(): string[] {
@@ -190,4 +193,20 @@ export function getDepartmentsPreview(): DepartmentPreview[] {
     color: d.color,
     href: `/departments#${d.id}`,
   }));
+}
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(/[^\w-]+/g, "") // Remove all non-word chars
+    .replace(/--+/g, "-") // Replace multiple - with single -
+    .replace(/^-+/, "") // Trim - from start of text
+    .replace(/-+$/, ""); // Trim - from end of text
+}
+
+export function getDepartmentBySlug(slug: string) {
+  const departments = getDepartments();
+  return departments.find((dept) => slugify(dept.name) === slug);
 }
