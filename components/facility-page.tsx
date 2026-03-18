@@ -128,6 +128,7 @@ export function FacilityPage({
   highlights,
   images = [],
   sections = [],
+  sections2 = [],
   breadcrumblabel,
 }: FacilityPageProps) {
   const Icon = ICON_MAP[iconName];
@@ -377,7 +378,7 @@ export function FacilityPage({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-base leading-relaxed text-muted-foreground sm:text-lg"
+                className="text-base leading-relaxed text-muted-foreground sm:text-sm"
               >
                 {description}
               </motion.p>
@@ -413,6 +414,7 @@ export function FacilityPage({
           </div>
         </div>
       </section>
+      
       {/* ── Sections — room types / area descriptions ── */}
       {sections.length > 0 && (
         <section className="relative overflow-hidden bg-secondary py-20 lg:py-28">
@@ -428,45 +430,209 @@ export function FacilityPage({
           <div className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-accent/20 blur-[80px]" />
 
           <div className="relative mx-auto max-w-7xl px-4">
-            <FadeIn className="mb-12">
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                  Room Types
-                </span>
+            <FadeIn className="mb-12 flex justify-center">
+              <div className="text-center">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    Room Types
+                  </span>
+                </div>
+                <h2 className="text-primary font-bold text-foreground md:text-5xl">
+                  <span className="text-black">Our Accommodation</span>
+                </h2>
               </div>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-                Our <span className="text-primary">Accommodations</span>
-              </h2>
             </FadeIn>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {sections.map((section, i) => (
-                <FadeIn key={section.title} delay={i * 0.07}>
-                  <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-                    {/* Top accent sweep */}
-                    <div className="absolute left-0 top-0 h-0.5 w-0 rounded-t-2xl bg-primary transition-all duration-500 group-hover:w-full" />
-                    {/* Number watermark */}
-                    <span className="pointer-events-none absolute right-3 top-2 select-none text-5xl font-black text-primary/5">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary">
-                      <CheckCircle2 className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                    </div>
-                    <h3 className="mb-2 font-bold text-card-foreground">
-                      {section.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {section.description}
-                    </p>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
+            {/* Second Floor | Lobby and Prayer Area */}
+            {sections?.length > 0 && (
+              <div className="space-y-8">
+                {sections.map((section, idx) => {
+                  const [activeImg, setActiveImg] = useState(section.images?.[0]);
+
+                  return (
+                    <FadeIn
+                      key={idx}
+                      className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
+                    >
+                      {/* Left side: main image */}
+                      {(section.images?.length ?? 0) > 0 && (
+                        <div className="sm:w-1/2 sm:mr-8">
+                          <button
+                            onClick={() => {
+                              const el = document.getElementById(`expanded-${idx}`);
+                              if (el) {
+                                el.classList.toggle("hidden");
+                              }
+                            }}
+                            className="w-full"
+                          >
+                            <img
+                              src={activeImg}
+                              alt={section.title}
+                              className="w-full h-100 object-cover rounded-lg shadow"
+                            />
+                          </button>
+                          <div className="flex justify-center gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mt-4">
+                            {section.images?.map((src, i) => (
+                              <button
+                                key={i}
+                                onClick={() => setActiveImg(src)}
+                                className={`relative h-16 w-24 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 hover:opacity-50 ${
+                                  activeImg === src
+                                    ? "border-primary"
+                                    : "border-transparent opacity-60 hover:opacity-100"
+                                }`}
+                              >
+                                <img
+                                  src={src}
+                                  alt={`${section.title} thumbnail ${i + 1}`}
+                                  className="h-full w-full object-cover"
+                                />
+                              </button>
+                            ))}
+                          </div>
+                          <div
+                            id={`expanded-${idx}`}
+                            onClick={() =>
+                              document
+                                .getElementById(`expanded-${idx}`)
+                                ?.classList.add("hidden")
+                            }
+                            className="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+                          >
+                            <img
+                              src={activeImg}
+                              alt={`${section.title} expanded`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
+                            />
+                            <button
+                              onClick={() =>
+                                document
+                                  .getElementById(`expanded-${idx}`)
+                                  ?.classList.add("hidden")
+                              }
+                              className="absolute top-4 right-4 text-white text-3xl"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Right side: text */}
+                      <div className="w-full sm:flex-1 flex items-start justify-start">
+                        <div className="max-w-prose text-center sm:text-left space-y-6">
+                          <span className="block text-lg sm:text-5xl font-bold text-primary">
+                            {section.title}
+                          </span>
+                          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                            {section.description}
+                          </p>
+                        </div>
+                      </div>
+                    </FadeIn>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
       )}
 
+        {/* ── Section 2 ── */}
+        {sections2.length > 0 && (
+          <section className="relative overflow-hidden bg-accent/5 py-20 lg:py-28">
+            <div className="relative mx-auto max-w-7xl px-4">
+              <div className="space-y-8">
+                {sections2.map((section, idx) => {
+                  const [activeImg, setActiveImg] = useState(section.images?.[0]);
+                  return (
+                    <FadeIn
+                      key={idx}
+                      className="flex flex-col items-center gap-6 sm:flex-row sm:items-start"
+                    >
+                      {/* ── Text first on left ── */}
+                      <div className="w-full sm:flex-1 flex items-start justify-start order-2 sm:order-1">
+                        <div className="max-w-prose text-center sm:text-left space-y-6">
+                          <span className="block text-lg sm:text-5xl font-bold text-primary">
+                            {section.title}
+                          </span>
+                          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                            {section.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* ── Image second on right ── */}
+                      {(section.images?.length ?? 0) > 0 && (
+                        <div className="sm:w-1/2 sm:ml-8 order-1 sm:order-2">
+                          <button
+                            onClick={() => {
+                              const el = document.getElementById(`expanded2-${idx}`);
+                              if (el) el.classList.toggle("hidden");
+                            }}
+                            className="w-full"
+                          >
+                            <img
+                              src={activeImg}
+                              alt={section.title}
+                              className="w-full h-100 object-cover rounded-lg shadow"
+                            />
+                          </button>
+
+                          <div className="flex justify-center gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mt-4">
+                            {section.images?.map((src, i) => (
+                              <button
+                                key={i}
+                                onClick={() => setActiveImg(src)}
+                                className={`relative h-16 w-24 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 hover:opacity-50 ${
+                                  activeImg === src
+                                    ? "border-primary"
+                                    : "border-transparent opacity-60 hover:opacity-100"
+                                }`}
+                              >
+                                <img
+                                  src={src}
+                                  alt={`${section.title} thumbnail ${i + 1}`}
+                                  className="h-full w-full object-cover"
+                                />
+                              </button>
+                            ))}
+                          </div>
+
+                          <div
+                            id={`expanded2-${idx}`}
+                            onClick={() =>
+                              document.getElementById(`expanded2-${idx}`)?.classList.add("hidden")
+                            }
+                            className="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+                          >
+                            <img
+                              src={activeImg}
+                              alt={`${section.title} expanded`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="max-h-[90%] max-w-[90%] rounded-lg shadow-lg"
+                            />
+                            <button
+                              onClick={() =>
+                                document.getElementById(`expanded2-${idx}`)?.classList.add("hidden")
+                              }
+                              className="absolute top-4 right-4 text-white text-3xl"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </FadeIn>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
       {/* ── Features ── */}
       <section className="relative overflow-hidden bg-background py-20 lg:py-28">
         <div

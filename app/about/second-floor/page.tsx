@@ -39,39 +39,31 @@ export default function SecondFloorPage() {
 
       sections={[
         {
-          title: "Lobby",
+          title: "Lobby and Prayer Area",
           description:
-            "A welcoming space designed to ease patient and visitor anxiety with comfortable seating, natural lighting, and helpful staff ready to assist.",
+            " a welcoming space designed to alleviate patient and visitor anxiety, featuring comfortable seating, natural lighting, and attentive staff available to provide assistance. Additionally, a serene multi-faith environment offers patients and their families a place for spiritual comfort, quiet reflection, and a sense of peace throughout their hospital stay.",
+          images: [
+            "/about/second-floor/IMG_7984-1024x683.jpg",
+            "/about/second-floor/FRD_5301-1024x683.jpg",
+            "/about/second-floor/IMG_7986-1024x683.jpg",
+          ],
         },
+        
+      ]}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        {
-          title: "Prayer Area",
-          description:
-            "A serene multi-faith space where patients and families can find spiritual comfort, reflection, and peace during their hospital stay.",
-        },
+      sections2={[
         {
           title: "Nursery Complex",
           description:
-            "State-of-the-art facilities for newborn care, including regular nursery, NICU, and specialized care for premature and high-risk infants.",
-        },
+            "State-of-the-art facilities for newborn care, including regular nursery, NICU, and specialized units for premature and high-risk infants. With advanced technology and expert staff, the complex ensures safe, compassionate, and family-centered care to give every newborn the best possible start in life.",
+          images: [
+            "/about/second-floor/FRD_5293-1024x683.jpg",
+            "/about/second-floor/FRD_5294-1024x683.jpg",
+            "/about/second-floor/FRD_5297-1024x683.jpg",
+          ],
+        }
       ]}
+
       highlights={[
       ]}
       breadcrumblabel="Second Floor"

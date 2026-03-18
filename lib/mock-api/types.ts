@@ -120,6 +120,7 @@ export interface Highlight {
 export interface Section {
   title: string;
   description: string;
+  images?: string[];
 }
 
 export interface FacilityPageProps {
@@ -128,9 +129,13 @@ export interface FacilityPageProps {
   description: string;
   iconName: string;
   features: string[];
-  highlights: Highlight[];
+  highlights: {
+    title: string;
+    value: string;
+  }[];
   images?: string[];
   sections?: Section[];
+  sections2?: Section[];
   breadcrumblabel?: string;
 }
 
