@@ -615,25 +615,27 @@ export default function CareersPage() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
-            <aside className="hidden lg:block w-[300px]">
-              <div className="sticky top-10 space-y-8 bg-white p-8 rounded-3xl border">
+            <aside className="hidden lg:block w-[300px] shrink-0">
+              {/* Changed top-10 to top-32 for more breathing room */}
+              <div className="sticky top-32 space-y-8 bg-white p-8 rounded-3xl border shadow-sm">
                 <div>
-                  <label className="text-xs font-black uppercase text-gray-400 block mb-2">
-                    Search
+                  <label className="text-[10px] font-black uppercase text-gray-400 block mb-3 tracking-[0.15em]">
+                    Search Positions
                   </label>
                   <input
-                    className="w-full rounded-2xl border bg-gray-50 p-3 text-sm outline-none"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-[#5aa61b]/10 focus:border-[#5aa61b] transition-all"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search positions..."
+                    placeholder="e.g. Nurse, Radiologist..."
                   />
                 </div>
+
                 <div>
-                  <label className="text-xs font-black uppercase text-gray-400 block mb-2">
-                    Department
+                  <label className="text-[10px] font-black uppercase text-gray-400 block mb-3 tracking-[0.15em]">
+                    Filter by Department
                   </label>
                   <select
-                    className="w-full rounded-2xl border bg-gray-50 p-3 text-sm font-bold"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm font-bold outline-none cursor-pointer focus:border-[#5aa61b] appearance-none"
                     value={selectedDept}
                     onChange={(e) => setSelectedDept(e.target.value)}
                   >
@@ -644,16 +646,84 @@ export default function CareersPage() {
                     ))}
                   </select>
                 </div>
-                <PaginationControls
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPrev={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  onNext={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
-                />
+
+                <div className="pt-4 border-t border-gray-50">
+                  <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPrev={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    onNext={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
+                  />
+                </div>
               </div>
             </aside>
+            {/* ─── MOBILE FILTER DRAWER ─── */}
+            <AnimatePresence>
+              {showMobileFilters && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="lg:hidden overflow-hidden mb-6"
+                >
+                  <div className="rounded-3xl border bg-white p-6 shadow-sm space-y-6">
+                    {/* Mobile Search */}
+                    <div>
+                      <label className="text-[10px] font-black uppercase text-gray-400 block mb-2 tracking-widest">
+                        Search Positions
+                      </label>
+                      <input
+                        className="w-full rounded-2xl border bg-gray-50 p-3 text-sm outline-none focus:border-[#5aa61b]"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Search..."
+                      />
+                    </div>
+
+                    {/* Mobile Department Select */}
+                    <div>
+                      <label className="text-[10px] font-black uppercase text-gray-400 block mb-2 tracking-widest">
+                        Department
+                      </label>
+                      <select
+                        className="w-full rounded-2xl border bg-gray-50 p-3 text-sm font-bold outline-none"
+                        value={selectedDept}
+                        onChange={(e) => setSelectedDept(e.target.value)}
+                      >
+                        {departments.map((d) => (
+                          <option key={d} value={d}>
+                            {d}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Mobile Pagination */}
+                    <div className="pt-4 border-t border-gray-50">
+                      <PaginationControls
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPrev={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        onNext={() =>
+                          setCurrentPage((p) => Math.min(totalPages, p + 1))
+                        }
+                      />
+                    </div>
+
+                    {/* Close Button */}
+                    <Button
+                      variant="ghost"
+                      className="w-full text-xs font-bold text-gray-400 uppercase"
+                      onClick={() => setShowMobileFilters(false)}
+                    >
+                      Close Filters
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="flex-1 grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2 h-fit">
               <AnimatePresence mode="wait">
