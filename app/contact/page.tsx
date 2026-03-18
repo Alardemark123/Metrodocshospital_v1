@@ -234,8 +234,7 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 viewport={{ once: true }}
-                className="group relative flex flex-col items-start rounded-2xl border border-border bg-card px-5 py-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
-              >
+                className="group relative flex flex-col items-start rounded-2xl border border-border bg-card px-5 py-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
                 <div className="absolute left-0 top-0 h-1 w-12 rounded-tl-2xl bg-primary/40 transition-all duration-300 group-hover:w-full group-hover:rounded-tr-2xl group-hover:bg-primary/30" />
                 <div className="mb-4 mt-2 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
                   <card.icon className="h-5 w-5 text-primary" />
