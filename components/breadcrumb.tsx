@@ -7,9 +7,16 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+// Added className to the props interface
+interface BreadcrumbProps {
+  items: BreadcrumbItem[];
+  className?: string;
+}
+
+export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
   return (
-    <nav className="flex items-center gap-1.5 text-sm min-w-0">
+    // Merged the custom className here
+    <nav className={`flex items-center gap-1.5 text-sm min-w-0 ${className}`}>
       {items.map((item, i) => (
         <div key={i} className="flex items-center gap-1.5 min-w-0">
           {i > 0 && (

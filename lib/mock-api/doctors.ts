@@ -1,6 +1,6 @@
-import type { Doctor } from "./types"
+import type { Doctor } from "./types";
 
-const doctors: Doctor[] = [
+const rawDoctorsData: Omit<Doctor, "slug">[] = [
   {
     id: 1,
     name: "Dr. Sarah Chen",
@@ -10,11 +10,12 @@ const doctors: Doctor[] = [
     rating: 4.9,
     education: "Harvard Medical School",
     bio: "Board-certified cardiologist specializing in interventional cardiology and heart failure management.",
-    fullBio: "Dr. Sarah Chen is a renowned cardiologist with over 15 years of experience in diagnosing and treating complex cardiovascular conditions. She completed her medical degree at Harvard Medical School and her cardiology fellowship at Massachusetts General Hospital. Dr. Chen specializes in interventional cardiology, heart failure management, and preventive cardiology. She has published numerous research papers and is known for her patient-centered approach to care.",
+    fullBio: "Dr. Sarah Chen is a renowned cardiologist with over 15 years of experience in diagnosing and treating complex cardiovascular conditions...",
     awards: ["Best Cardiologist Award 2024", "Excellence in Patient Care 2023", "Research Innovation Award 2022"],
     languages: ["English", "Mandarin"],
     availability: "Mon, Wed, Fri: 9AM - 5PM",
     image: "/doctors/doctor-1.jpg",
+    gender: "female"
   },
   {
     id: 2,
@@ -25,11 +26,12 @@ const doctors: Doctor[] = [
     rating: 4.8,
     education: "Johns Hopkins University",
     bio: "Expert in neurological disorders including stroke, epilepsy, and movement disorders.",
-    fullBio: "Dr. Michael Roberts is a board-certified neurologist specializing in stroke care, epilepsy management, and movement disorders. He graduated from Johns Hopkins University School of Medicine and completed his residency at Cleveland Clinic. With over 12 years of experience, Dr. Roberts has helped thousands of patients manage complex neurological conditions. He is passionate about patient education and takes time to ensure his patients understand their conditions and treatment options.",
+    fullBio: "Dr. Michael Roberts is a board-certified neurologist specializing in stroke care...",
     awards: ["Neurologist of the Year 2023", "Patient Choice Award 2022"],
     languages: ["English", "Spanish"],
     availability: "Tue, Thu: 10AM - 6PM",
     image: "/doctors/doctor-2.jpg",
+    gender: "male"
   },
   {
     id: 3,
@@ -40,11 +42,12 @@ const doctors: Doctor[] = [
     rating: 4.9,
     education: "Stanford University",
     bio: "Dedicated pediatrician with expertise in child development and pediatric infectious diseases.",
-    fullBio: "Dr. Emily Watson is a compassionate pediatrician dedicated to providing exceptional care for children from infancy through adolescence. She earned her medical degree from Stanford University and completed her pediatric residency at Children's Hospital of Philadelphia. Dr. Watson specializes in child development, pediatric infectious diseases, and preventive care. She is known for her warm, friendly approach that puts both children and parents at ease.",
+    fullBio: "Dr. Emily Watson is a compassionate pediatrician dedicated to providing exceptional care for children...",
     awards: ["Top Pediatrician 2024", "Community Care Excellence 2023"],
     languages: ["English"],
     availability: "Mon - Fri: 8AM - 4PM",
     image: "/doctors/doctor-3.jpg",
+    gender: "female"
   },
   {
     id: 4,
@@ -55,11 +58,12 @@ const doctors: Doctor[] = [
     rating: 4.7,
     education: "Yale School of Medicine",
     bio: "Renowned orthopedic surgeon specializing in joint replacement and sports medicine.",
-    fullBio: "Dr. James Miller is a highly skilled orthopedic surgeon with 18 years of experience in joint replacement surgery and sports medicine. He graduated from Yale School of Medicine and completed his orthopedic surgery residency at Hospital for Special Surgery in New York. Dr. Miller has performed thousands of successful joint replacement surgeries and is recognized for his expertise in minimally invasive techniques that promote faster recovery.",
+    fullBio: "Dr. James Miller is a highly skilled orthopedic surgeon with 18 years of experience...",
     awards: ["Excellence in Orthopedic Surgery 2024", "Innovation in Joint Replacement 2023"],
     languages: ["English", "French"],
     availability: "Mon, Wed, Thu: 9AM - 5PM",
     image: "/doctors/doctor-4.jpg",
+    gender: "male"
   },
   {
     id: 5,
@@ -70,10 +74,11 @@ const doctors: Doctor[] = [
     rating: 4.8,
     education: "UCLA Medical School",
     bio: "Emergency medicine specialist with extensive trauma care experience.",
-    fullBio: "Dr. Maria Garcia is a board-certified emergency medicine physician with 14 years of experience in acute care and trauma management. She earned her medical degree from UCLA Medical School and completed her emergency medicine residency at Los Angeles County Hospital. Dr. Garcia is known for her calm demeanor under pressure and her ability to make quick, accurate diagnoses. She has been instrumental in developing protocols that have improved patient outcomes in our emergency department.",
+    fullBio: "Dr. Maria Garcia is a board-certified emergency medicine physician with 14 years of experience...",
     awards: ["Emergency Physician of the Year 2024", "Trauma Care Excellence 2023"],
     languages: ["English", "Spanish", "Portuguese"],
     availability: "Rotating shifts - 24/7 Emergency Coverage",
+    gender: "female"
   },
   {
     id: 6,
@@ -84,10 +89,11 @@ const doctors: Doctor[] = [
     rating: 4.6,
     education: "Columbia University",
     bio: "Diagnostic radiologist with expertise in MRI and CT imaging interpretation.",
-    fullBio: "Dr. David Kim is an expert diagnostic radiologist with 11 years of experience in medical imaging. He graduated from Columbia University College of Physicians and Surgeons and completed his radiology residency at NYU Langone Medical Center. Dr. Kim specializes in MRI and CT interpretation, with particular expertise in neuroimaging and oncologic imaging. He is committed to providing accurate, timely diagnoses that guide effective treatment plans.",
+    fullBio: "Dr. David Kim is an expert diagnostic radiologist with 11 years of experience in medical imaging.",
     awards: ["Excellence in Diagnostic Imaging 2023", "Research Achievement Award 2022"],
     languages: ["English", "Korean"],
     availability: "Mon - Fri: 7AM - 3PM",
+    gender: "male"
   },
   {
     id: 7,
@@ -98,10 +104,11 @@ const doctors: Doctor[] = [
     rating: 4.8,
     education: "University of Pennsylvania",
     bio: "Internal medicine physician focused on preventive care and chronic disease management.",
-    fullBio: "Dr. Jennifer Lee is a dedicated internal medicine physician with 9 years of experience in adult primary care. She graduated from the University of Pennsylvania Perelman School of Medicine and completed her residency at UCSF Medical Center. Dr. Lee is passionate about preventive medicine and helping patients manage chronic conditions such as diabetes, hypertension, and heart disease. She believes in building long-term relationships with her patients to achieve optimal health outcomes.",
+    fullBio: "Dr. Jennifer Lee is a dedicated internal medicine physician with 9 years of experience in adult primary care.",
     awards: ["Patient Satisfaction Award 2024", "Primary Care Excellence 2023"],
     languages: ["English", "Cantonese"],
     availability: "Mon, Tue, Thu, Fri: 9AM - 5PM",
+    gender: "female"
   },
   {
     id: 8,
@@ -112,10 +119,11 @@ const doctors: Doctor[] = [
     rating: 4.7,
     education: "Duke University",
     bio: "Clinical pathologist ensuring accurate diagnostic testing and quality assurance.",
-    fullBio: "Dr. Robert Thompson is a board-certified clinical pathologist with 16 years of experience in laboratory medicine. He earned his medical degree from Duke University School of Medicine and completed his pathology residency at Mayo Clinic. Dr. Thompson oversees all laboratory operations, ensuring the highest standards of accuracy and quality in diagnostic testing. His expertise helps physicians make informed decisions about patient care through reliable test results.",
+    fullBio: "Dr. Robert Thompson is a board-certified clinical pathologist with 16 years of experience...",
     awards: ["Laboratory Excellence Award 2024", "Quality Assurance Achievement 2023"],
     languages: ["English"],
     availability: "Mon - Fri: 8AM - 4PM",
+    gender: "male"
   },
   {
     id: 9,
@@ -128,6 +136,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "female"
   },
   {
     id: 10,
@@ -140,6 +149,7 @@ const doctors: Doctor[] = [
     bio: "Pathology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 11,
@@ -152,6 +162,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Sat: 09:00-11:00AM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 12,
@@ -164,6 +175,7 @@ const doctors: Doctor[] = [
     bio: "Endocrinology specialist.",
     availability: "Mon, Wed, Fri: 2:00PM - 4:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 13,
@@ -176,6 +188,7 @@ const doctors: Doctor[] = [
     bio: "Gastroenterology specialist.",
     availability: "Mon, Wed, Fri: 10:00AM - 12:00NN",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 14,
@@ -188,6 +201,7 @@ const doctors: Doctor[] = [
     bio: "Thoracic & Cardiovascular Surgery specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 15,
@@ -200,6 +214,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0065-280x292.jpg",
+    gender: "female"
   },
   {
     id: 16,
@@ -212,6 +227,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "female"
   },
   {
     id: 17,
@@ -224,6 +240,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 18,
@@ -236,6 +253,7 @@ const doctors: Doctor[] = [
     bio: "Dermatology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 19,
@@ -248,6 +266,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 20,
@@ -260,6 +279,7 @@ const doctors: Doctor[] = [
     bio: "Orthopedic Surgery specialist.",
     availability: "Mon, Wed, Fri: 2:00PM - 4:00PM",
     image: "/doctors/MG_0049-280x280.jpg",
+    gender: "male"
   },
   {
     id: 21,
@@ -272,6 +292,7 @@ const doctors: Doctor[] = [
     bio: "Cardiology specialist.",
     availability: "Fri: 11:00AM - 12:00NN",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 22,
@@ -284,6 +305,7 @@ const doctors: Doctor[] = [
     bio: "Oncology specialist.",
     availability: "Mon, Wed, Fri: 2:00PM - 4:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 23,
@@ -296,6 +318,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 24,
@@ -308,6 +331,7 @@ const doctors: Doctor[] = [
     bio: "Radiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 25,
@@ -320,6 +344,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0052-280x267.jpg",
+    gender: "male"
   },
   {
     id: 26,
@@ -332,6 +357,7 @@ const doctors: Doctor[] = [
     bio: "Pulmonology specialist.",
     availability: "Tue, Thu, Sat: 11:00AM - 1:00PM",
     image: "/doctors/PhotoRoom-20230331-144948-e1717140808660-280x263.jpg",
+    gender: "female"
   },
   {
     id: 27,
@@ -344,6 +370,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 28,
@@ -356,6 +383,7 @@ const doctors: Doctor[] = [
     bio: "Family Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 29,
@@ -368,6 +396,7 @@ const doctors: Doctor[] = [
     bio: "Neurology specialist.",
     availability: "Tue, Fri: 9:00AM - 11:00AM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 30,
@@ -380,6 +409,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Tue, Thu: 4:00PM - 6:00PM | Sat: 8:00AM - 10:00AM",
     image: "/doctors/MG_0061-280x302.jpg",
+    gender: "male"
   },
   {
     id: 31,
@@ -392,6 +422,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Mon, Wed, Fri: 03:00PM - 05:00PM",
     image: "/doctors/unnamed-2-e1717140183195-280x270.jpg",
+    gender: "male"
   },
   {
     id: 32,
@@ -404,6 +435,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 33,
@@ -416,6 +448,7 @@ const doctors: Doctor[] = [
     bio: "Urology specialist.",
     availability: "Fri: 8:00AM - 10:00AM",
     image: "/doctors/photo_2023-02-10_10-46-27-e1717140388113-280x250.jpg",
+    gender: "male"
   },
   {
     id: 34,
@@ -428,6 +461,7 @@ const doctors: Doctor[] = [
     bio: "Nephrology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 35,
@@ -440,6 +474,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Tue, Fri: 10:00AM - 12:00NN | Wed: 4:00PM - 6:00PM | Thu: 2:00PM - 5:00PM",
     image: "https://www.metrodocshospital.com/wp-content/uploads/2023/11/viber_image_2023-10-27_09-27-27-869-e1717139002112-280x280.jpg",
+    gender: "male"
   },
   {
     id: 36,
@@ -452,6 +487,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Mon, Wed, Thu, Fri, Sat: 1:00-3:00PM | Tue: 9:00-11:00AM",
     image: "/doctors/IMG-2950-e1717140616298-280x256.jpg",
+    gender: "female"
   },
   {
     id: 37,
@@ -464,6 +500,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Mon, Fri: 1:00-3:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 38,
@@ -476,6 +513,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Mon, Wed: 10:00AM - 12:00NN | Tue, Thu: 1:00PM - 3:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 39,
@@ -488,6 +526,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 40,
@@ -500,6 +539,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 41,
@@ -512,6 +552,7 @@ const doctors: Doctor[] = [
     bio: "Ophthalmology specialist.",
     availability: "Schedule not available",
     image: "/doctors/photo_2023-02-10_10-24-56-e1717140096859-280x264.jpg",
+    gender: "male"
   },
   {
     id: 42,
@@ -524,6 +565,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 43,
@@ -536,6 +578,7 @@ const doctors: Doctor[] = [
     bio: "General Practice specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0021-280x300.jpg",
+    gender: "male"
   },
   {
     id: 44,
@@ -548,6 +591,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/photo_2023-02-10_10-00-00-duran-e1717140641838-280x253.jpg",
+    gender: "male"
   },
   {
     id: 45,
@@ -560,6 +604,7 @@ const doctors: Doctor[] = [
     bio: "Gastroenterology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 46,
@@ -572,6 +617,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 47,
@@ -584,6 +630,7 @@ const doctors: Doctor[] = [
     bio: "Diabetology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 48,
@@ -596,6 +643,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0027-280x271.jpg",
+    gender: "male"
   },
   {
     id: 49,
@@ -608,6 +656,7 @@ const doctors: Doctor[] = [
     bio: "Nephrology specialist.",
     availability: "Wed, Sat: 4:00-6:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 50,
@@ -620,6 +669,7 @@ const doctors: Doctor[] = [
     bio: "Rehabilitation Medicine specialist.",
     availability: "Wed: 2:00PM - 4:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 51,
@@ -632,6 +682,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 52,
@@ -644,6 +695,7 @@ const doctors: Doctor[] = [
     bio: "Pulmonology specialist.",
     availability: "Mon, Tue, Wed, Thu, Fri, Sat, Sun: VIRTUAL CONSULTATION",
     image: "/doctors/photo_2023-02-10_11-18-42-e1717140848985-280x259.jpg",
+    gender: "male"
   },
   {
     id: 53,
@@ -656,6 +708,7 @@ const doctors: Doctor[] = [
     bio: "Pulmonology specialist.",
     availability: "Fri: 1:00PM - 3:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 54,
@@ -668,6 +721,7 @@ const doctors: Doctor[] = [
     bio: "Psychiatry specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 55,
@@ -680,6 +734,7 @@ const doctors: Doctor[] = [
     bio: "Neurosurgery specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 56,
@@ -692,6 +747,7 @@ const doctors: Doctor[] = [
     bio: "General Practice specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 57,
@@ -704,6 +760,7 @@ const doctors: Doctor[] = [
     bio: "Cardiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 58,
@@ -716,6 +773,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Wed, Sat: 10:00AM - 12:00NN | Thu: 2:00PM - 4:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 59,
@@ -728,6 +786,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Mon, Wed, Fri: 1:00PM - 3:00PM",
     image: "/doctors/viber_image_2023-03-31_09-35-21-561-280x280.jpg",
+    gender: "male"
   },
   {
     id: 60,
@@ -740,6 +799,7 @@ const doctors: Doctor[] = [
     bio: "Pulmonology specialist.",
     availability: "Mon, Thu: 9:00AM - 12:00NN",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 61,
@@ -752,6 +812,7 @@ const doctors: Doctor[] = [
     bio: "Urology specialist.",
     availability: "Wed: 3:00PM - 5:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 62,
@@ -764,6 +825,7 @@ const doctors: Doctor[] = [
     bio: "Pulmonology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 63,
@@ -776,6 +838,7 @@ const doctors: Doctor[] = [
     bio: "Family Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/photo_2023-02-10_10-53-46-e1717139776877-280x275.jpg",
+    gender: "female"
   },
   {
     id: 64,
@@ -788,6 +851,7 @@ const doctors: Doctor[] = [
     bio: "Family Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 65,
@@ -800,6 +864,7 @@ const doctors: Doctor[] = [
     bio: "Family Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 66,
@@ -812,6 +877,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0138-280x295.jpg",
+    gender: "male"
   },
   {
     id: 67,
@@ -824,6 +890,7 @@ const doctors: Doctor[] = [
     bio: "Rehabilitation Medicine specialist.",
     availability: "Tue, Thu: 2:00PM - 4:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 68,
@@ -836,6 +903,7 @@ const doctors: Doctor[] = [
     bio: "Rehabilitation Medicine specialist.",
     availability: "Sat: 10:00AM - 12:00NN",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 69,
@@ -848,6 +916,7 @@ const doctors: Doctor[] = [
     bio: "Rehabilitation Medicine specialist.",
     availability: "Fri: 9:00AM - 12:00NN",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 70,
@@ -860,6 +929,7 @@ const doctors: Doctor[] = [
     bio: "Nephrology specialist.",
     availability: "Mon: 1:00PM - 3:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 71,
@@ -872,6 +942,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Mon: 1:00PM - 3:00PM | Wed: 8:00AM - 10:00AM",
     image: "/doctors/unnamed-1-e1717140583720-280x280.jpg",
+    gender: "female"
   },
   {
     id: 72,
@@ -884,6 +955,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Mon: 12:00-3:00PM | Sat: 12:00-2:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 73,
@@ -896,6 +968,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 74,
@@ -908,6 +981,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 75,
@@ -920,6 +994,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 76,
@@ -932,6 +1007,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Mon, Wed, Fri: 4:00PM - 6:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 77,
@@ -944,6 +1020,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Tue, Sat: 9:00AM - 11:00AM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 78,
@@ -956,6 +1033,7 @@ const doctors: Doctor[] = [
     bio: "Neurology specialist.",
     availability: "Wed, Sat: 3:00PM - 5:00PM",
     image: "/doctors/MG_0056-280x242.jpg",
+    gender: "male"
   },
   {
     id: 79,
@@ -968,6 +1046,7 @@ const doctors: Doctor[] = [
     bio: "Radiology specialist.",
     availability: "Wed, Sat: 3:00-5:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "male"
   },
   {
     id: 80,
@@ -980,6 +1059,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Mon: 4:00-6:00PM | Wed, Fri: 10:00-12:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 81,
@@ -992,6 +1072,7 @@ const doctors: Doctor[] = [
     bio: "Radiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 82,
@@ -1004,6 +1085,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Sat: 9:00-11:00AM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 83,
@@ -1016,6 +1098,7 @@ const doctors: Doctor[] = [
     bio: "Nephrology specialist.",
     availability: "Mon, Wed, Fri: 4:00PM - 6:00PM",
     image: "/doctors/photo_2023-02-10_11-25-42-2-e1717140790537-280x251.jpg",
+    gender: "female"
   },
   {
     id: 84,
@@ -1028,6 +1111,7 @@ const doctors: Doctor[] = [
     bio: "Cardiology specialist.",
     availability: "Tue: 3:00PM - 4:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 85,
@@ -1040,6 +1124,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Tue, Thu: 1:00-2:00PM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 86,
@@ -1052,6 +1137,7 @@ const doctors: Doctor[] = [
     bio: "Orthopedic Surgery specialist.",
     availability: "Mon, Wed: 1:00PM - 2:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 87,
@@ -1064,6 +1150,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 88,
@@ -1076,6 +1163,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Mon, Wed: 1:00PM - 3:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 89,
@@ -1088,6 +1176,7 @@ const doctors: Doctor[] = [
     bio: "Cardiology specialist.",
     availability: "Tue, Thu, Sat: 9:00AM - 11:00AM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 90,
@@ -1100,6 +1189,7 @@ const doctors: Doctor[] = [
     bio: "Infectious Disease specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 91,
@@ -1112,6 +1202,7 @@ const doctors: Doctor[] = [
     bio: "ENT specialist.",
     availability: "Mon, Thu: 09:00AM - 11:00AM",
     image: "/doctors/photo_2023-02-22_11-26-53-e1717140686349-280x281.jpg",
+    gender: "female"
   },
   {
     id: 92,
@@ -1124,6 +1215,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 93,
@@ -1136,6 +1228,7 @@ const doctors: Doctor[] = [
     bio: "Orthopedic Surgery specialist.",
     availability: "Thu: 11:00AM - 12:00NN",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 94,
@@ -1148,6 +1241,7 @@ const doctors: Doctor[] = [
     bio: "Radiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 95,
@@ -1160,6 +1254,7 @@ const doctors: Doctor[] = [
     bio: "General Surgery specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 96,
@@ -1172,6 +1267,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Sat: 10:00AM-12:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 97,
@@ -1184,6 +1280,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 98,
@@ -1196,6 +1293,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/photo_2023-02-10_11-25-42-3-e1717139895177-280x231.jpg",
+    gender: "male"
   },
   {
     id: 99,
@@ -1208,6 +1306,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Mon: 3:00PM-5:00PM | Wed: 8:00AM-10:00AM",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 100,
@@ -1220,6 +1319,7 @@ const doctors: Doctor[] = [
     bio: "Radiology specialist.",
     availability: "Mon: 3:00PM-5:00PM",
     image: "/doctors/thumbnail-e1717139571311-280x271.jpg",
+    gender: "female"
   },
   {
     id: 101,
@@ -1232,6 +1332,7 @@ const doctors: Doctor[] = [
     bio: "Cardiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 102,
@@ -1244,6 +1345,7 @@ const doctors: Doctor[] = [
     bio: "Ophthalmology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 103,
@@ -1256,6 +1358,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 104,
@@ -1268,6 +1371,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Tue: 12:00NN - 2:00PM | Wed: 3:00PM - 5:00PM",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 105,
@@ -1280,6 +1384,7 @@ const doctors: Doctor[] = [
     bio: "Internal Medicine specialist.",
     availability: "Tue: 1:00-3:00PM",
     image: "/doctors/image_6487327-e1717140884401-280x282.jpg",
+    gender: "male"
   },
   {
     id: 106,
@@ -1292,6 +1397,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Tue, Thu: 2:00-4:00PM | Sat: 10:00-12:00PM",
     image: "/doctors/photo_2023-02-10_11-25-42-e1717140939478-280x266.jpg",
+    gender: "female"
   },
   {
     id: 107,
@@ -1304,6 +1410,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0101-scaled-e1717139496394-280x284.jpg",
+    gender: "female"
   },
   {
     id: 108,
@@ -1316,6 +1423,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 109,
@@ -1328,6 +1436,7 @@ const doctors: Doctor[] = [
     bio: "OB-Gynecology specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 110,
@@ -1340,6 +1449,7 @@ const doctors: Doctor[] = [
     bio: "Anesthesiology specialist.",
     availability: "Schedule not available",
     image: "/doctors/photo_2023-02-10_10-10-39-varagas-e1717139429103-280x265.jpg",
+    gender: "female"
   },
   {
     id: 111,
@@ -1352,6 +1462,7 @@ const doctors: Doctor[] = [
     bio: "Dentistry specialist.",
     availability: "Schedule not available",
     image: "/doctors/1130796_OQ6UTW0-280x280.jpg",
+    gender: "male"
   },
   {
     id: 112,
@@ -1364,6 +1475,7 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 113,
@@ -1376,6 +1488,7 @@ const doctors: Doctor[] = [
     bio: "Family Medicine specialist.",
     availability: "Schedule not available",
     image: "/doctors/doctor-280x281.png",
+    gender: "female"
   },
   {
     id: 114,
@@ -1388,9 +1501,9 @@ const doctors: Doctor[] = [
     bio: "Pediatrics specialist.",
     availability: "Schedule not available",
     image: "/doctors/MG_0098-280x280.jpg",
+    gender: "female"
   },
-]
-
+];
 export function slugify(name: string): string {
   return name
     .toLowerCase()
@@ -1398,22 +1511,43 @@ export function slugify(name: string): string {
     .trim()
     .replace(/\s+/g, "-");
 }
+export const doctors: Doctor[] = rawDoctorsData.map((doc) => ({
+  ...doc,
+  slug: slugify(doc.name), // This injects the missing property
+}));
 
-export function getDoctorBySlug(slug: string) {
-  return doctors.find((d) => slugify(d.name) === slug) ?? null;
-}
+export const getDoctorBySlug = (slug: string) => {
+  return doctors.find((d) => d.slug === slug);
+};
 
-export function getDoctors(): Doctor[] {
-  return doctors
-}
+export const getDoctors = () => doctors;
 
 export function getDoctorById(id: number | string): Doctor | undefined {
-  const n = typeof id === "string" ? parseInt(id, 10) : id
-  return doctors.find((d) => d.id === n)
+  const n = typeof id === "string" ? parseInt(id, 10) : id;
+  return doctors.find((d) => d.id === n);
 }
 
-export const DOCTOR_DEPARTMENT_FILTERS = ["All", "Cardiology", "Dentistry", "Dermatology", "Emergency", "ENT", "Family Medicine", "Internal Medicine", "Laboratory", "Neurology", "OB-Gynecology", "Oncology", "Ophthalmology", "Pediatrics", "Psychiatry", "Radiology", "Rehabilitation", "Surgery"] as const
+export const DOCTOR_DEPARTMENT_FILTERS = [
+  "All",
+  "Cardiology",
+  "Dentistry",
+  "Dermatology",
+  "Emergency",
+  "ENT",
+  "Family Medicine",
+  "Internal Medicine",
+  "Laboratory",
+  "Neurology",
+  "OB-Gynecology",
+  "Oncology",
+  "Ophthalmology",
+  "Pediatrics",
+  "Psychiatry",
+  "Radiology",
+  "Rehabilitation",
+  "Surgery",
+] as const;
 
 export function getDoctorDepartmentFilters(): string[] {
-  return [...DOCTOR_DEPARTMENT_FILTERS]
+  return [...DOCTOR_DEPARTMENT_FILTERS];
 }

@@ -68,16 +68,16 @@ function useDoctorsPerPage() {
 function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const [imgSrc, setImgSrc] = useState("/doctors/placeholder-doctor.jpg");
+  const malePlaceholder = "/doctors/placeholder-doctor.jpg";
+  const femalePlaceholder = "/doctors/doctor-280x281.png";
+  const fallbackImg =
+    doctor.gender === "female" ? femalePlaceholder : malePlaceholder;
+  const [imgSrc, setImgSrc] = useState(doctor.image || fallbackImg);
 
   useEffect(() => {
     const isExternal = doctor.image?.startsWith("http");
-    setImgSrc(
-      isExternal
-        ? "/doctors/placeholder-doctor.jpg"
-        : doctor.image || "/doctors/placeholder-doctor.jpg",
-    );
-  }, [doctor.image]);
+    setImgSrc(doctor.image || fallbackImg);
+  }, [doctor.image, fallbackImg]);
 
   return (
     <motion.div
@@ -98,7 +98,8 @@ function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
               alt={`Photo of ${doctor.name}`}
               fill
               className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              onError={() => setImgSrc("/doctors/placeholder-doctor.jpg")}
+              // 5. If the provided image path 404s, swap to the correct gender fallback
+              onError={() => setImgSrc(fallbackImg)}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
             <div className="absolute left-3 top-3">

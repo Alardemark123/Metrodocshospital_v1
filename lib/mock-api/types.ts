@@ -1,9 +1,9 @@
 export { slugify, getDoctorBySlug } from "./doctors";
 
 export interface Doctor {
-  slug: any;
   id: number;
   name: string;
+  slug: string;
   specialty: string;
   department: string;
   experience: string;
@@ -15,6 +15,7 @@ export interface Doctor {
   languages?: string[];
   availability?: string;
   image?: string;
+  gender: string;
 }
 
 export interface NewsArticle {

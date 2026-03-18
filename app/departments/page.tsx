@@ -6,23 +6,22 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
-  Phone,
-  Clock,
-  Stethoscope,
   ChevronLeft,
   ChevronRight,
+  Stethoscope,
+  Clock,
+  Phone,
 } from "lucide-react";
-import { getDepartments } from "@/lib/mock-api";
+import { slugify, getDepartments } from "@/lib/mock-api";
 import type { Department } from "@/lib/mock-api";
 
-// ─── Carousel ────────────────────────────────────────────────────────────────
+// ─── Carousel Component ──────────────────────────────────────────────────────
 
 function DepartmentCarousel({ departments }: { departments: Department[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsToShow, setCardsToShow] = useState(3);
   const n = departments.length;
 
-  // Handle responsive card counts
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) setCardsToShow(1);
@@ -42,7 +41,6 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
     setCurrentIndex((prev) => (prev - 1 + n) % n);
   }, [n]);
 
-  // Determine which cards are visible
   const visibleCards = [];
   for (let i = 0; i < cardsToShow; i++) {
     visibleCards.push(departments[(currentIndex + i) % n]);
@@ -62,14 +60,14 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
         {/* Flat Card Stage */}
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout" initial={false}>
-            {visibleCards.map((dept, i) => (
+            {visibleCards.map((dept) => (
               <motion.div
                 key={dept.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="flex flex-col overflow-hidden rounded-[24px] bg-white border border-slate-50 shadow-sm hover:shadow-xl transition-all duration-300"
+                className="flex flex-col overflow-hidden rounded-[24px] bg-white border border-slate-50 shadow-sm hover:shadow-xl transition-all duration-300 h-full"
               >
                 {/* Image Section */}
                 <div className="relative aspect-[1.4/1] w-full overflow-hidden">
@@ -77,26 +75,33 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
                     src={dept.image || "/placeholder.jpg"}
                     alt={dept.name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
 
                 {/* Content Section */}
                 <div className="flex flex-1 flex-col p-7">
-                  {/* Meta (Style from reference) */}
                   <div className="mb-4 flex items-center gap-2 text-[12px] font-bold text-[#5CA51B]">
                     <span>Metro Rizal Doctors</span>
                   </div>
 
-                  {/* Title */}
                   <h3 className="mb-3 text-lg font-extrabold text-[#0a2e1a] line-clamp-1">
                     {dept.name}
                   </h3>
 
-                  {/* Description */}
-                  <p className="mb-8 line-clamp-2 text-sm leading-relaxed text-slate-500">
+                  <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-slate-500">
                     {dept.excerpt || dept.description}
                   </p>
+
+                  <div className="mt-auto">
+                    <Link
+                      href={`/departments/${slugify(dept.name)}`}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-[#5CA51B] transition-all hover:gap-3"
+                    >
+                      View Details
+                      <ArrowRight size={16} />
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -128,58 +133,35 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
   );
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+// ─── Main Page Component (The Default Export) ───────────────────────────────
 
 export default function DepartmentsPage() {
   const departments = getDepartments();
 
   return (
     <div className="bg-[#f8faff] min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, currentColor 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-accent/30 blur-2xl" />
-
-        <div className="relative mx-auto max-w-7xl px-4">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 py-20 lg:py-28">
+        <div className="relative mx-auto max-w-7xl px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto max-w-3xl text-center"
+            className="mx-auto max-w-3xl"
           >
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5CA51B]/20 bg-[#5CA51B]/10 px-4 py-1.5">
               <Stethoscope className="h-3.5 w-3.5 text-[#5CA51B]" />
               <span className="text-xs font-semibold uppercase tracking-wider text-[#5CA51B]">
-                Our Departments
+                Our Expertise
               </span>
             </div>
             <h1 className="mb-5 text-4xl font-bold text-[#0a2e1a] md:text-5xl">
               Specialized Medical Departments
             </h1>
             <p className="mb-8 text-base text-muted-foreground md:text-lg">
-              Our hospital features specialized departments staffed by expert
-              physicians and equipped with cutting-edge technology.
+              Providing world-class healthcare through specialized units and
+              dedicated professionals.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <div className="flex items-center gap-2 rounded-xl border border-border bg-card/80 px-4 py-2.5 backdrop-blur-sm">
-                <Clock className="h-4 w-4 text-[#5CA51B]" />
-                <span className="text-sm text-foreground">
-                  24/7 Emergency Services
-                </span>
-              </div>
-              <div className="flex items-center gap-2 rounded-xl border border-border bg-card/80 px-4 py-2.5 backdrop-blur-sm">
-                <Phone className="h-4 w-4 text-[#5CA51B]" />
-                <span className="text-sm text-foreground">(02) 8251-6922</span>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
