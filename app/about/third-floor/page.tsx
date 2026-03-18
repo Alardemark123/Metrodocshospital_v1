@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FacilityPage } from "@/components/facility-page";
 
 export const metadata: Metadata = {
-  title: "Third Floor | metrodocshospital",
+  title: "Third Floor | Metro Rizal Doctors Hospital",
   description:
-    "Outpatient services and OPD at metrodocshospital. Specialty clinics and comfortable waiting areas.",
+    "Outpatient services and OPD at Metro Rizal Doctors Hospital. Specialty clinics and comfortable waiting areas.",
 };
 
 export default function ThirdFloorPage() {
@@ -42,14 +42,28 @@ export default function ThirdFloorPage() {
         {
           title: "Specialty Clinics",
           description:
-            "Ten fully-equipped consultation rooms for various medical specialties, staffed by our expert physicians and support team.",
+            "Ten fully-equipped consultation rooms designed to provide comprehensive care across a range of medical specialties. Each room is staffed by our team of experienced physicians and dedicated support staff, ensuring personalized attention, accurate diagnoses, and high-quality treatment for every patient.",
+          images: [
+            "/about/third-floor/FRD_5242-1024x683.jpg",
+            "/about/third-floor/FRD_5243-1024x683.jpg",
+            "/about/third-floor/FRD_5245-1024x683.jpg",
+          ],
         },
+      ]}
+
+      sections2={[
         {
           title: "OPD Waiting Area",
           description:
             "A spacious, air-conditioned waiting area with comfortable seating, entertainment systems, and refreshment facilities for patients and companions.",
+          images: [
+            "/about/third-floor/IMG_7974-1024x683.jpg",
+            "/about/third-floor/IMG_7976-1024x683.jpg",
+            "/about/third-floor/IMG_7978-1024x683.jpg",
+          ],
         },
       ]}
+
       highlights={[
       ]}
       breadcrumblabel="Third Floor"
