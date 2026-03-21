@@ -30,13 +30,13 @@ function Pagination({
   onPageChange: (page: number) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 w-full">
+    <div className="flex items-center justify-between gap-4">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="flex-1 rounded-full border border-gray-100 bg-primary py-2 text-[11px] font-bold text-white transition-all"
       >
-        Prev
+        {"< Prev"}
       </button>
 
       <span className="text-[11px] font-bold text-gray-500 min-w-[40px] text-center">
@@ -48,7 +48,7 @@ function Pagination({
         disabled={currentPage === totalPages || totalPages === 0}
         className="flex-1 rounded-full border border-gray-100 bg-primary py-2 text-[11px] font-bold text-white transition-all"
       >
-        Next
+        {"Next >"}
       </button>
     </div>
   );

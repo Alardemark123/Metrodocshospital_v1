@@ -496,25 +496,32 @@ function JobCard({
 }
 
 // ——— PAGINATION ———
-function PaginationControls({ currentPage, totalPages, onPrev, onNext }: any) {
+function PaginationControls({
+  currentPage,
+  totalPages,
+  onPrev,
+  onNext,
+}: any) {
   return (
     <div className="flex items-center justify-between gap-4">
       <button
         onClick={onPrev}
         disabled={currentPage === 1}
-        className="flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold text-gray-500 disabled:opacity-30"
+        className="flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold text-white bg-primary"
       >
-        <ChevronLeft size={14} /> Prev
+        {"< Prev"}
       </button>
+
       <span className="text-xs font-black text-gray-700">
         {currentPage} / {totalPages || 1}
       </span>
+
       <button
         onClick={onNext}
         disabled={currentPage >= totalPages}
-        className="flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold text-gray-500 disabled:opacity-30"
+        className="flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold text-white bg-primary"
       >
-        Next <ChevronRight size={14} />
+        {"Next >"}
       </button>
     </div>
   );
