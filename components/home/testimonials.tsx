@@ -3,201 +3,176 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { testimonials } from "@/lib/mock-api/testimonial";
 
 export function Testimonials() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % testimonials.length);
+      setPage((prev) => prev + 1);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [page]);
 
   const navigate = (dir: number) => {
-    setDirection(dir);
-    setCurrent((prev) => {
-      if (dir === 1) return (prev + 1) % testimonials.length;
-      return prev === 0 ? testimonials.length - 1 : prev - 1;
-    });
+    setPage((prev) => prev + dir);
   };
 
-  const variants = {
-    enter: (direction: number) => ({ x: direction > 0 ? 60 : -60, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction: number) => ({ x: direction < 0 ? 60 : -60, opacity: 0 }),
+  const getIndex = (offset: number) => {
+    let index = (page + offset) % testimonials.length;
+    if (index < 0) index += testimonials.length;
+    return index;
   };
 
-  const t = testimonials[current];
+  const visibleItems = [-2, -1, 0, 1, 2].map((offset) => {
+    const index = getIndex(offset);
+    return {
+      ...testimonials[index],
+      offset,
+      uniqueKey: page + offset,
+    };
+  });
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden bg-primary py-20 lg:py-32"
-    >
-      {/* Radial glows */}
-      {/* Diagonal stripe pattern */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
-          backgroundSize: "16px 16px",
-        }}
-      />
-      {/* Floating rings */}
-      <div className="pointer-events-none absolute left-8 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
-      <div className="pointer-events-none absolute left-8 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full border border-primary-foreground/10" />
-      <div className="pointer-events-none absolute bottom-12 right-1/3 h-8 w-8 rotate-45 rounded-sm border border-primary-foreground/10" />
-      <div className="pointer-events-none absolute -left-24 -top-24 h-[400px] w-[400px] rounded-full bg-primary-foreground/5 blur-[100px]" />
-      <div className="pointer-events-none absolute -bottom-16 right-0 h-[350px] w-[350px] rounded-full bg-primary-foreground/5 blur-[90px]" />
-
-      {/* Giant decorative quote */}
-      <div className="pointer-events-none absolute right-8 top-4 select-none text-[200px] font-serif leading-none text-primary-foreground/5 lg:right-24 lg:text-[280px]">
-        "
-      </div>
-
-      <div className="relative mx-auto max-w-5xl px-4">
+    <section ref={ref} className="bg-[#E9EBEA] py-16 lg:py-32 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 relative">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-14 text-center"
+          className="mb-8 md:mb-12 text-center max-w-3xl mx-auto"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary-foreground/80">
-              Testimonials
-            </span>
-          </div>
-          <h2 className="text-balance text-3xl font-bold text-primary-foreground md:text-4xl lg:text-5xl">
-            What Our Patients Say
+          <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-primary mb-2">
+            TESTIMONIALS
           </h2>
+          <div className="mx-auto mb-4 h-1 w-48 md:w-64 bg-foreground" />
+          <h3 className="text-2xl font-bold text-foreground md:text-4xl lg:text-5xl mb-4 md:mb-6">
+            What Our Patients Say
+          </h3>
+          <p className="text-muted-foreground text-base md:text-lg">
+            We place huge value on strong relationships and have seen the benefit they bring to our patients. Patient feedback is vital in helping us deliver the best possible care.
+          </p>
         </motion.div>
 
-        {/* Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="relative overflow-hidden rounded-3xl border border-primary-foreground/10 bg-primary-foreground/10 backdrop-blur-sm">
-            {/* Top accent bar */}
-            <div className="h-1 w-full bg-gradient-to-r from-primary-foreground/20 via-primary-foreground/60 to-primary-foreground/20" />
+        {/* Carousel */}
+        <div className="relative flex w-full items-center justify-center my-6">
+          {/* Navigation Left */}
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute left-0 sm:left-4 md:left-8 z-30 hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 shadow-lg"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
 
-            <div className="p-8 md:p-12">
-              {/* Quote icon */}
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-foreground/15">
-                <Quote className="h-6 w-6 text-primary-foreground" />
-              </div>
+          {/* Cards Container */}
+          <div className="relative flex w-full max-w-5xl justify-center items-center h-[420px] md:h-[460px]">
+            <AnimatePresence initial={false}>
+              {visibleItems.map((item) => {
+                const isCenter = item.offset === 0;
+                const isVisible = Math.abs(item.offset) <= 1;
 
-              {/* Animated quote */}
-              <div className="relative min-h-[120px]">
-                <AnimatePresence mode="wait" custom={direction}>
+                return (
                   <motion.div
-                    key={current}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    key={item.uniqueKey}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                      x: `${item.offset * 100}%`,
+                    }}
+                    animate={{
+                      opacity: isVisible ? (isCenter ? 1 : 0.8) : 0,
+                      scale: isCenter ? 1 : 0.85,
+                      x: `${item.offset * 100}%`,
+                      zIndex: isCenter ? 20 : isVisible ? 10 : 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.8,
+                      x: `${item.offset * 100}%`,
+                      zIndex: 0,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute"
+                    style={{ pointerEvents: isVisible ? "auto" : "none" }}
                   >
-                    {/* Stars */}
-                    <div className="mb-5 flex gap-1">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
-                    <blockquote className="mb-8 text-lg leading-relaxed text-primary-foreground md:text-xl lg:text-2xl">
-                      &ldquo;{t.quote}&rdquo;
-                    </blockquote>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-4">
-                      {/* Avatar initials */}
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-foreground/20 text-sm font-bold text-primary-foreground">
-                        {t.name
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")
-                          .slice(0, 2)}
+                    <div className="flex h-[380px] w-[270px] sm:h-[400px] sm:w-[300px] md:h-[420px] md:w-[360px] flex-col rounded-[2rem] overflow-hidden shadow-xl border border-black/5 bg-white">
+                      {/* Top half white */}
+                      <div className="bg-white h-[100px] md:h-[120px] w-full shrink-0 relative">
+                        {/* Avatar */}
+                        <div className="absolute left-1/2 -bottom-10 md:-bottom-12 h-20 w-20 md:h-24 md:w-24 -translate-x-1/2 rounded-full border-4 border-white bg-gray-200 text-3xl flex items-center justify-center font-bold text-gray-500 overflow-hidden shadow-sm z-10">
+                          {/* Placeholder for avatar similar to the concept image */}
+                          <div className="h-full w-full bg-[#B3B3B3] rounded-full flex items-center justify-center relative overflow-hidden">
+                            <div className="absolute bottom-0 h-[45%] w-[70%] bg-[#1A1A1A] rounded-t-full" />
+                            <div className="absolute top-[20%] h-[35%] w-[35%] bg-[#1A1A1A] rounded-full" />
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-primary-foreground">
-                          {t.name}
-                        </p>
-                        <p className="text-sm text-primary-foreground/60">
-                          Patient
-                        </p>
+                      {/* Bottom half green */}
+                      <div className="bg-primary px-6 md:px-8 pb-8 md:pb-10 pt-12 md:pt-16 text-center text-primary-foreground flex grow flex-col justify-between relative rounded-t-[2rem] -mt-6">
+                        <div className="relative h-full flex flex-col justify-center">
+                          <span className="absolute -left-2 -top-4 md:-top-6 text-5xl md:text-6xl font-serif text-primary-foreground/40 leading-none">
+                            &ldquo;
+                          </span>
+                          <p className="text-xs sm:text-sm leading-relaxed line-clamp-6 font-medium px-1 sm:px-2">
+                            {item.quote}
+                          </p>
+                          <span className="absolute -right-2 -bottom-2 md:-bottom-4 text-5xl md:text-6xl font-serif text-primary-foreground/40 leading-none">
+                            &rdquo;
+                          </span>
+                        </div>
+
+                        <div className="mt-4 md:mt-6 flex flex-col gap-1 text-[10px] sm:text-xs md:text-sm">
+                          <div className="font-bold uppercase tracking-wider">
+                            {item.name}
+                          </div>
+                          <div className="font-medium text-primary-foreground/80 mt-1">
+                            {item.role} &middot; {item.department}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Navigation */}
-              <div className="mt-8 flex items-center justify-between border-t border-primary-foreground/10 pt-6">
-                {/* Counter */}
-                <p className="text-sm text-primary-foreground/50">
-                  <span className="font-bold text-primary-foreground">
-                    {current + 1}
-                  </span>
-                  {" / "}
-                  {testimonials.length}
-                </p>
-
-                {/* Dots + arrows */}
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => navigate(-1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-foreground/20 text-primary-foreground transition-all hover:bg-primary-foreground/15"
-                    aria-label="Previous"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-
-                  <div className="flex gap-1.5">
-                    {testimonials.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          setDirection(i > current ? 1 : -1);
-                          setCurrent(i);
-                        }}
-                        className={`rounded-full transition-all duration-300 ${
-                          i === current
-                            ? "h-2 w-6 bg-primary-foreground"
-                            : "h-2 w-2 bg-primary-foreground/30 hover:bg-primary-foreground/60"
-                        }`}
-                        aria-label={`Go to ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => navigate(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-foreground/20 text-primary-foreground transition-all hover:bg-primary-foreground/15"
-                    aria-label="Next"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
+                );
+              })}
+            </AnimatePresence>
           </div>
-        </motion.div>
+
+          {/* Navigation Right */}
+          <button
+            onClick={() => navigate(1)}
+            className="absolute right-0 sm:right-4 md:right-8 z-30 hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 shadow-lg"
+            aria-label="Next"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="mt-6 md:mt-8 flex justify-center gap-2 md:gap-3">
+          {testimonials.map((_, idx) => {
+            const currentActualIndex = getIndex(0);
+            return (
+              <button
+                key={idx}
+                onClick={() => {
+                  setPage(page + (idx - currentActualIndex));
+                }}
+                className={`h-2.5 w-2.5 md:h-3 md:w-3 rounded-full transition-all ${
+                  idx === currentActualIndex
+                    ? "bg-primary w-6 md:w-8"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            );
+          })}
+        </div>
       </div>
     </section>
   );
