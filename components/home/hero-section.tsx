@@ -14,8 +14,6 @@ export function HeroSection() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    // We remove [index] from the dependency array.
-    // The functional update (prev) ensures we always have the current value.
     const t = setInterval(() => {
       setIndex((prev) => (prev + 1) % photos.length);
     }, 6000);
@@ -35,7 +33,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="inline-block py-1.5 px-2 rounded-md bg-[#5CA51B]/10 text-primary text-xs sm:text-sm font-medium tracking-widest uppercase mb-6">
+            <span className="inline-block py-1.5 px-2 text-primary text-sm sm:text-base font-normal tracking-widest uppercase mb-6">
               Welcome to Metro Rizal Doctors Hospital
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-6">
@@ -121,7 +119,7 @@ export function HeroSection() {
             <div className="w-32 h-2 sm:w-48 sm:h-3 bg-[#94a3b8] mx-auto rounded-t-xl rounded-b-sm shadow-md" />
           </motion.div>
 
-          {/* Thumbnails Navigation (Below Monitor) */}
+          {/* Thumbnails Navigation*/}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

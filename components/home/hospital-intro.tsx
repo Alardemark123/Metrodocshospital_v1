@@ -14,113 +14,83 @@ export function HospitalIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden bg-background py-20 lg:py-28"
-    >
-      {/* Plus/cross pattern top right */}
-      <div
-        className="pointer-events-none absolute right-0 top-0 h-64 w-64 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-      />
-      {/* Floating accent circles */}
-      <div className="pointer-events-none absolute -right-10 top-20 h-48 w-48 rounded-full border-2 border-dashed border-primary/10" />
-      <div className="pointer-events-none absolute bottom-10 left-10 h-24 w-24 rotate-45 rounded-xl border border-primary/10" />
-      <div className="pointer-events-none absolute right-1/4 bottom-20 h-10 w-10 rounded-full bg-primary/5" />
-      <div className="mx-auto max-w-7xl px-4">
-        {/* Top two-column: video left, text right */}
-        <div className="mb-16 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* LEFT — YouTube embed */}
+    <section ref={ref} className="relative bg-white py-24 md:py-20 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        
+        {/* Editorial Header */}
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={isInView ? { opacity: 1, y: 0 } : {}}
+           transition={{ duration: 0.8, ease: "easeOut" }}
+           className="max-w-3xl mb-8 md:mb-10"
+        >
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span className="text-primary font-thin tracking-widest text-xs sm:text-sm uppercase">
+              About Our Hospital
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 leading-[1.05] tracking-tight">
+            A Legacy of Healing,<br/>
+            <span className="text-primary font-extrabold">A Future of Hope.</span>
+          </h2>
+        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-start">
+          {/* Left / Video (Spans 7 cols) */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            className="relative order-last lg:order-first"
+             initial={{ opacity: 0, scale: 0.98 }}
+             animate={isInView ? { opacity: 1, scale: 1 } : {}}
+             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+             className="col-span-1 lg:col-span-7 gap-10"
           >
-            <div className="absolute -left-3 -top-3 h-24 w-24 rounded-2xl bg-primary/10 -z-10" />
-            <div className="absolute -bottom-3 -right-3 h-16 w-16 rounded-xl bg-accent -z-10" />
-
-            <div className="overflow-hidden rounded-2xl border border-border shadow-xl">
-              <div className="relative aspect-video w-full">
-                <iframe
-                  src="https://www.youtube.com/embed/iJMZbE_Pz7Y?autoplay=1&mute=1&rel=0&modestbranding=1&loop=1&playlist=iJMZbE_Pz7Y"
-                  title="Metro Rizal Doctors Hospital"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full"
-                  suppressHydrationWarning
-                />
-              </div>
-            </div>
-
-            <div className="mt-3 flex items-center gap-2">
-              <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-              <p className="text-xs text-muted-foreground">
-                Metro Rizal Doctors Hospital — Official
-              </p>
+            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-slate-100 ring-1 ring-slate-900/5 shadow-2xl shadow-slate-200/50">
+              <iframe
+                src="https://www.youtube.com/embed/iJMZbE_Pz7Y?autoplay=1&mute=1&rel=0&modestbranding=1&loop=1&playlist=iJMZbE_Pz7Y"
+                title="Metro Rizal Doctors Hospital"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full"
+                suppressHydrationWarning
+              />
             </div>
           </motion.div>
 
-          {/* RIGHT — text content */}
+          {/* Right / Text & Stats (Spans 5 cols) */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="order-first lg:order-last"
+             initial={{ opacity: 0, y: 30 }}
+             animate={isInView ? { opacity: 1, y: 0 } : {}}
+             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+             className="col-span-1 lg:col-span-5 flex flex-col justify-center pt-4 lg:pt-0"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                About Us
-              </span>
-            </div>
-
-            <h2 className="mb-5 text-balance text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-              A Legacy of Healing,{" "}
-              <span className="text-primary">A Future of Hope</span>
-            </h2>
-
-            <p className="mb-6 text-pretty leading-relaxed text-muted-foreground">
-              At Metro Rizal Doctors Hospital, we are committed to providing you
-              with the highest quality of healthcare services and support. We
-              understand that seeking medical attention can be a difficult and
-              stressful experience, and we want you to know that we are here to
-              help you every step of the way.
+            <p className="text-lg md:text-lg text-slate-600 leading-relaxed font-light text-pretty mb-6">
+              At <strong className="font-semibold text-primary">Metro Rizal Doctors Hospital</strong>, we are committed to providing you with the highest quality of healthcare services. We understand that seeking medical attention can be difficult, and we are here to support you every step of the way.
             </p>
 
-            {/* Stats */}
-            <div className="mb-8 flex gap-8">
+            <div className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { value: "25+", label: "Years of Service" },
-                { value: "98%", label: "Patient Satisfaction" },
+                { value: "98%", label: "Patient Focus" },
                 { value: "50+", label: "Expert Doctors" },
+                { value: "24/7", label: "Care & Support" },
               ].map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
-                >
-                  <p className="text-2xl font-bold text-primary">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{stat.label}</p>
-                </motion.div>
+                <div key={stat.label} className="border-l-2 border-primary/30 pl-4">
+                  <p className="text-3xl font-black text-primary tracking-tight">{stat.value}</p>
+                  <p className="text-sm text-slate-500 mt-1 font-medium">{stat.label}</p>
+                </div>
               ))}
             </div>
 
-            <Button asChild className="gap-2">
-              <Link href="/about">
-                Learn More About Us
-                <ArrowRight className="h-4 w-4" />
+            <div>
+              <Link 
+                href="/about" 
+                className="inline-flex items-center justify-center px-8 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-base transition-all shadow-lg shadow-primary/20 hover:-translate-y-1 w-full sm:w-auto"
+              >
+                Discover our Story
               </Link>
-            </Button>
+            </div>
           </motion.div>
         </div>
+        
       </div>
     </section>
   );
