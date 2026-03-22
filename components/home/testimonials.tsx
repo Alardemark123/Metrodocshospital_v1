@@ -5,6 +5,11 @@ import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { testimonials } from "@/lib/mock-api/testimonial";
+import { Dancing_Script } from "next/font/google";
+
+const cursiveFont = Dancing_Script({
+  subsets: ["latin"],
+});
 
 export function Testimonials() {
   const ref = useRef(null);
@@ -45,13 +50,13 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-8 md:mb-12 text-center max-w-3xl mx-auto"
+          className="mb-2 md:mb-4 text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-primary mb-2">
+          <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-foreground mb-2">
             TESTIMONIALS
           </h2>
           <div className="mx-auto mb-4 h-1 w-48 md:w-64 bg-foreground" />
-          <h3 className="text-2xl font-bold text-foreground md:text-4xl lg:text-5xl mb-4 md:mb-6">
+          <h3 className="text-2xl font-bold text-primary md:text-4xl lg:text-5xl mb-4 md:mb-6">
             What Our Patients Say
           </h3>
           <p className="text-muted-foreground text-base md:text-lg">
@@ -60,8 +65,7 @@ export function Testimonials() {
         </motion.div>
 
         {/* Carousel */}
-        <div className="relative flex w-full items-center justify-center my-6">
-          {/* Navigation Left */}
+        <div className="relative flex w-full items-center justify-center mt-2 mb-6">
           <button
             onClick={() => navigate(-1)}
             className="absolute left-0 sm:left-4 md:left-8 z-30 hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 shadow-lg"
@@ -102,11 +106,8 @@ export function Testimonials() {
                     style={{ pointerEvents: isVisible ? "auto" : "none" }}
                   >
                     <div className="flex h-[380px] w-[270px] sm:h-[400px] sm:w-[300px] md:h-[420px] md:w-[360px] flex-col rounded-[2rem] overflow-hidden shadow-xl border border-black/5 bg-white">
-                      {/* Top half white */}
                       <div className="bg-white h-[100px] md:h-[120px] w-full shrink-0 relative">
-                        {/* Avatar */}
                         <div className="absolute left-1/2 -bottom-10 md:-bottom-12 h-20 w-20 md:h-24 md:w-24 -translate-x-1/2 rounded-full border-4 border-white bg-gray-200 text-3xl flex items-center justify-center font-bold text-gray-500 overflow-hidden shadow-sm z-10">
-                          {/* Placeholder for avatar similar to the concept image */}
                           <div className="h-full w-full bg-[#B3B3B3] rounded-full flex items-center justify-center relative overflow-hidden">
                             <div className="absolute bottom-0 h-[45%] w-[70%] bg-[#1A1A1A] rounded-t-full" />
                             <div className="absolute top-[20%] h-[35%] w-[35%] bg-[#1A1A1A] rounded-full" />
@@ -127,7 +128,7 @@ export function Testimonials() {
                           </span>
                         </div>
 
-                        <div className="mt-4 md:mt-6 flex flex-col gap-1 text-[10px] sm:text-xs md:text-sm">
+                        <div className="mt-4 md:mt-4 flex flex-col gap-1 text-[10px] sm:text-xs md:text-sm">
                           <div className="font-bold uppercase tracking-wider">
                             {item.name}
                           </div>
@@ -143,7 +144,6 @@ export function Testimonials() {
             </AnimatePresence>
           </div>
 
-          {/* Navigation Right */}
           <button
             onClick={() => navigate(1)}
             className="absolute right-0 sm:right-4 md:right-8 z-30 hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 shadow-lg"
@@ -153,7 +153,6 @@ export function Testimonials() {
           </button>
         </div>
 
-        {/* Dots */}
         <div className="mt-6 md:mt-8 flex justify-center gap-2 md:gap-3">
           {testimonials.map((_, idx) => {
             const currentActualIndex = getIndex(0);
