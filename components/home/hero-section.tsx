@@ -34,7 +34,6 @@ export function HeroSection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
-            <span className="h-2 w-2 rounded-full bg-primary" />
             <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
               Welcome to Metro Rizal Doctors Hospital
             </span>

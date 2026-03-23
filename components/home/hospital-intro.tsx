@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getFeatures, ICON_MAP } from "@/lib/mock-api";
 import { Button } from "@/components/ui/button";
+import { NetworkBackground } from "./network-background";
 
 export function HospitalIntro() {
   const features = getFeatures();
@@ -15,7 +16,8 @@ export function HospitalIntro() {
 
   return (
     <section ref={ref} className="relative bg-white py-24 md:py-20 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <NetworkBackground />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         
         {/* Editorial Header */}
         <motion.div
