@@ -1,173 +1,190 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { Settings } from "lucide-react";
 import { getServices, ICON_MAP } from "@/lib/mock-api";
+import { cn } from "@/lib/utils";
+
+const ORBIT_COLORS = [
+  "bg-[#004b23]",    // Shade of Green
+  "bg-[#006400]",    
+  "bg-[#007200]",    
+  "bg-[#008000]",   
+  "bg-[#38b000]",   
+  "bg-[#70e000]",    
+  "bg-[#9ef01a]",      
+];
 
 export function ServicesHighlights() {
-  const services = getServices();
+  const allServices = getServices();
+  const services = allServices.slice(0, 6); 
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [orbitRotation, setOrbitRotation] = useState(0);
+
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const featured = services[0];
-  const rest = services.slice(1);
-  const FeaturedIcon = featured ? ICON_MAP[featured.icon] : null;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((current) => (current + 1) % services.length);
+      setOrbitRotation((prev) => prev + (360 / services.length));
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [services.length]);
+
+  const activeService = services[activeIndex];
+  const ActiveIcon = activeService ? ICON_MAP[activeService.icon] : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32">
-      {/* Diagonal stripe accent top-left */}
-      <div
-        className="pointer-events-none absolute -left-10 -top-10 h-48 w-48 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 50%)",
-          backgroundSize: "12px 12px",
-        }}
-      />
-      {/* Floating shapes */}
-      <div className="pointer-events-none absolute right-10 top-16 h-16 w-16 rotate-12 rounded-2xl border border-primary/10" />
-      <div className="pointer-events-none absolute left-1/3 bottom-16 h-8 w-8 rotate-45 bg-primary/5 rounded-sm" />
-      <div className="pointer-events-none absolute right-1/4 top-1/2 h-32 w-32 rounded-full border border-primary/8" />
-
-      {/* Low-opacity background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/FRD_5333-scaled.jpg')" }}
-      />
-      <div className="absolute inset-0 bg-secondary/90" />
-      {/* Radial glow effects */}
-      <div className="pointer-events-none absolute -left-32 -top-32 h-[500px] w-[500px] rounded-full bg-primary/10 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-24 right-0 h-[420px] w-[420px] rounded-full bg-primary/10 blur-[100px]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/40 blur-[90px]" />
-
-      <div className="relative mx-auto max-w-7xl px-4">
-        {/* Header — split left/right */}
-        <div className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32 bg-white">
+      <div className="mx-auto max-w-7xl px-4 lg:px-9">
+        
+        {/* Header section */}
+        <div className="text-center mb-8 md:mb-12 flex flex-col items-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="max-w-xl"
+            className="text-4xl md:text-5xl font-bold text-foreground mb-2"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Our Services
-              </span>
-            </div>
-            <h2 className="text-balance text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-              Comprehensive <span className="text-primary">Healthcare</span>{" "}
-              Services
-            </h2>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, x: 20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            Our Services
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="max-w-sm text-sm leading-relaxed text-muted-foreground lg:text-right"
+            className="text-xl text-primary font-normal"
           >
-            From routine check-ups to specialized treatments, we offer a wide
-            range of medical services to meet all your healthcare needs under
-            one roof.
+            Comprehensive Healthcare Services
           </motion.p>
         </div>
 
-        {/* Bento grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
-          {/* Featured — spans 2 rows */}
-          {featured && (
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.55 }}
-              className="lg:row-span-2"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-0 items-center">
+          
+          {/* Left Side: Content Box */}
+          <div className="flex flex-col justify-center order-2 lg:order-1 px-4 lg:pl-10 lg:pr-2">
+            <motion.h3 
+               initial={{ opacity: 0, x: -20 }}
+               animate={isInView ? { opacity: 1, x: 0 } : {}}
+               transition={{ duration: 0.6, delay: 0.2 }}
+               className="text-3xl md:text-[2.75rem] font-bold text-foreground leading-[1.25] mb-8"
+            > Excellence in Healthcare  
+            </motion.h3>
+
+            <div className="min-h-[260px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 15 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="flex flex-col items-start"
+                >
+                  <h4 className="text-xl font-bold text-primary mb-3">
+                    {activeService?.title || "Services"}
+                  </h4>
+                  <p className="text-gray-500 leading-relaxed mb-6 max-w-md text-[15px]">
+                    {activeService?.description}
+                    {" "} This is a sample text and here you need to add your own text that describes your own concept in your way and that fit best for your topic and make it simple as much as you can that is better.
+                  </p>
+                  
+                  {activeService?.href && (
+                    <Link
+                      href={activeService.href}
+                      className="inline-flex items-center justify-center px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                    >
+                      Learn more
+                    </Link>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Right Side: Orbit Graphic */}
+          <div className="relative flex items-center justify-center min-h-[400px] lg:min-h-[500px] order-1 lg:order-2 w-full">
+            <motion.div 
+               initial={{ opacity: 0, scale: 0.8 }}
+               animate={isInView ? { opacity: 1, scale: 1 } : {}}
+               transition={{ duration: 0.4, delay: 0.3 }}
+               className="relative w-full max-w-[330px] md:max-w-[430px] aspect-square"
             >
-              <Link href={featured.href} className="group block h-full">
-                <div className="relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-3xl bg-primary p-7 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:min-h-0">
-                  <div className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10" />
-                  <div className="pointer-events-none absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-white/5" />
+              {/* Center Circle */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-[150px] h-[150px] md:w-[150px] md:h-[150px] bg-[#4f772d] rounded-full flex items-center justify-center shadow-xl border-[5px] border-white transition-all hover:scale-105 duration-500 overflow-hidden">
+                 <AnimatePresence mode="popLayout">
+                   <motion.div
+                     key={activeIndex}
+                     initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                     exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                     transition={{ duration: 0.4, ease: "backOut" }}
+                     className="flex items-center justify-center p-2"
+                   >
+                     {ActiveIcon ? (
+                       <ActiveIcon className="w-16 h-16 md:w-20 md:h-20 text-white drop-shadow-md" />
+                     ) : (
+                       <Settings className="w-16 h-16 md:w-20 md:h-20 text-white animate-[spin_10s_linear_infinite]" />
+                     )}
+                   </motion.div>
+                 </AnimatePresence>
+              </div>
 
-                  <div className="relative mb-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
-                    {FeaturedIcon && (
-                      <FeaturedIcon className="h-7 w-7 text-primary-foreground" />
-                    )}
-                  </div>
-
-                  <div className="relative mt-8">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">
-                      Featured Service
-                    </span>
-                    <h3 className="mb-3 text-2xl font-bold text-primary-foreground">
-                      {featured.title}
-                    </h3>
-                    <p className="mb-6 text-sm leading-relaxed text-primary-foreground/80">
-                      {featured.description}
-                    </p>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-primary-foreground transition-all group-hover:bg-white/30">
-                      Learn more
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          )}
-
-          {/* Remaining cards */}
-          {rest.map((service, index) => {
-            const ServiceIcon = ICON_MAP[service.icon];
-            return (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.07 }}
+              {/* Orbiting Circles Container - Animates Rotation */}
+              <motion.div 
+                className="absolute inset-0 z-20"
+                animate={{ rotate: orbitRotation }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
               >
-                <Link href={service.href} className="group block h-full">
-                  <div className="flex h-full flex-col rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                        {ServiceIcon && (
-                          <ServiceIcon className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                        )}
-                      </div>
-                      <h3 className="font-semibold text-card-foreground">
-                        {service.title}
-                      </h3>
-                    </div>
-                    <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">
-                      {service.description}
-                    </p>
-                    <div className="flex items-center gap-1 text-xs font-semibold text-primary">
-                      Learn more
-                      <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
+                {services.map((service, i) => {
+                  const angle = (i * (360 / services.length)) - 90; 
+                  const angleRad = (angle * Math.PI) / 180;
+                  
+                  // Radius percentage
+                  const x = 50 + Math.cos(angleRad) * 44; 
+                  const y = 50 + Math.sin(angleRad) * 44; 
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="mt-10 flex justify-center"
-        >
-          <Link
-            href="/departments"
-            className="group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card/80 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
-          >
-            View All Departments
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
+                  const SIcon = ICON_MAP[service.icon];
+                  const isActive = activeIndex === i;
+                  const bgColor = ORBIT_COLORS[i % ORBIT_COLORS.length];
+
+                  return (
+                    <motion.button
+                      key={service.title}
+                      onClick={() => {
+                        setActiveIndex(i);
+                        setOrbitRotation(prev => prev + (360 / services.length));
+                      }}
+                      // Counter-rotate individual icons so they stay completely upright!
+                      initial={{ x: "-50%", y: "-50%", rotate: 0 }}
+                      animate={{ x: "-50%", y: "-50%", rotate: -orbitRotation }}
+                      transition={{ duration: 0.8, ease: "easeInOut" }}
+                      className={cn(
+                        "absolute",
+                        "w-[110px] h-[110px] md:w-[140px] md:h-[140px] rounded-full flex flex-col items-center justify-center gap-1.5 transition-shadow duration-300 ease-out",
+                        "border-[5px] shadow-lg z-20 overflow-hidden",
+                        bgColor,
+                        isActive ? "border-white shadow-2xl z-30 ring-4 ring-primary/50 ring-offset-2" : "border-white/95 opacity-90 hover:opacity-100"
+                      )}
+                      style={{
+                        left: `${x}%`,
+                        top: `${y}%`,
+                      }}
+                    >
+                       {SIcon && <SIcon className="w-7 h-7 md:w-8 md:h-8 text-white shrink-0" />}
+                       <span className="text-white text-[11px] md:text-[13px] font-semibold px-2 text-center leading-tight line-clamp-2 w-full">
+                          {service.title.replace('Department', '').trim()} 
+                       </span>
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
