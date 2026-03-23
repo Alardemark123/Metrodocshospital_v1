@@ -8,7 +8,7 @@ import { getServices, ICON_MAP } from "@/lib/mock-api";
 import { cn } from "@/lib/utils";
 
 const ORBIT_COLORS = [
-  "bg-[#004b23]",    // Shade of Green
+  "bg-[#004b23]",    // Shades of Green
   "bg-[#006400]",    
   "bg-[#007200]",    
   "bg-[#008000]",   
@@ -26,19 +26,11 @@ export function ServicesHighlights() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % services.length);
-      setOrbitRotation((prev) => prev + (360 / services.length));
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [services.length]);
-
   const activeService = services[activeIndex];
   const ActiveIcon = activeService ? ICON_MAP[activeService.icon] : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32 bg-white">
+    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32 bg-primary/400">
       <div className="mx-auto max-w-7xl px-4 lg:px-9">
         
         {/* Header section */}
@@ -70,7 +62,7 @@ export function ServicesHighlights() {
                animate={isInView ? { opacity: 1, x: 0 } : {}}
                transition={{ duration: 0.6, delay: 0.2 }}
                className="text-3xl md:text-[2.75rem] font-bold text-foreground leading-[1.25] mb-8"
-            > Excellence in Healthcare  
+            > Excellence in Healthcare
             </motion.h3>
 
             <div className="min-h-[260px]">
@@ -113,7 +105,11 @@ export function ServicesHighlights() {
                className="relative w-full max-w-[330px] md:max-w-[430px] aspect-square"
             >
               {/* Center Circle */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-[150px] h-[150px] md:w-[150px] md:h-[150px] bg-[#4f772d] rounded-full flex items-center justify-center shadow-xl border-[5px] border-white transition-all hover:scale-105 duration-500 overflow-hidden">
+              <Link 
+                href={activeService?.href || "#"}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-[150px] h-[150px] md:w-[150px] md:h-[150px] bg-[#4f772d] rounded-full flex items-center justify-center shadow-xl border-[5px] border-white transition-all hover:scale-110 hover:shadow-2xl hover:border-white/80 duration-500 overflow-hidden group cursor-pointer"
+                title={`Explore ${activeService?.title || "Service"}`}
+              >
                  <AnimatePresence mode="popLayout">
                    <motion.div
                      key={activeIndex}
@@ -121,7 +117,7 @@ export function ServicesHighlights() {
                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
                      exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
                      transition={{ duration: 0.4, ease: "backOut" }}
-                     className="flex items-center justify-center p-2"
+                     className="flex items-center justify-center p-2 group-hover:scale-110 transition-transform duration-300"
                    >
                      {ActiveIcon ? (
                        <ActiveIcon className="w-16 h-16 md:w-20 md:h-20 text-white drop-shadow-md" />
@@ -130,7 +126,7 @@ export function ServicesHighlights() {
                      )}
                    </motion.div>
                  </AnimatePresence>
-              </div>
+              </Link>
 
               {/* Orbiting Circles Container - Animates Rotation */}
               <motion.div 

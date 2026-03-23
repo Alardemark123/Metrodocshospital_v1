@@ -55,7 +55,7 @@ export function HeroSection() {
            animate="center"
            exit="exit"
            transition={{
-             opacity: { duration: 0.8, ease: "easeInOut" },
+             opacity: { duration: 0.9, ease: "easeInOut" },
            }}
            className="absolute inset-0 w-full h-full"
         >
