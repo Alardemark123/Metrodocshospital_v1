@@ -15,7 +15,7 @@ export function HospitalIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="relative bg-white py-24 md:py-20 overflow-hidden">
+    <section ref={ref} className="relative bg-white py-12 lg:py-16 overflow-hidden">
       <NetworkBackground />
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         
@@ -24,7 +24,7 @@ export function HospitalIntro() {
            initial={{ opacity: 0, y: 30 }}
            animate={isInView ? { opacity: 1, y: 0 } : {}}
            transition={{ duration: 0.8, ease: "easeOut" }}
-           className="max-w-3xl mb-8 md:mb-10"
+           className="max-w-3xl mb-6 md:mb-8"
         >
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
             <span className="h-2 w-2 rounded-full bg-primary" />

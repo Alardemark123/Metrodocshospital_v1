@@ -6,22 +6,9 @@ import { HmoMarquee } from "@/components/ui/hmo-marquee";
 
 export function CreditedHmo() {
   return (
-    <section className="relative overflow-hidden bg-background py-20 lg:py-28">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, currentColor 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
-      <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
-      <div className="pointer-events-none absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-accent/20 blur-2xl" />
-      <div className="pointer-events-none absolute right-16 bottom-10 h-16 w-16 rotate-45 rounded-lg border border-primary/10" />
-      <div className="pointer-events-none absolute left-10 top-10 h-10 w-10 rounded-full border border-primary/10" />
-
-      <div className="relative mx-auto max-w-7xl px-4">
-        <FadeIn className="mb-14 text-center">
+    <section className="relative overflow-hidden bg-white py-12 lg:py-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-4">
+        <FadeIn className="mb-8 text-center">
           <h2 className="mb-3 text-balance text-3xl font-bold text-foreground md:text-4xl">
             Accredited <span className="text-primary">HMOs</span>
           </h2>

@@ -4,111 +4,67 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
-import { Phone, Calendar, ArrowRight } from "lucide-react";
+import { Phone, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getExtraPhones, getOfficeHours } from "@/lib/mock-api/contact";
-
-const phones = getExtraPhones();
-const hours = getOfficeHours();
 
 export function CTABanner() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="bg-background py-20 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4">
+    <section ref={ref} className="relative z-20 -mb-16 md:-mb-24 px-4 sm:px-6">
+      <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-foreground to-foreground/90 p-8 md:p-12 lg:p-16"
+          className="relative overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-primary/10 p-8 sm:p-10 md:p-12 border border-border/50"
         >
-          {/* Background Pattern */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-primary/10 blur-2xl" />
-          </div>
-
-          <div className="relative grid items-center gap-8 lg:grid-cols-2">
-            {/* Content */}
-            <div>
-              <h2 className="mb-4 text-balance text-3xl font-bold text-background md:text-4xl">
+          <div className="relative flex flex-col items-center justify-between gap-8 md:flex-row">
+            {/* Left side text and features */}
+            <div className="text-center md:text-left text-foreground flex-1">
+              <h2 className="mb-3 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl text-foreground">
                 Need Medical Assistance?
               </h2>
-              <p className="mb-6 max-w-lg text-pretty text-background/80">
-                Our dedicated team is available around the clock to help you
-                with any medical concerns. Schedule an appointment or reach out
-                for emergency services.
-              </p>
-
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  asChild
-                  className="gap-2 border-background/30 bg-transparent text-background hover:bg-background/10 hover:text-background"
-                >
-                  <a href="tel:+15551234567">
-                    <Phone className="h-5 w-5" />
-                    Call Now
-                  </a>
-                </Button>
-              </div>
+              <ul className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-3 mt-4 text-sm font-medium text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10"><Check className="h-3.5 w-3.5 text-primary" /></div> 
+                  Available 24/7
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10"><Check className="h-3.5 w-3.5 text-primary" /></div> 
+                  Certified Specialists
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10"><Check className="h-3.5 w-3.5 text-primary" /></div> 
+                  Emergency Ready
+                </li>
+              </ul>
             </div>
 
-            {/* Info Cards */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="rounded-2xl bg-background/10 p-6 backdrop-blur"
-              >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
-                  <Phone className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <h3 className="mb-1 font-semibold text-background">
-                  Emergency Hotline
-                </h3>
-                <p className="mb-2 text-sm text-background/70">
-                  Available 24/7
-                </p>
-                <a
-                  href="tel:+15551234567"
-                  className="flex items-center gap-2 text-primary hover:underline"
-                >
-                  <span>{phones.join(" / ")}</span>
-                </a>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="rounded-2xl bg-background/10 p-6 backdrop-blur"
-              >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
-                  <Calendar className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <h3 className="mb-1 font-semibold text-background">
-                  Working Hours
-                </h3>
-                <div className="space-y-2 text-sm text-[#fff]">
-                  {hours.map((h) => (
-                    <p
-                      key={h.label}
-                      className={
-                        h.highlight ? "font-semibold text-primary" : ""
-                      }
-                    >
-                      {h.highlight
-                        ? `Hospital: ${h.hours}`
-                        : `${h.label}: ${h.hours}`}
-                    </p>
-                  ))}
-                </div>
-              </motion.div>
+            {/* Right side Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+               <Button
+                 size="lg"
+                 variant="outline"
+                 asChild
+                 className="w-full sm:w-auto border-border bg-transparent text-foreground hover:bg-muted hover:text-foreground transition-all rounded-full px-8 font-semibold"
+               >
+                 <a href="tel:+15551234567">
+                   <Phone className="mr-2 h-4 w-4 text-primary" />
+                   Call Hotline
+                 </a>
+               </Button>
+               <Button
+                 size="lg"
+                 asChild
+                 className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 transition-all rounded-full px-8 shadow-lg shadow-primary/25 font-semibold"
+               >
+                 <Link href="/contact">
+                   Book Appointment
+                   <ArrowRight className="ml-2 h-4 w-4" />
+                 </Link>
+               </Button>
             </div>
           </div>
         </motion.div>

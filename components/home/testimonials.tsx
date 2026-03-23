@@ -43,8 +43,32 @@ export function Testimonials() {
   });
 
   return (
-    <section ref={ref} className="bg-[#E9EBEA] py-16 lg:py-32 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 relative">
+    <section ref={ref} className="relative bg-white py-12 lg:py-16 overflow-hidden">
+      {/* Minimalist Abstract Wavy Background (from Reference Concept) */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-[15%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-slate-50/80 rounded-[45%_55%_70%_30%/40%_50%_60%_50%] transform rotate-12" />
+        <div className="absolute -bottom-[20%] -left-[10%] w-[65vw] h-[65vw] max-w-[700px] max-h-[700px] bg-slate-50/80 rounded-[60%_40%_30%_70%/50%_60%_40%_50%] transform -rotate-12" />
+        {/* Scattered Dots */}
+        <div className="absolute top-[20%] right-[30%] w-3 h-3 bg-slate-200/50 rounded-full" />
+        <div className="absolute top-[25%] right-[25%] w-1.5 h-1.5 bg-slate-300/50 rounded-full" />
+        <div className="absolute top-[15%] right-[15%] w-2 h-2 bg-slate-200/50 rounded-full" />
+        <div className="absolute bottom-[30%] left-[20%] w-4 h-4 bg-slate-200/50 rounded-full" />
+        <div className="absolute bottom-[20%] left-[25%] w-2 h-2 bg-slate-300/50 rounded-full" />
+        <div className="absolute top-[40%] left-[10%] w-3 h-3 bg-slate-200/50 rounded-full" />
+
+        {/* Subtle Wavy Contour Lines (SVG) */}
+        <svg className="absolute w-full h-full opacity-[0.15]" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
+          <path d="M0,15 C30,25 40,-5 100,15" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+          <path d="M0,20 C35,30 45,0 100,20" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+          <path d="M0,25 C40,35 50,5 100,25" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+
+          <path d="M0,85 C30,75 40,105 100,85" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+          <path d="M0,90 C35,80 45,110 100,90" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+          <path d="M0,95 C40,85 50,115 100,95" stroke="#94a3b8" strokeWidth="0.1" vectorEffect="non-scaling-stroke" />
+        </svg>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,14 +76,14 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="mb-2 md:mb-4 text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-foreground mb-2">
+          <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-primary mb-2">
             TESTIMONIALS
           </h2>
-          <div className="mx-auto mb-4 h-1 w-48 md:w-64 bg-foreground" />
-          <h3 className="text-2xl font-bold text-primary md:text-4xl lg:text-5xl mb-4 md:mb-6">
+          <div className="mx-auto mb-4 h-1 w-48 md:w-64 bg-primary" />
+          <h3 className="text-2xl font-bold text-foreground md:text-4xl lg:text-5xl mb-4 md:mb-6">
             What Our Patients Say
           </h3>
-          <p className="text-muted-foreground text-base md:text-lg">
+          <p className="text-muted-foreground text-sm md:text-lg">
             We place huge value on strong relationships and have seen the benefit they bring to our patients. Patient feedback is vital in helping us deliver the best possible care.
           </p>
         </motion.div>
@@ -162,11 +186,10 @@ export function Testimonials() {
                 onClick={() => {
                   setPage(page + (idx - currentActualIndex));
                 }}
-                className={`h-2.5 w-2.5 md:h-3 md:w-3 rounded-full transition-all ${
-                  idx === currentActualIndex
+                className={`h-2.5 w-2.5 md:h-3 md:w-3 rounded-full transition-all ${idx === currentActualIndex
                     ? "bg-primary w-6 md:w-8"
                     : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             );

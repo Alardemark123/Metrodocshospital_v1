@@ -30,7 +30,7 @@ export function ServicesHighlights() {
   const ActiveIcon = activeService ? ICON_MAP[activeService.icon] : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-32 bg-primary/400">
+    <section ref={ref} className="relative overflow-hidden py-12 lg:py-16 bg-primary/400">
       <div className="mx-auto max-w-7xl px-4 lg:px-9">
         
         {/* Header section */}
