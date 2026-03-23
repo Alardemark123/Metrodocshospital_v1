@@ -36,9 +36,9 @@ function DoctorCard({
       transition={{ duration: 0.55, delay: index * 0.1 }}
     >
       <Link href={`/doctors/${slugify(doctor.name)}`} className="group block">
-        <div className="relative overflow-hidden rounded-3xl bg-card shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <div className="relative overflow-hidden rounded-3xl border-3 border-transparent bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-primary group-hover:shadow-xl">
           {/* Portrait image */}
-          <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/50">
+          <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/50">
             <Image
               src={imgSrc}
               alt={`Photo of ${doctor.name}`}
@@ -83,12 +83,6 @@ function DoctorCard({
             </div>
           </div>
 
-          {/*
-            Left accent bar:
-            Mobile: always fully visible
-            Desktop: animates in on hover
-          */}
-          <div className="absolute left-0 top-0 h-full w-1 rounded-r bg-primary lg:origin-bottom lg:scale-y-0 lg:transition-transform lg:duration-300 lg:group-hover:scale-y-100" />
         </div>
       </Link>
     </motion.div>
@@ -103,7 +97,7 @@ export function DoctorsHighlight() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-secondary py-20 lg:py-32"
+      className="relative overflow-hidden bg-primary/400 py-12 lg:py-16"
     >
       {/* Dot pattern */}
       <div
@@ -126,12 +120,12 @@ export function DoctorsHighlight() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left"
+          className="mb-8 flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-left"
         >
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
                 Our Team
               </span>
             </div>
@@ -160,7 +154,7 @@ export function DoctorsHighlight() {
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.55 }}
-          className="mt-12 flex justify-center"
+          className="mt-8 flex justify-center"
         >
           <Button size="lg" asChild>
             <Link href="/doctors" className="gap-2">

@@ -22,12 +22,6 @@ export function CreditedHmo() {
 
       <div className="relative mx-auto max-w-7xl px-4">
         <FadeIn className="mb-14 text-center">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-              Accredited Partners
-            </span>
-          </div>
           <h2 className="mb-3 text-balance text-3xl font-bold text-foreground md:text-4xl">
             Accredited <span className="text-primary">HMOs</span>
           </h2>

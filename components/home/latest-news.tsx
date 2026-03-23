@@ -26,7 +26,7 @@ export function LatestNews() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-background py-20 lg:py-32"
+      className="relative overflow-hidden bg-background py-12 lg:py-16"
     >
       {/* Grid line pattern */}
       <div
@@ -52,12 +52,12 @@ export function LatestNews() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end"
+          className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end"
         >
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
                 News & Events
               </span>
             </div>
@@ -89,7 +89,7 @@ export function LatestNews() {
             >
               <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
                 {/* Image area */}
-                <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-accent to-primary/10">
+                <div className="relative aspect-[16/9] lg:aspect-[2.2/1] overflow-hidden bg-gradient-to-br from-primary/20 via-accent to-primary/10">
                   <Image
                     src={featured.image || "/placeholder-news.jpg"}
                     alt={featured.title}
@@ -115,8 +115,8 @@ export function LatestNews() {
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex flex-1 flex-col p-4 md:p-5">
+                  <div className="mb-2.5 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="h-3.5 w-3.5 text-primary/70" />
                       {formatDate(featured.date)}
@@ -139,7 +139,7 @@ export function LatestNews() {
           </motion.div>
 
           {/* Side articles — 2 cols, stacked */}
-          <div className="flex flex-col gap-5 lg:col-span-2">
+          <div className="flex flex-col gap-4 lg:col-span-2">
             {rest.map((article, index) => (
               <motion.div
                 key={article.id}
@@ -156,9 +156,9 @@ export function LatestNews() {
                     {/* Thin color bar at top */}
                     <div className="h-1 w-full bg-gradient-to-r from-primary/60 via-primary to-primary/40 transition-all group-hover:from-primary group-hover:to-primary/70" />
 
-                    <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-1 flex-col p-4 md:p-5 max-h-[160px] lg:max-h-none justify-center">
                       {/* Category + date row */}
-                      <div className="mb-3 flex items-center justify-between">
+                      <div className="mb-2 flex items-center justify-between">
                         <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
                           {article.category}
                         </span>
