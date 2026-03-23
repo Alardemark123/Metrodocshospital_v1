@@ -22,7 +22,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[calc(100vh-80px)] bg-slate-50 overflow-hidden flex items-center justify-center py-16 px-4 sm:px-8 lg:px-16">
+    <section className="relative w-full min-h-[calc(100vh-80px)] bg-primary/200 overflow-hidden flex items-center justify-center py-16 px-4 sm:px-8 lg:px-16">
 
       <div className="w-full max-w-[1400px] flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-16">
 
@@ -33,12 +33,15 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="inline-block py-1.5 px-2 text-primary text-sm sm:text-base font-normal tracking-widest uppercase mb-6">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
               Welcome to Metro Rizal Doctors Hospital
             </span>
+          </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-6">
-              Compassionate Care,<br />
-              <span className="text-[#5CA51B]">Advanced Medicine</span>
+              Advance Healthcare,<br />
+              <span className="text-[#5CA51B]">Right Here in Rizal</span>
             </h1>
             <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
               We are dedicated to providing world-class healthcare, advanced medical facilities, and compassionate service to our community.

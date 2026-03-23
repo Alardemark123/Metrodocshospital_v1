@@ -26,7 +26,7 @@ export function HospitalIntro() {
         >
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
             <span className="h-2 w-2 rounded-full bg-primary" />
-            <span className="text-primary font-thin tracking-widest text-xs sm:text-sm uppercase">
+            <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
               About Our Hospital
             </span>
           </div>
