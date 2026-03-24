@@ -39,11 +39,11 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-white">
+    <section className="relative w-full max-h-[500px] md:max-h-[600px] lg:max-h-[700px] xl:max-h-[800px] overflow-hidden bg-white">
       <img 
         src={photos[0].src} 
         alt="layout spacer tracking" 
-        className="w-full h-auto invisible pointer-events-none select-none" 
+        className="w-full h-auto max-h-[400px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] object-cover invisible pointer-events-none select-none" 
       />
 
       {/* Background Slider */}

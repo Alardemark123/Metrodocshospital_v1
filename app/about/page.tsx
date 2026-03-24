@@ -325,12 +325,12 @@ export default function AboutPage() {
 
         <div className="relative mx-auto max-w-7xl px-4">
           <FadeIn className="mb-14 text-center">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Individual Approach
-              </span>
-            </div>
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
+              Individual Approach
+            </span>
+          </div>
             <h2 className="mb-3 text-balance text-3xl font-bold text-foreground md:text-4xl">
               Why Choose <span className="text-primary">Us</span>
             </h2>
@@ -340,40 +340,36 @@ export default function AboutPage() {
             </p>
           </FadeIn>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-wrap justify-center gap-6 mt-8">
             {whyChooseUs.map((item, index) => (
-              <FadeIn key={item.title} delay={index * 0.07}>
-                <div className="group relative flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-
-                  {/* Animated border overlay */}
-                  <div className="absolute left-0 top-0 w-0 h-0 border-1 border-primary rounded-2xl transition-all duration-500 group-hover:w-full group-hover:h-full" />
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    <item.icon className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
+              <FadeIn 
+                key={item.title} 
+                delay={index * 0.07}
+                className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(20%-20px)] flex"
+              >
+                <div className="relative flex w-full flex-col h-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                  <div 
+                    className="bg-primary h-[160px] w-full flex items-center justify-center pb-8"
+                    style={{ clipPath: "polygon(0 0, 100% 0, 100% 70%, 0 100%)" }}
+                  >
+                    <item.icon className="h-14 w-14 text-white" strokeWidth={1.5} />
                   </div>
-                  <h3 className="mb-2 font-semibold text-card-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {item.description}
-                  </p>
+                  
+                  {/* Bottom white section */}
+                  <div className="px-6 pb-8 pt-2 flex-1 flex flex-col bg-white">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-[3px] h-4 bg-primary shrink-0" />
+                      <h3 className="font-bold text-primary text-[13px] tracking-widest uppercase">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               </FadeIn>
             ))}
-            <FadeIn delay={whyChooseUs.length * 0.07}>
-              <Link href="/contact" className="group block h-full">
-                <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-6 text-center transition-all hover:border-primary hover:bg-primary/10">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
-                    <ArrowRight className="h-5 w-5 text-primary transition-colors group-hover:text-primary-foreground" />
-                  </div>
-                  <p className="font-semibold text-foreground">
-                    Book a Consultation
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Get in touch with our team today
-                  </p>
-                </div>
-              </Link>
-            </FadeIn>
           </div>
         </div>
       </section>
