@@ -49,11 +49,11 @@ const hours = getOfficeHours();
 
 export function Footer() {
   return (
-    <footer className="bg-primary/95 text-white pt-28 md:pt-36">
+    <footer className="bg-primary/95 text-white pt-20 md:pt-28">
       {/* Main body */}
       <div className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 pb-12 pt-8">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12 text-center md:text-left items-center md:items-start">
+        <div className="mx-auto max-w-7xl px-4 pb-8">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-12 text-center md:text-left items-center md:items-start">
             {/* Logo */}
             <div className="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
               <Link href="/" className=" flex items-center shrink-0 self-start md:self-auto">
@@ -74,11 +74,11 @@ export function Footer() {
                 </div>
               </Link>
 
-              <p className="mb-4 mt-5 text-sm font-medium leading-relaxed text-white max-w-xs drop-shadow-sm">
+              <p className="mb-3 mt-3 text-sm font-medium leading-relaxed text-white max-w-xs drop-shadow-sm">
                 Delivering compassionate, world-class healthcare with cutting-edge technology and trusted medical professionals.
               </p>
                {/* Follow us */}
-              <div className="flex gap-2 justify-center md:justify-start mt-2">
+              <div className="flex gap-2 justify-center md:justify-start mt-1">
                 {socialLinks.map((social) => (
                   <a
                     key={social.name}
@@ -96,10 +96,10 @@ export function Footer() {
 
             {/* Quick Links */}
             <div className="lg:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
-              <p className="mb-5 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
+              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
                 Quick Links
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-1.5">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
                     <Link
@@ -116,10 +116,10 @@ export function Footer() {
 
             {/* Departments */}
             <div className="lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
-              <p className="mb-5 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
+              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
                 Departments
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-1.5">
                 {departments.map((dept) => (
                   <li key={dept.name}>
                     <Link
@@ -136,10 +136,10 @@ export function Footer() {
 
             {/* Contact */}
             <div className="lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
-              <p className="mb-5 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
+              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-white drop-shadow-sm">
                 Contact Us
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-2">
                 <li className="flex flex-col items-center md:flex-row md:items-start gap-3 text-center md:text-left group">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#ffffff33] transition-colors group-hover:bg-white">
                     <MapPin className="h-4 w-4 text-white transition-colors group-hover:text-primary" />
@@ -191,7 +191,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/20 bg-black/10 py-6 text-center text-xs font-medium text-white/90">
+      <div className="border-t border-white/20 bg-black/10 py-4 text-center text-xs font-medium text-white/90">
         © {new Date().getFullYear()} Metro Rizal Doctors Hospital. All rights reserved.
         <span className="ml-2 inline-block mt-1 sm:mt-0">
           Developed by{" "}

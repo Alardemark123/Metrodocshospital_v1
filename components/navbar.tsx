@@ -76,10 +76,10 @@ export function Navbar() {
               className="h-14 w-auto"
             />
             <div className="ml-2 flex flex-col">   
-              <span className="text-base font-old font-semibold text-green-800 leading-none">
+              <span className="text-base font-extrabold text-green-800 leading-none">
                 Metro Rizal
               </span>
-              <span className="text-base font-semibold text-green-800 leading-none mt-0.5 tracking-wider">
+              <span className="text-base font-extrabold text-green-800 leading-none mt-0.5 tracking-wider">
                 Doctors Hospital
               </span>
             </div>
