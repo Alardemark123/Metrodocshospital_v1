@@ -122,7 +122,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
         className="relative z-10 w-full sm:max-w-4xl bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[95vh] sm:max-h-[90vh] pointer-events-auto"
       >
         {/* --- MOBILE HEADER & ACCORDION (Visible < 768px) --- */}
-        <div className="md:hidden bg-[#5aa61b] text-white shrink-0 rounded-t-[2.5rem]">
+        <div className="md:hidden bg-primary text-white shrink-0 rounded-t-[2.5rem]">
           <div className="px-6 py-6">
             <div className="flex justify-between items-start">
               <div>
@@ -189,7 +189,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
         </div>
 
         {/* Sidebar (Desktop only) */}
-        <div className="hidden md:flex w-[300px] bg-[#5aa61b] p-10 text-white flex-col justify-between shrink-0 rounded-l-[2.5rem]">
+        <div className="hidden md:flex w-[300px] bg-primary p-10 text-white flex-col justify-between shrink-0 rounded-l-[2.5rem]">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-widest opacity-80 mb-2">
               Applying For
@@ -230,13 +230,13 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
         <div className="flex-1 flex flex-col min-h-0 bg-white rounded-b-[2.5rem] md:rounded-r-[2.5rem] md:rounded-bl-none">
           {submitted ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center py-16 px-6 md:px-12">
-              <CheckCircle size={72} className="text-[#5aa61b] mb-6" />
+              <CheckCircle size={72} className="text-primary mb-6" />
               <h3 className="text-2xl font-bold text-gray-900">
                 Application Submitted!
               </h3>
               <Button
                 onClick={onClose}
-                className="mt-8 bg-[#5aa61b] rounded-xl px-12 h-12"
+                className="mt-8 bg-primary rounded-xl px-12 h-12"
               >
                 Close
               </Button>
@@ -299,14 +299,14 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                     <div className="relative z-10 flex flex-col items-center pointer-events-none">
                       {fileName ? (
                         <>
-                          <FileText size={22} className="text-[#5aa61b] mb-2" />
+                          <FileText size={22} className="text-primary mb-2" />
                           <p className="text-sm font-bold text-gray-700">
                             {fileName}
                           </p>
                         </>
                       ) : (
                         <>
-                          <Upload size={22} className="text-[#5aa61b] mb-2" />
+                          <Upload size={22} className="text-primary mb-2" />
                           <p className="text-sm font-bold">
                             Upload Resume (Required)
                           </p>
@@ -346,7 +346,7 @@ function ApplyModal({ job, onClose }: { job: Job; onClose: () => void }) {
                   form="apply-form"
                   disabled={!token || isSubmitting}
                   className={`w-full sm:w-auto h-12 px-8 rounded-xl text-sm font-bold shadow-lg transition-all
-                    ${!token ? "bg-gray-300 cursor-not-allowed text-gray-500" : "bg-[#5aa61b] text-white hover:opacity-90"}`}
+                    ${!token ? "bg-gray-300 cursor-not-allowed text-gray-500" : "bg-primary text-white hover:opacity-90"}`}
                 >
                   {isSubmitting ? "Sending..." : "Submit Application"}
                 </Button>
@@ -384,14 +384,14 @@ function JobDetailsModal({
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         className="relative z-10 w-full sm:max-w-5xl sm:max-h-[90vh] max-h-[95vh] bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden flex flex-col pointer-events-auto"
       >
-        <div className="bg-[#5aa61b] px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 shrink-0 text-white">
+        <div className="bg-primary px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3 shrink-0 text-white">
           <h2 className="text-base sm:text-xl font-black truncate">
             {job.position}
           </h2>
           <div className="flex items-center gap-2">
             <Button
               onClick={onApply}
-              className="bg-white text-[#5aa61b] hover:bg-gray-100 font-bold px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm"
+              className="bg-white text-primary hover:bg-gray-100 font-bold px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm"
             >
               Apply
             </Button>
@@ -422,7 +422,7 @@ function JobDetailsModal({
           </div>
           <div className="flex-1 overflow-y-auto p-5 sm:p-8 space-y-8">
             <div>
-              <h4 className="font-bold mb-4 flex items-center gap-2 text-[#5aa61b] text-xs uppercase">
+              <h4 className="font-bold mb-4 flex items-center gap-2 text-primary text-xs uppercase">
                 <CheckCircle size={14} /> Requirements
               </h4>
               <ul className="space-y-3">
@@ -431,7 +431,7 @@ function JobDetailsModal({
                     key={i}
                     className="flex gap-3 text-xs sm:text-sm text-gray-500 font-medium"
                   >
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#5aa61b]/50" />{" "}
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/50" />{" "}
                     {r}
                   </li>
                 ))}
@@ -457,14 +457,14 @@ function JobCard({
   return (
     <motion.div
       whileHover={{ y: -3 }}
-      className="group flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm transition-all hover:shadow-xl hover:border-[#5aa61b]/30"
+      className="group flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm transition-all hover:shadow-xl hover:border-primary/30"
     >
       <div>
         <div className="mb-3 flex items-start justify-between gap-2">
-          <h3 className="text-lg sm:text-xl font-bold text-[#1a3c2a] group-hover:text-[#5aa61b] transition-colors">
+          <h3 className="text-lg sm:text-xl font-bold text-[#1a3c2a] group-hover:text-primary transition-colors">
             {job.position}
           </h3>
-          <span className="shrink-0 rounded-full bg-[#5aa61b]/10 px-3 py-1 text-[10px] font-bold uppercase text-[#5aa61b]">
+          <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase text-primary">
             {job.type}
           </span>
         </div>
@@ -485,7 +485,7 @@ function JobCard({
           </button>
           <button
             onClick={onApply}
-            className="rounded-xl bg-[#5aa61b] px-3 py-2 text-xs font-bold text-white shadow-lg shadow-[#5aa61b]/20"
+            className="rounded-xl bg-primary px-3 py-2 text-xs font-bold text-white shadow-lg shadow-primary/20"
           >
             Apply Now
           </button>
@@ -598,7 +598,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <div className="min-h-screen bg-[#F8FAF8] py-10 px-4">
+      <div className="min-h-screen bg-white py-10 px-4">
         <div className="mx-auto max-w-[1400px]">
           <div className="lg:hidden mb-5 flex gap-3">
             <div className="relative flex-1">
@@ -615,7 +615,7 @@ export default function CareersPage() {
             </div>
             <button
               onClick={() => setShowMobileFilters(!showMobileFilters)}
-              className={`p-3 rounded-2xl border ${showMobileFilters ? "bg-[#5aa61b] text-white" : "bg-white text-gray-600"}`}
+              className={`p-3 rounded-2xl border ${showMobileFilters ? "bg-primary text-white" : "bg-white text-gray-600"}`}
             >
               <SlidersHorizontal size={18} />
             </button>
@@ -630,7 +630,7 @@ export default function CareersPage() {
                     Search Positions
                   </label>
                   <input
-                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-[#5aa61b]/10 focus:border-[#5aa61b] transition-all"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="e.g. Nurse, Radiologist..."
@@ -642,7 +642,7 @@ export default function CareersPage() {
                     Filter by Department
                   </label>
                   <select
-                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm font-bold outline-none cursor-pointer focus:border-[#5aa61b] appearance-none"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm font-bold outline-none cursor-pointer focus:border-primary appearance-none"
                     value={selectedDept}
                     onChange={(e) => setSelectedDept(e.target.value)}
                   >
@@ -682,7 +682,7 @@ export default function CareersPage() {
                         Search Positions
                       </label>
                       <input
-                        className="w-full rounded-2xl border bg-gray-50 p-3 text-sm outline-none focus:border-[#5aa61b]"
+                        className="w-full rounded-2xl border bg-gray-50 p-3 text-sm outline-none focus:border-primary"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Search..."

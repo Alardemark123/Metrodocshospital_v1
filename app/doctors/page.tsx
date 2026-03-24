@@ -103,7 +103,7 @@ function DoctorCard({ doctor, index }: { doctor: Doctor; index: number }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
             <div className="absolute left-3 top-3">
-              <span className="rounded-full border border-primary/30 bg-[#68A32B] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+              <span className="rounded-full border border-primary/30 bg-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
                 {doctor.department}
               </span>
             </div>

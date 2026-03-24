@@ -81,11 +81,11 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
 
                 {/* Content Section */}
                 <div className="flex flex-1 flex-col p-7">
-                  <div className="mb-4 flex items-center gap-2 text-[12px] font-bold text-[#5CA51B]">
+                  <div className="mb-4 flex items-center gap-2 text-[12px] font-bold text-primary">
                     <span>Metro Rizal Doctors</span>
                   </div>
 
-                  <h3 className="mb-3 text-lg font-extrabold text-[#0a2e1a] line-clamp-1">
+                  <h3 className="mb-3 text-lg font-extrabold text-foreground line-clamp-1">
                     {dept.name}
                   </h3>
 
@@ -96,7 +96,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
                   <div className="mt-auto">
                     <Link
                       href={`/departments/${slugify(dept.name)}`}
-                      className="inline-flex items-center gap-2 text-sm font-bold text-[#5CA51B] transition-all hover:gap-3"
+                      className="inline-flex items-center gap-2 text-sm font-bold text-primary transition-all hover:gap-3"
                     >
                       View Details
                       <ArrowRight size={16} />
@@ -111,7 +111,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
         {/* Right Arrow */}
         <button
           onClick={next}
-          className="absolute -right-2 lg:-right-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-[#0a2e1a] shadow-xl transition-all hover:bg-[#5CA51B] hover:text-white"
+          className="absolute -right-2 lg:-right-20 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-slate-100 bg-white text-primary shadow-xl transition-all hover:bg-[#5CA51B] hover:text-white"
         >
           <ChevronRight size={24} />
         </button>
@@ -124,7 +124,7 @@ function DepartmentCarousel({ departments }: { departments: Department[] }) {
             key={i}
             onClick={() => setCurrentIndex(i)}
             className={`h-1.5 transition-all duration-300 rounded-full ${
-              i === currentIndex ? "w-6 bg-[#5CA51B]" : "w-1.5 bg-slate-200"
+              i === currentIndex ? "w-6 bg-primary" : "w-1.5 bg-slate-200"
             }`}
           />
         ))}
@@ -137,7 +137,7 @@ export default function DepartmentsPage() {
   const departments = getDepartments();
 
   return (
-    <div className="bg-[#f8faff] min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-20 lg:py-28">
         <div className="relative mx-auto max-w-7xl px-4 text-center">
@@ -147,13 +147,13 @@ export default function DepartmentsPage() {
             transition={{ duration: 0.6 }}
             className="mx-auto max-w-3xl"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5CA51B]/20 bg-[#5CA51B]/10 px-4 py-1.5">
-              <Stethoscope className="h-3.5 w-3.5 text-[#5CA51B]" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#5CA51B]">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-[#5CA51B]/10 px-4 py-1.5">
+              <Stethoscope className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Our Expertise
               </span>
             </div>
-            <h1 className="mb-5 text-4xl font-bold text-[#0a2e1a] md:text-5xl">
+            <h1 className="mb-5 text-4xl font-bold text-foreground md:text-5xl">
               Specialized Medical Departments
             </h1>
             <p className="mb-8 text-base text-muted-foreground md:text-lg">

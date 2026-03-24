@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { CTABanner } from "@/components/home/cta-banner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#66b539",
+  themeColor: "#345f47",
   width: "device-width",
   initialScale: 1,
 };
@@ -80,6 +81,7 @@ export default function RootLayout({
       >
         <Navbar />
         <main>{children}</main>
+        <CTABanner />
         <Footer />
         <Analytics />
       </body>

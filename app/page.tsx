@@ -6,7 +6,6 @@ import { DepartmentsPreview } from "@/components/home/departments-preview";
 import { DoctorsHighlight } from "@/components/home/doctors-highlight";
 import { LatestNews } from "@/components/home/latest-news";
 import { Testimonials } from "@/components/home/testimonials";
-import { CTABanner } from "@/components/home/cta-banner";
 import { CreditedHmo } from "@/components/home/credited-hmo";
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ export default function HomePage() {
       <DoctorsHighlight />
       <CreditedHmo />
       <Testimonials />
-      <CTABanner />
     </>
   );
 }

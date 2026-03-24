@@ -488,7 +488,7 @@ export default function ContactPage() {
                           className={`gap-2 transition-colors ${
                             isSubmitting
                               ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-[#5aa61b]"
+                              : "bg-primary"
                           }`}
                         >
                           {isSubmitting ? (

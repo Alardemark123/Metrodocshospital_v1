@@ -49,12 +49,12 @@ export default function DepartmentDetailPage({
   const currentIndex = allDepartments.findIndex((d) => d.id === department.id);
   const prevDept =
     allDepartments[
-      (currentIndex - 1 + allDepartments.length) % allDepartments.length
+    (currentIndex - 1 + allDepartments.length) % allDepartments.length
     ];
   const nextDept = allDepartments[(currentIndex + 1) % allDepartments.length];
 
   return (
-    <div className="bg-[#f7f9f7] min-h-screen pb-24">
+    <div className="bg-white min-h-screen pb-24">
       <div className="mx-auto max-w-7xl px-4 pt-10">
         {/* 1. BREADCRUMBS */}
         <motion.div
@@ -80,11 +80,11 @@ export default function DepartmentDetailPage({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
         >
-          <div className="inline-flex items-center gap-2 bg-[#5CA51B]/10 text-[#5CA51B] text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#5CA51B]" />
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             Specialized Medical Unit
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-[#0a2e1a] leading-tight max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight max-w-2xl">
             {department.name}
           </h1>
           <p className="mt-3 text-sm text-slate-400 italic">
@@ -118,9 +118,9 @@ export default function DepartmentDetailPage({
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.15 }}
-              className="py-4" // Simple padding instead of a card
+              className="py-" // Simple padding instead of a card
             >
-              <div className="flex items-center gap-2 mb-6 text-[#5CA51B]">
+              <div className="flex items-center gap-2 mb-6 text-primary">
                 <Bookmark size={14} />
                 <p className="text-[10px] font-bold uppercase tracking-widest">
                   About the unit
@@ -143,10 +143,10 @@ export default function DepartmentDetailPage({
                 href={`/departments/${slugify(prevDept.name)}`}
                 className="group flex items-center gap-3 sm:gap-5 transition-all text-left"
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#5CA51B] group-hover:border-[#5CA51B] transition-all shrink-0">
+                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all shrink-0">
                   <ArrowLeft
                     size={18}
-                    className="text-[#0a2e1a] group-hover:text-white transition-colors"
+                    className="text-foreground group-hover:text-white transition-colors"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -155,7 +155,7 @@ export default function DepartmentDetailPage({
                     Previous Unit
                   </span>
                   {/* Title: base size is smaller, grows on sm screens */}
-                  <span className="text-sm sm:text-xl font-bold text-[#0a2e1a] group-hover:text-[#5CA51B] transition-colors leading-tight">
+                  <span className="text-sm sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                     {prevDept.name}
                   </span>
                 </div>
@@ -172,14 +172,14 @@ export default function DepartmentDetailPage({
                     Next Unit
                   </span>
                   {/* Title: base text-sm for mobile, text-xl for 640px+ */}
-                  <span className="text-sm sm:text-xl font-bold text-[#0a2e1a] group-hover:text-[#5CA51B] transition-colors leading-tight">
+                  <span className="text-sm sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                     {nextDept.name}
                   </span>
                 </div>
-                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-[#5CA51B] group-hover:border-[#5CA51B] transition-all shrink-0">
+                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all shrink-0">
                   <ArrowRight
                     size={18}
-                    className="text-[#0a2e1a] group-hover:text-white transition-colors"
+                    className="text-foreground group-hover:text-white transition-colors"
                   />
                 </div>
               </Link>
@@ -240,7 +240,7 @@ export default function DepartmentDetailPage({
 
             {/* CATEGORIES CARD */}
             <div className="rounded-3xl bg-white p-8 shadow-sm border border-slate-100">
-              <h3 className="text-lg font-bold text-[#0a2e1a] mb-6 border-l-4 border-[#5CA51B] pl-4">
+              <h3 className="text-lg font-bold text-foreground mb-6 border-l-4 border-primary pl-4">
                 Categories
               </h3>
               <div className="space-y-1.5">
@@ -250,11 +250,10 @@ export default function DepartmentDetailPage({
                     <Link
                       key={dept.id}
                       href={`/departments/${slugify(dept.name)}`}
-                      className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${
-                        isActive
-                          ? "bg-[#5CA51B] text-white shadow-lg"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-[#5CA51B]"
-                      }`}
+                      className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${isActive
+                        ? "bg-primary text-white shadow-lg"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-primary"
+                        }`}
                     >
                       <span className="font-bold">{dept.name}</span>
                       <ChevronRight
@@ -269,7 +268,7 @@ export default function DepartmentDetailPage({
 
             {/* RECENT POSTS CARD */}
             <div className="rounded-3xl bg-white p-8 shadow-xl text-green-800 overflow-hidden relative">
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-[#5CA51B]/10 blur-2xl" />
+              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
               <h3 className="text-lg font-bold mb-8 flex items-center gap-2">
                 <Calendar size={18} className="text-shadow-green-700" />
                 Recent Updates
@@ -284,7 +283,7 @@ export default function DepartmentDetailPage({
                     <h4 className="text-xs font-bold uppercase text-primary leading-snug transition-colors">
                       {post.title}
                     </h4>
-                    <p className="mt-1.5 text-[12px] font-semibold text-green-700 uppercase">
+                    <p className="mt-1.5 text-[12px] font-semibold text-primary/500 uppercase">
                       {post.date}
                     </p>
                   </Link>
