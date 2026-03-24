@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -16,6 +16,8 @@ import {
   Star,
   ChevronRight,
   Heart,
+  X,
+  ZoomIn,
 } from "lucide-react";
 import { getFacilities } from "@/lib/mock-api";
 import { FadeIn } from "@/components/ui/fade-in";
@@ -54,12 +56,7 @@ const whyChooseUs = [
   },
 ];
 
-const stats = [
-  { number: "25+", label: "Years of Excellence" },
-  { number: "50+", label: "Expert Doctors" },
-  { number: "10k+", label: "Patients Treated" },
-  { number: "9", label: "Departments" },
-];
+
 
 const visionPoints = [
   "To be the leader in the hospital and health service industry in the eastern section of the metropolis through our well-trained and knowledgeable health services staff and cooperative members.",
@@ -69,12 +66,14 @@ const visionPoints = [
 
 /* ─────────────────────────────────────────── */
 export default function AboutPage() {
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
+
   return (
     <>
       {/* ══════════════════════════════
           HERO
       ══════════════════════════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-accent py-24 lg:py-36">
+      <section className="relative overflow-hidden bg-white from-secondary via-background to-accent py-24 lg:py-36">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.03]"
           style={{
@@ -96,9 +95,9 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
                 About Us
               </span>
             </div>
@@ -119,7 +118,7 @@ export default function AboutPage() {
       {/* ══════════════════════════════
           GLAD TO HELP
       ══════════════════════════════ */}
-      <section className="relative overflow-hidden bg-background py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-background py-16 lg:py-20">
         <div
           className="pointer-events-none absolute right-0 top-0 h-64 w-64 opacity-[0.03]"
           style={{
@@ -132,22 +131,22 @@ export default function AboutPage() {
         <div className="pointer-events-none absolute right-1/4 top-16 h-8 w-8 rotate-45 rounded-sm border border-primary/10" />
 
         <div className="relative mx-auto max-w-7xl px-4">
-          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
             <FadeIn>
               <div className="relative">
                 <div className="pointer-events-none absolute -left-4 -top-8 select-none font-serif text-[120px] leading-none text-primary/8">
                   "
                 </div>
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                    We Are Always Glad To Help
+                <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-4 shadow-sm">
+                  <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
+                    We Are Always Glad to Help
                   </span>
                 </div>
-                <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">
+                <h2 className="mb-4 text-3xl font-bold text-foreground leading-tight md:text-4xl md:leading-tight">
                   Your Health Is Our{" "}
                   <span className="text-primary">Top Priority</span>
                 </h2>
-                <div className="space-y-4 text-muted-foreground">
+                <div className="space-y-3 text-muted-foreground text-[15px]">
                   <p className="leading-relaxed">
                     At Metro Rizal Doctors Hospital, we are committed to
                     providing you with the highest quality of healthcare
@@ -169,7 +168,7 @@ export default function AboutPage() {
                     best possible care and support.
                   </p>
                 </div>
-                <div className="mt-8 flex items-center gap-4 border-t border-border pt-6">
+                <div className="mt-6 flex items-center gap-4 border-t border-border pt-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                     ND
                   </div>
@@ -185,34 +184,31 @@ export default function AboutPage() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.15}>
-              <div className="grid grid-cols-2 gap-4">
-                {stats.map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className="group rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md"
-                  >
-                    <p className="text-3xl font-bold text-primary">
-                      {stat.number}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                ))}
-                <Link href="/contact" className="group col-span-2 block">
-                  <div className="flex items-center justify-between rounded-2xl border border-dashed border-primary/30 bg-primary/5 px-6 py-4 transition-all hover:border-primary hover:bg-primary/10">
-                    <span className="font-semibold text-foreground">
-                      Book a Consultation
-                    </span>
-                    <ArrowRight className="h-5 w-5 text-primary transition-transform group-hover:translate-x-1" />
+            <FadeIn delay={0.15} className="flex justify-center">
+              <motion.div 
+                className="relative group cursor-pointer overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-green-50/50 to-primary/5 backdrop-blur-xl p-3 sm:p-4 border border-primary/20 shadow-xl shadow-primary/10 mx-auto max-w-[22rem] w-full"
+                onClick={() => setIsImageExpanded(true)}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Single Inner Image Container */}
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.75rem] z-10 bg-background shadow-inner">
+                  <Image 
+                    src="/doctors/photo_2023-02-10_10-24-56-e1717140096859-280x264.jpg" 
+                    alt="Metro Rizal Doctors Medical Team"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  
+                  {/* View Overlay matching the reference style */}
+                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
+                    <div className="flex shadow-lg shadow-primary/10 items-center justify-center gap-2 bg-white text-foreground px-5 py-2.5 rounded-full font-semibold text-[13px] transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto">
+                       <ZoomIn className="w-4 h-4 text-foreground/80" /> View photo
+                    </div>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </motion.div>
             </FadeIn>
           </div>
         </div>
@@ -236,12 +232,12 @@ export default function AboutPage() {
 
         <div className="relative mx-auto max-w-7xl px-4">
           <FadeIn className="mb-14 text-center">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Mission & Vision
-              </span>
-            </div>
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-6 shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span className="text-primary font-medium tracking-widest text-xs sm:text-sm uppercase">
+              Mission and Vision
+            </span>
+          </div>
             <h2 className="text-balance text-3xl font-bold text-foreground md:text-4xl">
               What Drives Us Forward
             </h2>
@@ -309,7 +305,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      
+
       {/* ══════════════════════════════
           WHY CHOOSE US
       ══════════════════════════════ */}
@@ -348,7 +344,7 @@ export default function AboutPage() {
             {whyChooseUs.map((item, index) => (
               <FadeIn key={item.title} delay={index * 0.07}>
                 <div className="group relative flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-                  
+
                   {/* Animated border overlay */}
                   <div className="absolute left-0 top-0 w-0 h-0 border-1 border-primary rounded-2xl transition-all duration-500 group-hover:w-full group-hover:h-full" />
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary">
@@ -520,6 +516,54 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════
+          PHOTO LIGHTBOX MODAL
+      ══════════════════════════════ */}
+      <AnimatePresence>
+        {isImageExpanded && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={() => setIsImageExpanded(false)}
+          >
+            {/* backdrop */}
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+
+            {/* close button */}
+            <button
+              onClick={() => setIsImageExpanded(false)}
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 transition-colors"
+              aria-label="Close lightbox"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative z-10 max-h-[90vh] max-w-sm w-full cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-2xl border border-white/10">
+                <Image
+                  src="/doctors/photo_2023-02-10_10-24-56-e1717140096859-280x264.jpg"
+                  alt="Metro Rizal Doctors Medical Team expanded"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 384px"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
