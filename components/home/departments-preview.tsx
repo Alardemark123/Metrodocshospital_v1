@@ -13,7 +13,7 @@ export function DepartmentsPreview() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="bg-background py-20 lg:py-32">
+    <section ref={ref} className="bg-transparent py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
         <motion.div

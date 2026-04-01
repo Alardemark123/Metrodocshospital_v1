@@ -43,7 +43,7 @@ export function Testimonials() {
   });
 
   return (
-    <section ref={ref} className="relative bg-white py-12 lg:py-16 overflow-hidden">
+    <section ref={ref} className="relative bg-transparent py-12 lg:py-16 overflow-hidden">
       {/* Minimalist Abstract Wavy Background (from Reference Concept) */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute -top-[15%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-slate-50/80 rounded-[45%_55%_70%_30%/40%_50%_60%_50%] transform rotate-12" />

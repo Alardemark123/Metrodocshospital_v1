@@ -39,7 +39,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full max-h-[500px] md:max-h-[600px] lg:max-h-[700px] xl:max-h-[800px] overflow-hidden bg-white">
+    <section className="relative w-full max-h-[500px] md:max-h-[600px] lg:max-h-[700px] xl:max-h-[800px] overflow-hidden bg-transparent">
       <img 
         src={photos[0].src} 
         alt="layout spacer tracking" 
@@ -57,7 +57,7 @@ export function HeroSection() {
            transition={{
              opacity: { duration: 0.9, ease: "easeInOut" },
            }}
-           className="absolute inset-0 w-full h-full"
+           className="absolute inset-0 w-full h-full -z-10"
         >
           <img
             src={photos[imageIndex].src}

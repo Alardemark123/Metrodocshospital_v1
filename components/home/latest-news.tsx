@@ -26,7 +26,7 @@ export function LatestNews() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-background py-12 lg:py-16"
+      className="relative overflow-hidden bg-transparent py-12 lg:py-16"
     >
       {/* Grid line pattern */}
       <div

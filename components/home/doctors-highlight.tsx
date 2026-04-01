@@ -6,8 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Star, Stethoscope, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getDoctors, slugify } from "@/lib/mock-api";
+import { getDoctors, slugify, ICON_MAP } from "@/lib/mock-api";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 function DoctorCard({
   doctor,
@@ -36,7 +37,10 @@ function DoctorCard({
       transition={{ duration: 0.55, delay: index * 0.1 }}
     >
       <Link href={`/doctors/${slugify(doctor.name)}`} className="group block">
-        <div className="relative overflow-hidden rounded-3xl border-3 border-transparent bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-primary group-hover:shadow-xl">
+        <div className={cn(
+          "relative overflow-hidden rounded-3xl border-3 border-transparent bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-primary group-hover:shadow-xl",
+          index >= 6 && "hidden md:block"
+        )}>
           {/* Portrait image */}
           <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/50">
             <Image
@@ -49,12 +53,6 @@ function DoctorCard({
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
-
-            {/* Rating */}
-            {/* <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              {doctor.rating}
-            </div>  */}
 
             {/* Name + specialty */}
             <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -97,7 +95,7 @@ export function DoctorsHighlight() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-primary/400 py-12 lg:py-16"
+      className="relative overflow-hidden bg-transparent py-12 lg:py-16"
     >
       {/* Dot pattern */}
       <div
@@ -141,12 +139,13 @@ export function DoctorsHighlight() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {doctors.map((doctor, index) => (
-            <DoctorCard
-              key={doctor.id}
-              doctor={doctor}
-              index={index}
-              isInView={isInView}
-            />
+            <div key={doctor.id} className={cn(index === 3 && "hidden md:block")}>
+              <DoctorCard
+                doctor={doctor}
+                index={index}
+                isInView={isInView}
+              />
+            </div>
           ))}
         </div>
 

@@ -15,8 +15,8 @@ export function HospitalIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="relative bg-white py-12 lg:py-16 overflow-hidden">
-      <NetworkBackground />
+    <section ref={ref} className="relative bg-transparent py-12 lg:py-16 overflow-hidden">
+      
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         
         {/* Editorial Header */}
@@ -68,7 +68,7 @@ export function HospitalIntro() {
               At <strong className="font-semibold text-primary">Metro Rizal Doctors Hospital</strong>, we are committed to providing you with the highest quality of healthcare services. We understand that seeking medical attention can be difficult, and we are here to support you every step of the way.
             </p>
 
-            <div className="grid grid-cols-2 gap-3 mb-8">
+            {/* <div className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { value: "25+", label: "Years of Service" },
                 { value: "98%", label: "Patient Focus" },
@@ -80,7 +80,7 @@ export function HospitalIntro() {
                   <p className="text-sm text-slate-500 mt-1 font-medium">{stat.label}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <div>
               <Link 

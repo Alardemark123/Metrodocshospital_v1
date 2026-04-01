@@ -6,7 +6,7 @@ import { HmoMarquee } from "@/components/ui/hmo-marquee";
 
 export function CreditedHmo() {
   return (
-    <section className="relative overflow-hidden bg-white py-12 lg:py-16">
+    <section className="relative overflow-hidden bg-transparent py-12 lg:py-16">
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <FadeIn className="mb-8 text-center">
           <h2 className="mb-3 text-balance text-3xl font-bold text-foreground md:text-4xl">

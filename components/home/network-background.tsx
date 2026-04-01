@@ -55,14 +55,14 @@ export function NetworkBackground() {
       draw(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(15, 23, 42, ${this.colorOpacity})`; // slate-900
+        ctx.fillStyle = `rgba(37, 93, 60, ${this.colorOpacity})`; // #255d3c
         ctx.fill();
         
         // Subtle outline for larger nodes to enhance the molecule effect
         if (this.isLarge) {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(15, 23, 42, 0.15)`;
+            ctx.strokeStyle = `rgba(37, 93, 60, 0.15)`;
             ctx.lineWidth = 1.5;
             ctx.stroke();
         }
@@ -108,7 +108,7 @@ export function NetworkBackground() {
             const opacity = (1 - dist / maxDist) * 0.3;
             const isConnectingLarge = particles[i].isLarge || particles[j].isLarge;
             
-            ctx.strokeStyle = `rgba(15, 23, 42, ${opacity})`;
+            ctx.strokeStyle = `rgba(37, 93, 60, ${opacity})`;
             ctx.lineWidth = isConnectingLarge ? 1.2 : 0.6;
             ctx.stroke();
           }
@@ -138,7 +138,7 @@ export function NetworkBackground() {
 
   return (
     <div 
-      className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
+      className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"
       style={{
         maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
         WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)"
@@ -146,7 +146,7 @@ export function NetworkBackground() {
     >
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-[0.35]"
+        className="absolute inset-0 w-full h-full opacity-[0.45]"
       />
     </div>
   );
